@@ -1,0 +1,86 @@
+﻿#ifndef FUNCTOTEXT_H
+#define FUNCTOTEXT_H
+
+#include "globaldefine.h"
+
+QString accToText(uchar ch);
+QString acdToText(uchar ch);
+QString actToText(uchar ch);
+QString afqToText_iec101(uchar ch);
+QString afqToText_iec103(uchar ch);
+QString blToText(uchar ch);
+QString caToText(uchar ch);
+QString ccsToText(uchar ch);
+QString cl1ToText(uchar ch);
+QString cl2ToText(uchar ch);
+QString cl3ToText(uchar ch);
+QString coiToText(uchar ch);
+QString colToText(uchar ch);
+QString cw1ToText(uchar ch);
+QString cw2ToText(uchar ch);
+QString cyToText(uchar ch);
+QString dcsToText(uchar ch);
+QString dfcToText(uchar ch);
+QString dpiteToText(uchar ch);
+QString dpiToText(uchar ch);
+QString eiToText(uchar ch);
+QString erToText(uchar ch);
+QString esToText(uchar ch);
+QString fcbToText(uchar ch);
+QString fcvToText(uchar ch);
+QString frqToText(uchar ch);
+QString frzToText(uchar ch);
+QString gdd1ToText(uchar ch);
+QString gdd3ToText(uchar ch);
+QString grcToText(uchar ch);
+QString gsToText(uchar ch);
+QString hrToText(const char *ch, int len);
+QString hrToText(uchar *ch, int len);
+QString ivToText(uchar ch);
+QString kodToText(uchar ch);
+QString lsqToText_iec101(uchar ch);
+QString lsqToText_iec103(uchar ch);
+QString ndeToText(uchar ch);
+QString ngdToText(uchar ch);
+QString nogToText(uchar ch);
+QString ntToText(uchar ch);
+QString ovToText(uchar ch);
+QString prmToText(uchar ch);
+QString qoiToText(uchar ch);
+QString qosToText(uchar ch);
+QString qpaToText(uchar ch);
+QString qpmToText(uchar ch);
+QString qrpToText(uchar ch);
+QString quToText_iec101(uchar ch);
+QString quToText_iec103(uchar ch);
+QString rcsToText_iec101(uchar ch);
+QString rcsToText_iec103(uchar ch);
+QString rqtToText(uchar ch);
+QString sbToText(uchar ch);
+QString scqToText_iec101(uchar ch);
+QString scqToText_iec103(uchar ch);
+QString scsToText(uchar ch);
+QString seToText(uchar ch);
+QString sieToText(uchar ch);
+QString sl1ToText(uchar ch);
+QString sl2ToText(uchar ch);
+QString sl3ToText(uchar ch);
+QString sofToText(uchar ch);
+QString sofToText_iec101(uchar ch);
+QString sofToText_iec103(uchar ch);
+QString spiToText(uchar ch);
+QString srdToText(uchar ch);
+QString srqToText(uchar ch);
+QString suToText(uchar ch);
+QString timeToText(const char *time, int timelen);
+QString timeToText(uchar *time, int timelen);
+QString myTime1ToText(const char *time, int timelen);
+QString myTime1ToText(uchar *time, int timelen);
+QString myTime2ToText(const char *time, int timelen);
+QString myTime2ToText(uchar *time, int timelen);
+QString tooToText(uchar ch);
+QString tovToText(uchar ch);
+QString vtiToText_iec101(uchar ch);
+QString vtiToText_iec103(uchar ch);
+
+#endif // FUNCTOTEXT_H

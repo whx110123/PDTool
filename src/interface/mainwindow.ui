@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>899</width>
+    <height>623</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_tcpclient"/>
+      <widget class="QWidget" name="page_tcpserver"/>
+      <widget class="QWidget" name="page_udpclient"/>
+      <widget class="QWidget" name="page_udpserver"/>
+      <widget class="QWidget" name="page_com"/>
+      <widget class="QWidget" name="page_analysis"/>
+      <widget class="QWidget" name="page_handledata"/>
+      <widget class="QWidget" name="page_version"/>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>899</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>通信调试</string>
+    </property>
+    <addaction name="actionTCP_Client"/>
+    <addaction name="actionTCP_Server"/>
+    <addaction name="actionUDP_Client"/>
+    <addaction name="actionUDP_Server"/>
+    <addaction name="actionCOM"/>
+    <addaction name="separator"/>
+    <addaction name="actionSendData"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>报文</string>
+    </property>
+    <addaction name="actionAnalysis"/>
+    <addaction name="actionHandleData"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>设置</string>
+    </property>
+    <addaction name="actionOptions"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionVersion"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionTCP_Client">
+   <property name="text">
+    <string>TCP客户端</string>
+   </property>
+   <property name="toolTip">
+    <string>TCP客户端</string>
+   </property>
+  </action>
+  <action name="actionTCP_Server">
+   <property name="text">
+    <string>TCP服务器</string>
+   </property>
+   <property name="toolTip">
+    <string>TCP服务器</string>
+   </property>
+  </action>
+  <action name="actionUDP_Client">
+   <property name="text">
+    <string>UDP客户端</string>
+   </property>
+   <property name="toolTip">
+    <string>UDP客户端</string>
+   </property>
+  </action>
+  <action name="actionUDP_Server">
+   <property name="text">
+    <string>UDP服务器</string>
+   </property>
+   <property name="toolTip">
+    <string>UDP服务器</string>
+   </property>
+  </action>
+  <action name="actionCOM">
+   <property name="text">
+    <string>COM串口</string>
+   </property>
+   <property name="toolTip">
+    <string>COM串口</string>
+   </property>
+  </action>
+  <action name="actionAnalysis">
+   <property name="text">
+    <string>报文解析</string>
+   </property>
+  </action>
+  <action name="actionHandleData">
+   <property name="text">
+    <string>报文处理</string>
+   </property>
+   <property name="toolTip">
+    <string>报文处理</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>关于</string>
+   </property>
+   <property name="toolTip">
+    <string>关于</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>选项</string>
+   </property>
+   <property name="toolTip">
+    <string>选项</string>
+   </property>
+  </action>
+  <action name="actionVersion">
+   <property name="text">
+    <string>版本记录</string>
+   </property>
+   <property name="toolTip">
+    <string>版本记录</string>
+   </property>
+  </action>
+  <action name="actionSendData">
+   <property name="text">
+    <string>多帧发送</string>
+   </property>
+   <property name="toolTip">
+    <string>多帧发送</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
