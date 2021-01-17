@@ -21,14 +21,14 @@
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="page_tcpclient"/>
       <widget class="QWidget" name="page_tcpserver"/>
       <widget class="QWidget" name="page_udpclient"/>
       <widget class="QWidget" name="page_udpserver"/>
       <widget class="QWidget" name="page_com"/>
-      <widget class="QWidget" name="page_analysis"/>
+      <widget class="frmAnalysis" name="page_analysis"/>
       <widget class="QWidget" name="page_handledata"/>
       <widget class="QWidget" name="page_version"/>
      </widget>
@@ -168,6 +168,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>frmAnalysis</class>
+   <extends>QWidget</extends>
+   <header location="global">frmanalysis.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
