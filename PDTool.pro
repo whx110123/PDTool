@@ -26,7 +26,8 @@ INCLUDEPATH         += $$PWD
 INCLUDEPATH         += $$PWD/src
 
 RESOURCES += \
-	other/main.qrc
+	other/main.qrc \
+	other/qss.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

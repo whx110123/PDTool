@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmMain</class>
+ <widget class="QMainWindow" name="frmMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>850</width>
+    <height>626</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QStackedWidget" name="stackedWidget">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <widget class="QWidget" name="page"/>
+       <widget class="QWidget" name="page_2"/>
+      </widget>
+      <widget class="QStackedWidget" name="stackedWidget_2">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <widget class="QWidget" name="page_3"/>
+       <widget class="QWidget" name="page_4"/>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>850</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_F">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_O"/>
+    <addaction name="separator"/>
+    <addaction name="action_S"/>
+    <addaction name="action_C"/>
+   </widget>
+   <widget class="QMenu" name="menu_E">
+    <property name="title">
+     <string>编辑(&amp;E)</string>
+    </property>
+    <addaction name="action_X"/>
+    <addaction name="action_C_2"/>
+    <addaction name="action_V"/>
+   </widget>
+   <widget class="QMenu" name="menu_B">
+    <property name="title">
+     <string>构建(&amp;B)</string>
+    </property>
+    <addaction name="actionGouj"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>帮助(&amp;H)</string>
+    </property>
+    <addaction name="action_T"/>
+    <addaction name="action_A"/>
+   </widget>
+   <addaction name="menu_F"/>
+   <addaction name="menu_E"/>
+   <addaction name="menu_B"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <action name="action">
+   <property name="text">
+    <string>新建文件(&amp;N)</string>
+   </property>
+  </action>
+  <action name="action_O">
+   <property name="text">
+    <string>打开文件(&amp;O)</string>
+   </property>
+  </action>
+  <action name="action_S">
+   <property name="text">
+    <string>保存文件(&amp;S) </string>
+   </property>
+  </action>
+  <action name="action_C">
+   <property name="text">
+    <string>关闭退出(&amp;C)</string>
+   </property>
+  </action>
+  <action name="action_X">
+   <property name="text">
+    <string>剪切(&amp;X) </string>
+   </property>
+  </action>
+  <action name="action_C_2">
+   <property name="text">
+    <string>复制(&amp;C)</string>
+   </property>
+  </action>
+  <action name="action_V">
+   <property name="text">
+    <string>粘贴(&amp;V)</string>
+   </property>
+  </action>
+  <action name="actionGouj">
+   <property name="text">
+    <string>构建项目(&amp;B)</string>
+   </property>
+  </action>
+  <action name="action_T">
+   <property name="text">
+    <string>帮助文档(&amp;T)</string>
+   </property>
+  </action>
+  <action name="action_A">
+   <property name="text">
+    <string>关于(&amp;A)</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

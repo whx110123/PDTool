@@ -1,16 +1,16 @@
 FORMS += \
 	$$PWD/dialogmodbus.ui \
 	$$PWD/frmanalysis.ui \
-	$$PWD/mainwindow.ui
+	$$PWD/frmmain.ui
 
 HEADERS += \
 	$$PWD/dialogmodbus.h \
 	$$PWD/frmanalysis.h \
-	$$PWD/mainwindow.h \
+	$$PWD/frmmain.h \
 	$$PWD/myhighlighter.h
 
 SOURCES += \
 	$$PWD/dialogmodbus.cpp \
 	$$PWD/frmanalysis.cpp \
-	$$PWD/mainwindow.cpp \
+	$$PWD/frmmain.cpp \
 	$$PWD/myhighlighter.cpp
