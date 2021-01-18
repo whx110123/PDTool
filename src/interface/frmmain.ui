@@ -24,15 +24,449 @@
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
-       <widget class="QWidget" name="page"/>
-       <widget class="QWidget" name="page_2"/>
+       <property name="currentIndex">
+        <number>5</number>
+       </property>
+       <widget class="QWidget" name="page_tcpclient"/>
+       <widget class="QWidget" name="page_tcpserver"/>
+       <widget class="QWidget" name="page_udpclient"/>
+       <widget class="QWidget" name="page_udpserver"/>
+       <widget class="QWidget" name="page_com"/>
+       <widget class="frmAnalysis" name="page_analysis"/>
       </widget>
-      <widget class="QStackedWidget" name="stackedWidget_2">
+      <widget class="QStackedWidget" name="stackedWidget_config">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
-       <widget class="QWidget" name="page_3"/>
-       <widget class="QWidget" name="page_4"/>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="page_3">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="geometry">
+          <rect>
+           <x>230</x>
+           <y>70</y>
+           <width>161</width>
+           <height>311</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>规约配置</string>
+         </property>
+         <widget class="QComboBox" name="comboBox_cotlen">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>126</y>
+            <width>126</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_9">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>64</y>
+            <width>126</width>
+            <height>12</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>地址域字节数</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_infaddrlen">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>214</y>
+            <width>126</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_comaddrlen">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>170</y>
+            <width>126</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_8">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>126</width>
+            <height>12</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>长度域类型</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_7">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>196</y>
+            <width>126</width>
+            <height>12</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>信息体地址字节数</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_6">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>152</y>
+            <width>126</width>
+            <height>12</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>公共地址字节数</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>108</y>
+            <width>126</width>
+            <height>12</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>传送原因字节数</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_addrlen">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>82</y>
+            <width>126</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_lengthtype">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>38</y>
+            <width>126</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="page_4">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>40</y>
+           <width>191</width>
+           <height>331</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>规约配置</string>
+         </property>
+         <widget class="QPushButton" name="pushButton">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>300</y>
+            <width>126</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>解析码介绍</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_12">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>65</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>1.类型为</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit2_modbuslen">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>126</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_17">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>91</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>1.解析码</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox3_modbus">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>239</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox_sort">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>13</y>
+            <width>126</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_16">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>239</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>3.类型为</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit1_modbusanalysis">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>91</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="Line" name="line">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>117</y>
+            <width>126</width>
+            <height>3</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox1_modbus">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>65</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="Line" name="line_3">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>291</y>
+            <width>126</width>
+            <height>3</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_15">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>213</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>3.长度为</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_14">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>152</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>2.类型为</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit2_modbusanalysis">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>178</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_19">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>265</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>3.解析码</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboBox2_modbus">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>152</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit1_modbuslen">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>39</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_18">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>178</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>2.解析码</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_13">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>126</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>2.长度为</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_11">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>39</y>
+            <width>48</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>1.长度为</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit3_modbusanalysis">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>265</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit3_modbuslen">
+          <property name="geometry">
+           <rect>
+            <x>74</x>
+            <y>213</y>
+            <width>72</width>
+            <height>20</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="Line" name="line_2">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>204</y>
+            <width>126</width>
+            <height>3</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </widget>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -51,89 +485,136 @@
     <property name="title">
      <string>文件(&amp;F)</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_O"/>
-    <addaction name="separator"/>
-    <addaction name="action_S"/>
-    <addaction name="action_C"/>
+    <addaction name="action_Save"/>
+    <addaction name="action_Exit"/>
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
-     <string>编辑(&amp;E)</string>
+     <string>通信方式(&amp;E)</string>
     </property>
-    <addaction name="action_X"/>
-    <addaction name="action_C_2"/>
-    <addaction name="action_V"/>
+    <addaction name="action_TCPClient"/>
+    <addaction name="action_TCPServer"/>
+    <addaction name="action_UDPClient"/>
+    <addaction name="action_UDPServer"/>
+    <addaction name="action_COM"/>
    </widget>
    <widget class="QMenu" name="menu_B">
     <property name="title">
-     <string>构建(&amp;B)</string>
+     <string>报文(&amp;B)</string>
     </property>
-    <addaction name="actionGouj"/>
+    <addaction name="action_Analys"/>
+    <addaction name="action_HandleData"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
      <string>帮助(&amp;H)</string>
     </property>
-    <addaction name="action_T"/>
-    <addaction name="action_A"/>
+    <addaction name="action_Update"/>
+    <addaction name="action_About"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_E"/>
    <addaction name="menu_B"/>
    <addaction name="menu_H"/>
   </widget>
-  <action name="action">
+  <action name="action_New">
    <property name="text">
     <string>新建文件(&amp;N)</string>
    </property>
   </action>
-  <action name="action_O">
+  <action name="action_Open">
    <property name="text">
     <string>打开文件(&amp;O)</string>
    </property>
   </action>
-  <action name="action_S">
+  <action name="action_Save">
    <property name="text">
     <string>保存文件(&amp;S) </string>
    </property>
   </action>
-  <action name="action_C">
+  <action name="action_Exit">
    <property name="text">
     <string>关闭退出(&amp;C)</string>
    </property>
   </action>
-  <action name="action_X">
+  <action name="action_TCPClient">
    <property name="text">
-    <string>剪切(&amp;X) </string>
+    <string>TCP客户端(&amp;1) </string>
+   </property>
+   <property name="toolTip">
+    <string>TCP客户端(1)</string>
    </property>
   </action>
-  <action name="action_C_2">
+  <action name="action_TCPServer">
    <property name="text">
-    <string>复制(&amp;C)</string>
+    <string>TCP服务端(&amp;2)</string>
+   </property>
+   <property name="toolTip">
+    <string>TCP服务端(2)</string>
    </property>
   </action>
-  <action name="action_V">
+  <action name="action_UDPClient">
    <property name="text">
-    <string>粘贴(&amp;V)</string>
+    <string>UDP客户端(&amp;3) </string>
+   </property>
+   <property name="toolTip">
+    <string>UDP客户端(3) </string>
    </property>
   </action>
-  <action name="actionGouj">
+  <action name="action_Analys">
    <property name="text">
-    <string>构建项目(&amp;B)</string>
+    <string>报文解析</string>
+   </property>
+   <property name="toolTip">
+    <string>报文解析</string>
    </property>
   </action>
-  <action name="action_T">
+  <action name="action_Update">
    <property name="text">
-    <string>帮助文档(&amp;T)</string>
+    <string>版本记录(&amp;T)</string>
+   </property>
+   <property name="toolTip">
+    <string>版本记录(T)</string>
    </property>
   </action>
-  <action name="action_A">
+  <action name="action_About">
    <property name="text">
     <string>关于(&amp;A)</string>
    </property>
   </action>
+  <action name="action_UDPServer">
+   <property name="text">
+    <string>UDP服务端(&amp;4)</string>
+   </property>
+   <property name="toolTip">
+    <string>UDP服务端(4)</string>
+   </property>
+  </action>
+  <action name="action_COM">
+   <property name="text">
+    <string>COM串口(&amp;5)</string>
+   </property>
+   <property name="toolTip">
+    <string>COM串口(5)</string>
+   </property>
+  </action>
+  <action name="action_HandleData">
+   <property name="text">
+    <string>报文处理</string>
+   </property>
+   <property name="toolTip">
+    <string>报文处理</string>
+   </property>
+  </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>frmAnalysis</class>
+   <extends>QWidget</extends>
+   <header location="global">frmanalysis.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

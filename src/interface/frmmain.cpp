@@ -1,4 +1,4 @@
-﻿#pragma execution_character_set("utf-8")
+﻿//#pragma execution_character_set("utf-8")
 #include "frmmain.h"
 #include "ui_frmmain.h"
 #include "qfile.h"
@@ -26,13 +26,59 @@ void frmMain::showEvent(QShowEvent *)
 
 void frmMain::initForm()
 {
+	this->initSignalAndSlots();
 	this->initTableWidget();
 	this->initTreeWidget();
 	this->initListWidget();
 	this->initOther();
 	this->initStyle();
 	this->initTranslator();
-//    ui->tabWidget->setCurrentIndex(0);
+	ui->stackedWidget->setCurrentIndex(5);
+	ui->stackedWidget_config->setCurrentIndex(0);
+
+	QStringList list = QStringList();
+	list << "1" << "2";
+	ui->comboBox_addrlen->addItems(list);
+	ui->comboBox_addrlen->addItem("7");
+	ui->comboBox_cotlen->addItems(list);
+	ui->comboBox_comaddrlen->addItems(list);
+	list << "3";
+	ui->comboBox_infaddrlen->addItems(list);
+	QStringList list1 = QStringList();
+	list1 << IEC_SINGLE << IEC_DOUBLESAME << IEC_DOUBLEDIFF;
+	ui->comboBox_lengthtype->addItems(list1);
+	QStringList list2 = QStringList();
+	list2 << YC << YX << YM;
+	ui->comboBox1_modbus->addItems(list2);
+	ui->comboBox2_modbus->addItems(list2);
+	ui->comboBox3_modbus->addItems(list2);
+	QStringList list3 = QStringList();
+	list3 << SORT1 << SORT2 << SORT3 << SORT4;
+	ui->comboBox_sort->addItems(list3);
+
+	ui->comboBox_lengthtype->installEventFilter(this);
+	ui->comboBox_addrlen->installEventFilter(this);
+	ui->comboBox_cotlen->installEventFilter(this);
+	ui->comboBox_comaddrlen->installEventFilter(this);
+	ui->comboBox_infaddrlen->installEventFilter(this);
+	ui->comboBox_sort->installEventFilter(this);
+	ui->comboBox1_modbus->installEventFilter(this);
+	ui->comboBox2_modbus->installEventFilter(this);
+	ui->comboBox3_modbus->installEventFilter(this);
+
+
+	ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+	ui->comboBox_addrlen->setCurrentText("1");
+	ui->comboBox_cotlen->setCurrentText("2");
+	ui->comboBox_comaddrlen->setCurrentText("2");
+	ui->comboBox_infaddrlen->setCurrentText("3");
+
+}
+
+void frmMain::initSignalAndSlots()
+{
+	connect(ui->action_Save, &QAction::triggered, this, &frmMain::SaveAll);
+	connect(ui->page_analysis, &frmAnalysis::emitstr, this, &frmMain::HandleStr);
 }
 
 void frmMain::initTableWidget()
@@ -188,13 +234,157 @@ void frmMain::initStyle()
 
 void frmMain::initTranslator()
 {
-//    //加载鼠标右键菜单翻译文件
-//    QTranslator *translator1 = new QTranslator(qApp);
-//    translator1->load(":/image/qt_zh_CN.qm");
-//    qApp->installTranslator(translator1);
+	//加载鼠标右键菜单翻译文件
+	QTranslator *translator1 = new QTranslator(qApp);
+	translator1->load(":/image/qt_zh_CN.qm");
+	qApp->installTranslator(translator1);
 
-//    //加载富文本框鼠标右键菜单翻译文件
-//    QTranslator *translator2 = new QTranslator(qApp);
-//    translator2->load(":/image/widgets.qm");
-//    qApp->installTranslator(translator2);
+	//加载富文本框鼠标右键菜单翻译文件
+	QTranslator *translator2 = new QTranslator(qApp);
+	translator2->load(":/image/widgets.qm");
+	qApp->installTranslator(translator2);
+}
+
+void frmMain::SaveAll()
+{
+	qDebug() << "保存";
+}
+
+void frmMain::HandleStr(QString str)
+{
+	if(str == IEC_104)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("2");
+		ui->comboBox_comaddrlen->setCurrentText("2");
+		ui->comboBox_infaddrlen->setCurrentText("3");
+	}
+	else if(str == IEC_101)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("2");
+	}
+	else if(str == IEC_103WISCOMNET)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(str == IEC_103COM)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLESAME);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(str == IEC_103ASDU || str == IEC_103NANZINET)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(str == IEC_103BAOXINNET)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("2");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(str == IEC_103XUJINET)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("2");
+		ui->comboBox_comaddrlen->setCurrentText("2");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(str == IEC_103HUABEI)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("1");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+	else if(str == MODBUS_RTU || str == MODBUS_TCP)
+	{
+		ui->stackedWidget_config->setCurrentIndex(1);
+	}
+	else if(str == MEASUREDTERMINAL_NW_NET)
+	{
+		ui->stackedWidget_config->setCurrentIndex(0);
+		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_addrlen->setCurrentText("7");
+		ui->comboBox_cotlen->setCurrentText("1");
+		ui->comboBox_comaddrlen->setCurrentText("1");
+		ui->comboBox_infaddrlen->setCurrentText("1");
+	}
+}
+
+void frmMain::initProtocolConfig()
+{
+	MyBase::mConfig.lengthType = ui->comboBox_lengthtype->currentText();
+	MyBase::mConfig.addrLen = ui->comboBox_addrlen->currentText().toInt();
+	MyBase::mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
+	MyBase::mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+	MyBase::mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+
+	qDeleteAll(MyBase::mConfig.groups);
+	MyBase::mConfig.groups.clear();
+	ModbusDataGroup *datagroup = new ModbusDataGroup;
+	datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
+	datagroup->type = ui->comboBox1_modbus->currentText();
+	datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
+	datagroup->sort = ui->comboBox_sort->currentText();
+	MyBase::mConfig.groups.append(datagroup);
+	datagroup = new ModbusDataGroup;
+	datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
+	datagroup->type = ui->comboBox2_modbus->currentText();
+	datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
+	datagroup->sort = ui->comboBox_sort->currentText();
+	MyBase::mConfig.groups.append(datagroup);
+	datagroup = new ModbusDataGroup;
+	datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
+	datagroup->type = ui->comboBox3_modbus->currentText();
+	datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
+	datagroup->sort = ui->comboBox_sort->currentText();
+	MyBase::mConfig.groups.append(datagroup);
+}
+
+bool frmMain::eventFilter(QObject *obj, QEvent *ev)
+{
+	if(obj == ui->comboBox_lengthtype ||
+			obj == ui->comboBox_addrlen ||
+			obj == ui->comboBox_cotlen ||
+			obj == ui->comboBox_comaddrlen ||
+			obj == ui->comboBox_infaddrlen ||
+			obj == ui->comboBox_sort ||
+			obj == ui->comboBox1_modbus ||
+			obj == ui->comboBox2_modbus ||
+			obj == ui->comboBox3_modbus)
+	{
+		if(ev->type() == QEvent::Wheel)
+		{
+			return true;
+		}
+	}
+	return QWidget::eventFilter(obj, ev);
 }

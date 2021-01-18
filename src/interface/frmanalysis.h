@@ -19,6 +19,10 @@ public:
 	explicit frmAnalysis(QWidget *parent = nullptr);
 	~frmAnalysis();
 
+
+signals:
+	void emitstr(QString str);
+
 private slots:
 	void initForm();
 	void initConfig();
@@ -56,8 +60,6 @@ private:
 public:
 	void initProtocolConfig();
 	MyBase *createByName(QString name);
-protected:
-	bool eventFilter(QObject *obj, QEvent *ev) override;
 };
 
 #endif // FRMANALYSIS_H
