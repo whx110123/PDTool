@@ -2,6 +2,10 @@
 #define FRMMAIN_H
 
 #include <QMainWindow>
+#include <mybase.h>
+#include "globaldefine.h"
+#include "dialogmodbus.h"
+#include "myhighlighter.h"
 
 namespace Ui
 {
@@ -17,25 +21,44 @@ public:
 	~frmMain();
 
 protected:
-	void showEvent(QShowEvent *) override;
 	bool eventFilter(QObject *obj, QEvent *ev) override;
 
 private:
 	Ui::frmMain *ui;
-
+    myhighlighter *highlighter1;
+        myhighlighter *highlighter2;
+        DialogModbus *modbusdlg;
 private slots:
 	void initForm();
 	void initSignalAndSlots();
-	void initTableWidget();
-	void initTreeWidget();
-	void initListWidget();
-	void initOther();
 	void initStyle();
 	void initTranslator();
 
+    void on_clearBtn_clicked();
+    
+    void on_protocolcbox_currentIndexChanged(const QString &arg1);
+    
+    void on_highlightEdit_textChanged(const QString &arg1);
+    
+    void on_fontcolor_clicked();
+    
+    void on_backgroundcolor_clicked();
+    
+    void on_fontchange_clicked();
+    
+    void on_pushButton_Analysis_clicked();
+    
+    void on_pushButton_change_clicked();
+    
+    void on_pushButton_clean_clicked();
+
+    void on_pushButton_hide_clicked();
+
+    void on_pushButton_clicked();
+
 public:
+    MyBase *createByName(QString name);
 	void SaveAll();
-	void HandleStr(QString str);
 	void initProtocolConfig();
 
 };
