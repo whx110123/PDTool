@@ -41,6 +41,7 @@
 #include "iec101asdu127data.h"
 #include "iec101asdu137data.h"
 #include "iec101asdu167data.h"
+#include "iec101asdu104data.h"
 
 IEC101AsduData::IEC101AsduData()
 {

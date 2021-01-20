@@ -106,7 +106,6 @@ QString IEC101::showToText()
 	if(apci.flag == 0x68)
 	{
 		text.append(asdu.showToText());
-		text.append("-----------------------------------------------------------------------------------------------\r\n");
 	}
 	text.append(CharToHexStr(crc) + "\t校验和\r\n");
 	text.append(CharToHexStr(end) + "\t结束字符\r\n");

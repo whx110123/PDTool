@@ -50,7 +50,7 @@ QString qoiToText(uchar ch);
 QString qosToText(uchar ch);
 QString qpaToText(uchar ch);
 QString qpmToText(uchar ch);
-QString qrpToText(uchar ch);
+QString grpToText(uchar ch);
 QString quToText_iec101(uchar ch);
 QString quToText_iec103(uchar ch);
 QString rcsToText_iec101(uchar ch);

@@ -1676,9 +1676,9 @@ QString cl3ToText(uchar ch)
 	return text;
 }
 
-QString qrpToText(uchar ch)
+QString grpToText(uchar ch)
 {
-	QString text = "复位进程命令限定词QRP: " + QString::number(ch) + "  ";
+	QString text = "复位进程命令限定词GRP: " + QString::number(ch) + "  ";
 	switch(ch)
 	{
 	case 0:

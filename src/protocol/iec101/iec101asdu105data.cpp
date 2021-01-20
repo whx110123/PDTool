@@ -13,9 +13,9 @@ IEC101Asdu105Data::~IEC101Asdu105Data()
 bool IEC101Asdu105Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	ushortData = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + qrpToText(ushortData) + "\r\n");
-	len += 2;
+	grp = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t" + grpToText(grp) + "\r\n");
+	len++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())

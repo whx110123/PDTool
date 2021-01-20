@@ -25,41 +25,59 @@ protected:
 
 private:
 	Ui::frmMain *ui;
-    myhighlighter *highlighter1;
-        myhighlighter *highlighter2;
-        DialogModbus *modbusdlg;
+	myhighlighter *highlighter1;
+	myhighlighter *highlighter2;
+	DialogModbus *modbusdlg;
 private slots:
 	void initForm();
 	void initSignalAndSlots();
 	void initStyle();
 	void initTranslator();
 
-    void on_clearBtn_clicked();
-    
-    void on_protocolcbox_currentIndexChanged(const QString &arg1);
-    
-    void on_highlightEdit_textChanged(const QString &arg1);
-    
-    void on_fontcolor_clicked();
-    
-    void on_backgroundcolor_clicked();
-    
-    void on_fontchange_clicked();
-    
-    void on_pushButton_Analysis_clicked();
-    
-    void on_pushButton_change_clicked();
-    
-    void on_pushButton_clean_clicked();
+	void on_clearBtn_clicked();
 
-    void on_pushButton_hide_clicked();
+	void on_protocolcbox_currentIndexChanged(const QString& arg1);
 
-    void on_pushButton_clicked();
+	void on_highlightEdit_textChanged(const QString& arg1);
+
+	void on_fontcolor_clicked();
+
+	void on_backgroundcolor_clicked();
+
+	void on_fontchange_clicked();
+
+	void on_pushButton_Analysis_clicked();
+
+	void on_pushButton_change_clicked();
+
+	void on_pushButton_clean_clicked();
+
+	void on_pushButton_hide_clicked();
+
+	void on_pushButton_clicked();
+
+	void on_action_HandleData_triggered(bool checked);
+
+	void on_pbcrc_clicked();
+
+	void on_pbtransform_clicked();
+
+	void on_Bt1_clicked();
+
+	void on_Bt2_clicked();
+
+	void on_Bt3_clicked();
+
+	void on_Bt4_clicked();
+
+	void on_Bt_clear_clicked();
 
 public:
-    MyBase *createByName(QString name);
+	MyBase *createByName(QString name);
 	void SaveAll();
 	void initProtocolConfig();
+	void ConfigHide();
+	void ConfigShow(int index);
 
 };
 

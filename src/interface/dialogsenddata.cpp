@@ -3,34 +3,28 @@
 #include "quiwidget.h"
 #include "globaldefine.h"
 
+#include <app.h>
+
 DialogSendData::DialogSendData(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogSendData)
 {
 	ui->setupUi(this);
 	initfrom();
-//	piec104 = NULL;
+
 }
 
 DialogSendData::~DialogSendData()
 {
 	delete ui;
-//	if(piec104)
-//	{
-//		delete piec104;
-//		piec104 = NULL;
-//	}
 }
 
 void DialogSendData::initfrom()
 {
 	timercycle = new QTimer(this);
-//	handleDataTimer = new QTimer(this);
 	recflag = 0;
-//	haveData = false;
 
 	connect(timercycle, SIGNAL(timeout()), this, SLOT(sendDatacycle()));
-//	connect(handleDataTimer, SIGNAL(timeout()), this, SLOT(handleData()));
 	ui->comboBox->addItems(App::Transferlst);
 	mapline.insert(1, ui->linedata1);
 	mapline.insert(2, ui->linedata2);
