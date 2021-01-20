@@ -2,6 +2,8 @@
 #include "ui_frmudpserver.h"
 #include "quiwidget.h"
 
+#include <app.h>
+
 frmUdpServer::frmUdpServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmUdpServer)
 {
 	ui->setupUi(this);
@@ -241,7 +243,7 @@ void frmUdpServer::readData()
 
 		QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(buffer);
 		append(1, str);
-		emit dlgTodialogsenddata(str, "UDP服务器");
+		emit TofrmSendData(str, "UDP服务器");
 		clientConnected(ip, port);
 
 		if(App::DebugUdpServer)

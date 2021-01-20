@@ -2,6 +2,8 @@
 #include "ui_frmtcpclient.h"
 #include "quiwidget.h"
 
+#include <app.h>
+
 frmTcpClient::frmTcpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcpClient)
 {
 	ui->setupUi(this);
@@ -237,7 +239,7 @@ void frmTcpClient::readData()
 	}
 
 	append(1, buffer);
-	emit dlgTodialogsenddata(buffer, "TCP客户端");
+	emit TofrmSendData(buffer, "TCP客户端");
 	//自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
 	if(App::DebugTcpClient)
 	{

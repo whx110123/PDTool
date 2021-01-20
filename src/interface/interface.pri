@@ -1,19 +1,34 @@
 FORMS += \
-	$$PWD/dialogdealdata.ui \
 	$$PWD/dialogmodbus.ui \
-	$$PWD/dialogsenddata.ui \
-	$$PWD/frmmain.ui
+	$$PWD/dialogpma.ui \
+	$$PWD/frmcomtool.ui \
+	$$PWD/frmdebug.ui \
+	$$PWD/frmmain.ui \
+	$$PWD/frmtcpclient.ui \
+	$$PWD/frmtcpserver.ui \
+	$$PWD/frmudpclient.ui \
+	$$PWD/frmudpserver.ui
 
 HEADERS += \
-	$$PWD/dialogdealdata.h \
 	$$PWD/dialogmodbus.h \
-	$$PWD/dialogsenddata.h \
+	$$PWD/dialogpma.h \
+	$$PWD/frmcomtool.h \
+	$$PWD/frmdebug.h \
 	$$PWD/frmmain.h \
+	$$PWD/frmtcpclient.h \
+	$$PWD/frmtcpserver.h \
+	$$PWD/frmudpclient.h \
+	$$PWD/frmudpserver.h \
 	$$PWD/myhighlighter.h
 
 SOURCES += \
-	$$PWD/dialogdealdata.cpp \
 	$$PWD/dialogmodbus.cpp \
-	$$PWD/dialogsenddata.cpp \
+	$$PWD/dialogpma.cpp \
+	$$PWD/frmcomtool.cpp \
+	$$PWD/frmdebug.cpp \
 	$$PWD/frmmain.cpp \
+	$$PWD/frmtcpclient.cpp \
+	$$PWD/frmtcpserver.cpp \
+	$$PWD/frmudpclient.cpp \
+	$$PWD/frmudpserver.cpp \
 	$$PWD/myhighlighter.cpp

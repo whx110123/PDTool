@@ -1,30 +1,28 @@
-﻿#include "dialogsenddata.h"
-#include "ui_dialogsenddata.h"
-#include "quiwidget.h"
-#include "globaldefine.h"
+﻿#include "frmdebug.h"
+#include "ui_frmdebug.h"
 
+#include <QTimer>
 #include <app.h>
 
-DialogSendData::DialogSendData(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::DialogSendData)
+frmDebug::frmDebug(QWidget *parent) :
+	QWidget(parent),
+	ui(new Ui::frmDebug)
 {
 	ui->setupUi(this);
 	initfrom();
-
 }
 
-DialogSendData::~DialogSendData()
+frmDebug::~frmDebug()
 {
 	delete ui;
 }
 
-void DialogSendData::initfrom()
+void frmDebug::initfrom()
 {
 	timercycle = new QTimer(this);
 	recflag = 0;
 
-	connect(timercycle, SIGNAL(timeout()), this, SLOT(sendDatacycle()));
+	connect(timercycle, &QTimer::timeout, this, &frmDebug::sendDatacycle);
 	ui->comboBox->addItems(App::Transferlst);
 	mapline.insert(1, ui->linedata1);
 	mapline.insert(2, ui->linedata2);
@@ -32,10 +30,6 @@ void DialogSendData::initfrom()
 	mapline.insert(4, ui->linedata4);
 	mapline.insert(5, ui->linedata5);
 	mapline.insert(6, ui->linedata6);
-	mapline.insert(7, ui->linedata7);
-	mapline.insert(8, ui->linedata8);
-	mapline.insert(9, ui->linedata9);
-	mapline.insert(10, ui->linedata10);
 
 	mapchk.insert(1, ui->checkBox1);
 	mapchk.insert(2, ui->checkBox2);
@@ -43,14 +37,9 @@ void DialogSendData::initfrom()
 	mapchk.insert(4, ui->checkBox4);
 	mapchk.insert(5, ui->checkBox5);
 	mapchk.insert(6, ui->checkBox6);
-	mapchk.insert(7, ui->checkBox7);
-	mapchk.insert(8, ui->checkBox8);
-	mapchk.insert(9, ui->checkBox9);
-	mapchk.insert(10, ui->checkBox10);
-
 }
 
-void DialogSendData::initdataList()
+void frmDebug::initdataList()
 {
 	lstindex = 0;
 	dataList.clear();
@@ -68,13 +57,7 @@ void DialogSendData::initdataList()
 	}
 }
 
-void DialogSendData::closeEvent(QCloseEvent *event)
-{
-	stopTimer();
-	event->accept();
-}
-
-void DialogSendData::dealData(const QString& data, const QString& title)
+void frmDebug::dealData(const QString& data, const QString& title)
 {
 	if(ui->comboBox->currentText().contains(title))
 	{
@@ -82,7 +65,7 @@ void DialogSendData::dealData(const QString& data, const QString& title)
 	}
 }
 
-void DialogSendData::sendDatacycle()
+void frmDebug::sendDatacycle()
 {
 	switch(cycleflag)
 	{
@@ -124,30 +107,29 @@ void DialogSendData::sendDatacycle()
 
 	}
 	recflag = 0;
-
 }
 
-void DialogSendData::emitsignals(const QString& data)
+void frmDebug::emitsignals(const QString& data)
 {
 	if(ui->comboBox->currentText().contains("TCP客户端"))
 	{
-		emit dlgTotcpclient(data);
+		emit ToTcpClient(data);
 	}
 	else if(ui->comboBox->currentText().contains("TCP服务器"))
 	{
-		emit dlgTotcpserver(data);
+		emit ToTcpServer(data);
 	}
 	else if(ui->comboBox->currentText().contains("UDP客户端"))
 	{
-		emit dlgToudpclient(data);
+		emit ToUdpClient(data);
 	}
 	else if(ui->comboBox->currentText().contains("UDP服务器"))
 	{
-		emit dlgToudpserver(data);
+		emit ToUdpServer(data);
 	}
 	else if(ui->comboBox->currentText().contains("COM串口"))
 	{
-		emit dlgTocom(data);
+		emit ToCom(data);
 	}
 	QPalette palette1;
 	palette1.setColor(QPalette::Base, Qt::red);
@@ -167,7 +149,7 @@ void DialogSendData::emitsignals(const QString& data)
 	}
 }
 
-void DialogSendData::stopTimer()
+void frmDebug::stopTimer()
 {
 	if(timercycle->isActive())
 	{
@@ -179,9 +161,8 @@ void DialogSendData::stopTimer()
 	}
 }
 
-void DialogSendData::on_btnSendAll_clicked()
+void frmDebug::on_btnSendAll_clicked()
 {
-
 	stopTimer();
 
 	initdataList();
@@ -203,9 +184,8 @@ void DialogSendData::on_btnSendAll_clicked()
 	}
 }
 
-void DialogSendData::on_btnSendcycle_clicked()
+void frmDebug::on_btnSendcycle_clicked()
 {
-
 	if(timercycle->isActive())
 	{
 		timercycle->stop();
@@ -237,22 +217,22 @@ void DialogSendData::on_btnSendcycle_clicked()
 	}
 }
 
-void DialogSendData::on_comboBox_currentIndexChanged(int index)
+void frmDebug::on_comboBox_currentIndexChanged(const QString& arg1)
 {
 	stopTimer();
 }
 
-void DialogSendData::on_Cb_recv_stateChanged(int arg1)
+void frmDebug::on_timeinterval_textChanged(const QString& arg1)
 {
 	stopTimer();
 }
 
-void DialogSendData::on_timeinterval_textChanged(const QString& arg1)
+void frmDebug::on_Cb_recv_stateChanged(int arg1)
 {
 	stopTimer();
 }
 
-void DialogSendData::on_checkBox_stateChanged(int arg1)
+void frmDebug::on_checkBox_stateChanged(int arg1)
 {
 	for(int i = 0; i < mapchk.size(); i++)
 	{
@@ -260,7 +240,7 @@ void DialogSendData::on_checkBox_stateChanged(int arg1)
 	}
 }
 
-void DialogSendData::on_pushButton_clicked()
+void frmDebug::on_pushButton_load_clicked()
 {
 	QString fileDir = QFileDialog::getOpenFileName(this, tr("打开对话框"), "", tr("文本文件(*ini *txt)"));
 
@@ -287,10 +267,9 @@ void DialogSendData::on_pushButton_clicked()
 	{
 		mapline[i + 1]->setText(dataList.at(i));
 	}
-
 }
 
-void DialogSendData::on_pushButton_2_clicked()
+void frmDebug::on_pushButton_clearAll_clicked()
 {
 	int ret = QMessageBox::question(this, tr("对话框"), tr("确认清空报文吗？"), QMessageBox::Yes, QMessageBox::No);
 	if(ret == QMessageBox::No)
@@ -308,7 +287,7 @@ void DialogSendData::on_pushButton_2_clicked()
 	stopTimer();
 }
 
-void DialogSendData::on_btnopenfile_clicked()
+void frmDebug::on_btnopenfile_clicked()
 {
 	QString fileDir = QFileDialog::getOpenFileName(this, tr("打开对话框"), "", "");
 	if(fileDir.isEmpty())
@@ -324,7 +303,7 @@ void DialogSendData::on_btnopenfile_clicked()
 	}
 }
 
-void DialogSendData::on_btnsendfile_clicked()
+void frmDebug::on_btnsendfile_clicked()
 {
 	QFile file(ui->linefiledir->text());
 	if(file.open(QFile::ReadOnly | QIODevice::Text))
@@ -350,9 +329,7 @@ void DialogSendData::on_btnsendfile_clicked()
 	}
 }
 
-
-
-void DialogSendData::on_pushButton_send1_clicked()
+void frmDebug::on_pushButton_send1_clicked()
 {
 	QString data = ui->linedata1->text().trimmed();
 	if(!data.isEmpty())
@@ -361,7 +338,7 @@ void DialogSendData::on_pushButton_send1_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_send2_clicked()
+void frmDebug::on_pushButton_send2_clicked()
 {
 	QString data = ui->linedata2->text().trimmed();
 	if(!data.isEmpty())
@@ -370,7 +347,7 @@ void DialogSendData::on_pushButton_send2_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_send3_clicked()
+void frmDebug::on_pushButton_send3_clicked()
 {
 	QString data = ui->linedata3->text().trimmed();
 	if(!data.isEmpty())
@@ -379,7 +356,7 @@ void DialogSendData::on_pushButton_send3_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_send4_clicked()
+void frmDebug::on_pushButton_send4_clicked()
 {
 	QString data = ui->linedata4->text().trimmed();
 	if(!data.isEmpty())
@@ -388,7 +365,7 @@ void DialogSendData::on_pushButton_send4_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_send5_clicked()
+void frmDebug::on_pushButton_send5_clicked()
 {
 	QString data = ui->linedata5->text().trimmed();
 	if(!data.isEmpty())
@@ -397,7 +374,7 @@ void DialogSendData::on_pushButton_send5_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_send6_clicked()
+void frmDebug::on_pushButton_send6_clicked()
 {
 	QString data = ui->linedata6->text().trimmed();
 	if(!data.isEmpty())
@@ -406,38 +383,3 @@ void DialogSendData::on_pushButton_send6_clicked()
 	}
 }
 
-void DialogSendData::on_pushButton_send7_clicked()
-{
-	QString data = ui->linedata7->text().trimmed();
-	if(!data.isEmpty())
-	{
-		emitsignals(data);
-	}
-}
-
-void DialogSendData::on_pushButton_send8_clicked()
-{
-	QString data = ui->linedata8->text().trimmed();
-	if(!data.isEmpty())
-	{
-		emitsignals(data);
-	}
-}
-
-void DialogSendData::on_pushButton_send9_clicked()
-{
-	QString data = ui->linedata9->text().trimmed();
-	if(!data.isEmpty())
-	{
-		emitsignals(data);
-	}
-}
-
-void DialogSendData::on_pushButton_send10_clicked()
-{
-	QString data = ui->linedata10->text().trimmed();
-	if(!data.isEmpty())
-	{
-		emitsignals(data);
-	}
-}

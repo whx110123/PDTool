@@ -57,6 +57,7 @@ private slots:
 	void on_pushButton_clicked();
 
 	void on_action_HandleData_triggered(bool checked);
+	void on_action_Config_triggered(bool checked);
 
 	void on_pbcrc_clicked();
 
@@ -71,6 +72,20 @@ private slots:
 	void on_Bt4_clicked();
 
 	void on_Bt_clear_clicked();
+
+
+
+	void on_action_TCPClient_triggered();
+
+	void on_action_TCPServer_triggered();
+
+	void on_action_UDPClient_triggered();
+
+	void on_action_UDPServer_triggered();
+
+	void on_action_COM_triggered();
+
+	void on_action_Analys_triggered();
 
 public:
 	MyBase *createByName(QString name);

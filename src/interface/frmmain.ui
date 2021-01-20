@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>970</width>
-    <height>588</height>
+    <width>758</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="page_analysis">
         <layout class="QGridLayout" name="gridLayout_2">
@@ -93,6 +93,12 @@
          </item>
          <item row="3" column="0" colspan="3">
           <widget class="QTextEdit" name="resulttext">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="styleSheet">
             <string notr="true"/>
            </property>
@@ -144,6 +150,12 @@
          </item>
          <item row="1" column="0">
           <widget class="QTextEdit" name="originaltext">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -212,11 +224,11 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page_tcpclient"/>
-       <widget class="QWidget" name="page_tcpserver"/>
-       <widget class="QWidget" name="page_udpclient"/>
-       <widget class="QWidget" name="page_udpserver"/>
-       <widget class="QWidget" name="page_com"/>
+       <widget class="frmTcpClient" name="page_tcpclient"/>
+       <widget class="frmTcpServer" name="page_tcpserver"/>
+       <widget class="frmUdpClient" name="page_udpclient"/>
+       <widget class="frmUdpServer" name="page_udpserver"/>
+       <widget class="frmComTool" name="page_com"/>
       </widget>
       <widget class="QStackedWidget" name="stackedWidget_config">
        <property name="minimumSize">
@@ -494,18 +506,6 @@
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_4">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>130</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>150</height>
-            </size>
-           </property>
            <property name="title">
             <string>计算校验</string>
            </property>
@@ -513,7 +513,7 @@
             <item row="0" column="0">
              <widget class="QTextEdit" name="textsource">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -526,7 +526,7 @@
             <item row="1" column="0">
              <widget class="QTextEdit" name="textdestination">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -548,12 +548,6 @@
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_3">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>120</height>
-            </size>
-           </property>
            <property name="title">
             <string>数字与16进制转换</string>
            </property>
@@ -599,12 +593,6 @@
            <layout class="QGridLayout" name="gridLayout_9">
             <item row="2" column="0">
              <widget class="QLabel" name="label_3">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
                <string>UTF-8(16进制)</string>
               </property>
@@ -612,12 +600,6 @@
             </item>
             <item row="1" column="2">
              <widget class="QPushButton" name="Bt2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
                <string>转换</string>
               </property>
@@ -625,12 +607,6 @@
             </item>
             <item row="2" column="2">
              <widget class="QPushButton" name="Bt3">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
                <string>转换</string>
               </property>
@@ -651,12 +627,6 @@
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_20">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
                <string>GBK(16进制)</string>
               </property>
@@ -667,12 +637,6 @@
             </item>
             <item row="3" column="2">
              <widget class="QPushButton" name="Bt4">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
                <string>转换</string>
               </property>
@@ -687,12 +651,6 @@
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_21">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
                <string>Unicode(16进制)</string>
               </property>
@@ -707,11 +665,11 @@
             </item>
             <item row="0" column="1">
              <widget class="QPlainTextEdit" name="Le1">
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>50</height>
-               </size>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
              </widget>
             </item>
@@ -726,14 +684,14 @@
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>38</height>
+             <height>40</height>
             </size>
            </property>
           </spacer>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page_senddata"/>
+       <widget class="frmDebug" name="page_senddata"/>
       </widget>
      </widget>
     </item>
@@ -744,7 +702,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>970</width>
+     <width>758</width>
      <height>23</height>
     </rect>
    </property>
@@ -757,21 +715,21 @@
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
-     <string>通信方式(&amp;E)</string>
+     <string>主窗口(&amp;E)</string>
     </property>
+    <addaction name="action_Analys"/>
+    <addaction name="separator"/>
     <addaction name="action_TCPClient"/>
     <addaction name="action_TCPServer"/>
     <addaction name="action_UDPClient"/>
     <addaction name="action_UDPServer"/>
     <addaction name="action_COM"/>
-    <addaction name="separator"/>
-    <addaction name="action_Config"/>
    </widget>
    <widget class="QMenu" name="menu_B">
     <property name="title">
-     <string>报文(&amp;B)</string>
+     <string>副窗口(&amp;B)</string>
     </property>
-    <addaction name="action_Analys"/>
+    <addaction name="action_Config"/>
     <addaction name="action_HandleData"/>
    </widget>
    <widget class="QMenu" name="menu_H">
@@ -890,6 +848,44 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>frmDebug</class>
+   <extends>QWidget</extends>
+   <header location="global">frmdebug.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmTcpClient</class>
+   <extends>QWidget</extends>
+   <header location="global">frmtcpclient.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmTcpServer</class>
+   <extends>QWidget</extends>
+   <header location="global">frmtcpserver.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmUdpClient</class>
+   <extends>QWidget</extends>
+   <header location="global">frmudpclient.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmUdpServer</class>
+   <extends>QWidget</extends>
+   <header location="global">frmudpserver.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmComTool</class>
+   <extends>QWidget</extends>
+   <header location="global">frmcomtool.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

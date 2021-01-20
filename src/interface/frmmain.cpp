@@ -98,6 +98,35 @@ void frmMain::initForm()
 void frmMain::initSignalAndSlots()
 {
 	connect(ui->action_Save, &QAction::triggered, this, &frmMain::SaveAll);
+
+	connect(ui->page_senddata, &frmDebug::ToTcpClient, ui->page_tcpclient, &frmTcpClient::dealData);
+	connect(ui->page_senddata, &frmDebug::ToTcpServer, ui->page_tcpserver, &frmTcpServer::dealData);
+	connect(ui->page_senddata, &frmDebug::ToUdpClient, ui->page_udpclient, &frmUdpClient::dealData);
+	connect(ui->page_senddata, &frmDebug::ToUdpServer, ui->page_udpserver, &frmUdpServer::dealData);
+	connect(ui->page_senddata, &frmDebug::ToCom, ui->page_com, &frmComTool::dealData);
+
+	connect(ui->page_tcpclient, &frmTcpClient::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
+	connect(ui->page_tcpserver, &frmTcpServer::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
+	connect(ui->page_udpclient, &frmUdpClient::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
+	connect(ui->page_udpserver, &frmUdpServer::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
+	connect(ui->page_com, &frmComTool::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
+
+
+//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgTotcpclient(const QString&)), ui->tabTcpClient, SLOT(dealData(const QString&)));
+//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgTotcpserver(const QString&)), ui->tabTcpServer, SLOT(dealData(const QString&)));
+//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgToudpclient(const QString&)), ui->tabUdpClient, SLOT(dealData(const QString&)));
+//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgToudpserver(const QString&)), ui->tabUdpServer, SLOT(dealData(const QString&)));
+//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgTocom(const QString&)), ui->tabCom, SLOT(dealData(const QString&)));
+//	connect(ui->tabTcpClient, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
+//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
+//	connect(ui->tabTcpServer, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
+//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
+//	connect(ui->tabUdpClient, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
+//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
+//	connect(ui->tabUdpServer, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
+//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
+//	connect(ui->tabCom, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
+//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
 }
 
 void frmMain::initStyle()
@@ -184,6 +213,8 @@ void frmMain::initProtocolConfig()
 void frmMain::ConfigHide()
 {
 	ui->pushButton_hide->setText("打开配置");
+	ui->action_HandleData->setChecked(false);
+	ui->action_Config->setChecked(false);
 	ui->stackedWidget_config->hide();
 }
 
@@ -517,6 +548,20 @@ void frmMain::on_action_HandleData_triggered(bool checked)
 	if(checked == true)
 	{
 		ConfigShow(2);
+		ui->action_Config->setChecked(false);
+	}
+	else
+	{
+		ConfigHide();
+	}
+}
+
+void frmMain::on_action_Config_triggered(bool checked)
+{
+	if(checked == true)
+	{
+		ConfigShow(3);
+		ui->action_HandleData->setChecked(false);
 	}
 	else
 	{
@@ -762,4 +807,36 @@ void frmMain::on_Bt_clear_clicked()
 	ui->textdestination->clear();
 	ui->linesource->clear();
 	ui->linedestination->clear();
+}
+
+
+
+void frmMain::on_action_TCPClient_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(1);
+}
+
+void frmMain::on_action_TCPServer_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(2);
+}
+
+void frmMain::on_action_UDPClient_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(3);
+}
+
+void frmMain::on_action_UDPServer_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(4);
+}
+
+void frmMain::on_action_COM_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(5);
+}
+
+void frmMain::on_action_Analys_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(0);
 }

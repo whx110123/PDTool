@@ -19,7 +19,7 @@ public:
 public slots:
 	void dealData(const QString& data);
 signals:
-	void dlgTodialogsenddata(const QString& data, const QString& title);
+	void TofrmSendData(const QString& data, const QString& title);
 
 private:
 	Ui::frmUdpClient *ui;

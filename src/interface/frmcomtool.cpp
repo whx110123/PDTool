@@ -3,6 +3,7 @@
 #include "quiwidget.h"
 
 #include <QSerialPortInfo>
+#include <app.h>
 
 frmComTool::frmComTool(QWidget *parent) : QWidget(parent), ui(new Ui::frmComTool)
 {
@@ -377,7 +378,7 @@ void frmComTool::readData()
 		}
 
 		append(1, buffer);
-		emit dlgTodialogsenddata(buffer, "COM串口");
+		emit TofrmSendData(buffer, "COM串口");
 		receiveCount = receiveCount + data.size();
 		ui->btnReceiveCount->setText(QString("接收 : %1 字节").arg(receiveCount));
 

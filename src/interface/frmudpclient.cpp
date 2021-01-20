@@ -2,6 +2,8 @@
 #include "ui_frmudpclient.h"
 #include "quiwidget.h"
 
+#include <app.h>
+
 frmUdpClient::frmUdpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmUdpClient)
 {
 	ui->setupUi(this);
@@ -179,7 +181,7 @@ void frmUdpClient::readData()
 
 		QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(buffer);
 		append(1, str);
-		emit dlgTodialogsenddata(str, "UDP客户端");
+		emit TofrmSendData(str, "UDP客户端");
 		if(App::DebugUdpClient)
 		{
 			if(!App::m_map.isEmpty())
