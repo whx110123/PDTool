@@ -378,7 +378,7 @@ void frmComTool::readData()
 		}
 
 		append(1, buffer);
-		emit TofrmSendData(buffer, "COM串口");
+		emit TofrmOthers(buffer, "COM串口");
 		receiveCount = receiveCount + data.size();
 		ui->btnReceiveCount->setText(QString("接收 : %1 字节").arg(receiveCount));
 

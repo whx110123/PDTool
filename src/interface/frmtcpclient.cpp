@@ -239,7 +239,7 @@ void frmTcpClient::readData()
 	}
 
 	append(1, buffer);
-	emit TofrmSendData(buffer, "TCP客户端");
+	emit TofrmOthers(buffer, "TCP客户端");
 	//自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
 	if(App::DebugTcpClient)
 	{

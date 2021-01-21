@@ -19,7 +19,7 @@ public:
 public slots:
 	void dealData(const QString& data);
 signals:
-	void TofrmSendData(const QString& data, const QString& title);
+	void TofrmOthers(const QString& data, const QString& title);
 private:
 	Ui::frmTcpServer *ui;
 

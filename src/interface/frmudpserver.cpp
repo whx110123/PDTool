@@ -243,7 +243,7 @@ void frmUdpServer::readData()
 
 		QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(buffer);
 		append(1, str);
-		emit TofrmSendData(str, "UDP服务器");
+		emit TofrmOthers(str, "UDP服务器");
 		clientConnected(ip, port);
 
 		if(App::DebugUdpServer)

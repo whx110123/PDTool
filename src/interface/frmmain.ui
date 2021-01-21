@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>758</width>
-    <height>475</height>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page_analysis">
         <layout class="QGridLayout" name="gridLayout_2">
@@ -241,7 +241,7 @@
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>4</number>
        </property>
        <widget class="QWidget" name="page_config1">
         <layout class="QGridLayout" name="gridLayout_5">
@@ -512,11 +512,11 @@
            <layout class="QGridLayout" name="gridLayout_8">
             <item row="0" column="0">
              <widget class="QTextEdit" name="textsource">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>40</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -525,11 +525,11 @@
             </item>
             <item row="1" column="0">
              <widget class="QTextEdit" name="textdestination">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>40</height>
+               </size>
               </property>
               <property name="readOnly">
                <bool>true</bool>
@@ -665,11 +665,11 @@
             </item>
             <item row="0" column="1">
              <widget class="QPlainTextEdit" name="Le1">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>40</height>
+               </size>
               </property>
              </widget>
             </item>
@@ -691,7 +691,8 @@
          </item>
         </layout>
        </widget>
-       <widget class="frmDebug" name="page_senddata"/>
+       <widget class="frmDebug" name="page_debug"/>
+       <widget class="frmIEC104Master" name="page_iec104master"/>
       </widget>
      </widget>
     </item>
@@ -715,7 +716,7 @@
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
-     <string>主窗口(&amp;E)</string>
+     <string>功能(&amp;E)</string>
     </property>
     <addaction name="action_Analys"/>
     <addaction name="separator"/>
@@ -727,9 +728,9 @@
    </widget>
    <widget class="QMenu" name="menu_B">
     <property name="title">
-     <string>副窗口(&amp;B)</string>
+     <string>配置(&amp;B)</string>
     </property>
-    <addaction name="action_Config"/>
+    <addaction name="action_SendData"/>
     <addaction name="action_HandleData"/>
    </widget>
    <widget class="QMenu" name="menu_H">
@@ -739,9 +740,16 @@
     <addaction name="action_Update"/>
     <addaction name="action_About"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>规约模拟</string>
+    </property>
+    <addaction name="action_IEC104Master"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_E"/>
    <addaction name="menu_B"/>
+   <addaction name="menu"/>
    <addaction name="menu_H"/>
   </widget>
   <action name="action_New">
@@ -836,15 +844,37 @@
     <string>报文处理</string>
    </property>
   </action>
-  <action name="action_Config">
+  <action name="action_SendData">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>扩展功能</string>
+    <string>多帧发送</string>
    </property>
    <property name="toolTip">
-    <string>扩展功能</string>
+    <string>多帧发送</string>
+   </property>
+  </action>
+  <action name="action_PMA">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>规约模拟</string>
+   </property>
+   <property name="toolTip">
+    <string>规约模拟</string>
+   </property>
+  </action>
+  <action name="action_IEC104Master">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>IEC104主站</string>
+   </property>
+   <property name="toolTip">
+    <string>IEC104主站</string>
    </property>
   </action>
  </widget>
@@ -883,6 +913,12 @@
    <class>frmComTool</class>
    <extends>QWidget</extends>
    <header location="global">frmcomtool.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmIEC104Master</class>
+   <extends>QWidget</extends>
+   <header location="global">frmiec104master.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

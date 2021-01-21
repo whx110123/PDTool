@@ -57,7 +57,7 @@ private slots:
 	void on_pushButton_clicked();
 
 	void on_action_HandleData_triggered(bool checked);
-	void on_action_Config_triggered(bool checked);
+	void on_action_SendData_triggered(bool checked);
 
 	void on_pbcrc_clicked();
 
@@ -86,6 +86,8 @@ private slots:
 	void on_action_COM_triggered();
 
 	void on_action_Analys_triggered();
+
+	void on_action_IEC104Master_triggered(bool checked);
 
 public:
 	MyBase *createByName(QString name);

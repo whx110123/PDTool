@@ -3,6 +3,7 @@ FORMS += \
 	$$PWD/dialogpma.ui \
 	$$PWD/frmcomtool.ui \
 	$$PWD/frmdebug.ui \
+	$$PWD/frmiec104master.ui \
 	$$PWD/frmmain.ui \
 	$$PWD/frmtcpclient.ui \
 	$$PWD/frmtcpserver.ui \
@@ -14,6 +15,7 @@ HEADERS += \
 	$$PWD/dialogpma.h \
 	$$PWD/frmcomtool.h \
 	$$PWD/frmdebug.h \
+	$$PWD/frmiec104master.h \
 	$$PWD/frmmain.h \
 	$$PWD/frmtcpclient.h \
 	$$PWD/frmtcpserver.h \
@@ -26,6 +28,7 @@ SOURCES += \
 	$$PWD/dialogpma.cpp \
 	$$PWD/frmcomtool.cpp \
 	$$PWD/frmdebug.cpp \
+	$$PWD/frmiec104master.cpp \
 	$$PWD/frmmain.cpp \
 	$$PWD/frmtcpclient.cpp \
 	$$PWD/frmtcpserver.cpp \

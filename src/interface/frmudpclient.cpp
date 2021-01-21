@@ -181,7 +181,7 @@ void frmUdpClient::readData()
 
 		QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(buffer);
 		append(1, str);
-		emit TofrmSendData(str, "UDP客户端");
+		emit TofrmOthers(str, "UDP客户端");
 		if(App::DebugUdpClient)
 		{
 			if(!App::m_map.isEmpty())

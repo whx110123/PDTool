@@ -9,7 +9,7 @@ frmDebug::frmDebug(QWidget *parent) :
 	ui(new Ui::frmDebug)
 {
 	ui->setupUi(this);
-	initfrom();
+	initfrm();
 }
 
 frmDebug::~frmDebug()
@@ -17,7 +17,7 @@ frmDebug::~frmDebug()
 	delete ui;
 }
 
-void frmDebug::initfrom()
+void frmDebug::initfrm()
 {
 	timercycle = new QTimer(this);
 	recflag = 0;

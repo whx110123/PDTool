@@ -99,34 +99,30 @@ void frmMain::initSignalAndSlots()
 {
 	connect(ui->action_Save, &QAction::triggered, this, &frmMain::SaveAll);
 
-	connect(ui->page_senddata, &frmDebug::ToTcpClient, ui->page_tcpclient, &frmTcpClient::dealData);
-	connect(ui->page_senddata, &frmDebug::ToTcpServer, ui->page_tcpserver, &frmTcpServer::dealData);
-	connect(ui->page_senddata, &frmDebug::ToUdpClient, ui->page_udpclient, &frmUdpClient::dealData);
-	connect(ui->page_senddata, &frmDebug::ToUdpServer, ui->page_udpserver, &frmUdpServer::dealData);
-	connect(ui->page_senddata, &frmDebug::ToCom, ui->page_com, &frmComTool::dealData);
+	connect(ui->page_debug, &frmDebug::ToTcpClient, ui->page_tcpclient, &frmTcpClient::dealData);
+	connect(ui->page_debug, &frmDebug::ToTcpServer, ui->page_tcpserver, &frmTcpServer::dealData);
+	connect(ui->page_debug, &frmDebug::ToUdpClient, ui->page_udpclient, &frmUdpClient::dealData);
+	connect(ui->page_debug, &frmDebug::ToUdpServer, ui->page_udpserver, &frmUdpServer::dealData);
+	connect(ui->page_debug, &frmDebug::ToCom, ui->page_com, &frmComTool::dealData);
 
-	connect(ui->page_tcpclient, &frmTcpClient::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
-	connect(ui->page_tcpserver, &frmTcpServer::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
-	connect(ui->page_udpclient, &frmUdpClient::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
-	connect(ui->page_udpserver, &frmUdpServer::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
-	connect(ui->page_com, &frmComTool::TofrmSendData, ui->page_senddata, &frmDebug::dealData);
+	connect(ui->page_tcpclient, &frmTcpClient::TofrmOthers, ui->page_debug, &frmDebug::dealData);
+	connect(ui->page_tcpserver, &frmTcpServer::TofrmOthers, ui->page_debug, &frmDebug::dealData);
+	connect(ui->page_udpclient, &frmUdpClient::TofrmOthers, ui->page_debug, &frmDebug::dealData);
+	connect(ui->page_udpserver, &frmUdpServer::TofrmOthers, ui->page_debug, &frmDebug::dealData);
+	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_debug, &frmDebug::dealData);
 
 
-//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgTotcpclient(const QString&)), ui->tabTcpClient, SLOT(dealData(const QString&)));
-//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgTotcpserver(const QString&)), ui->tabTcpServer, SLOT(dealData(const QString&)));
-//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgToudpclient(const QString&)), ui->tabUdpClient, SLOT(dealData(const QString&)));
-//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgToudpserver(const QString&)), ui->tabUdpServer, SLOT(dealData(const QString&)));
-//	connect(ui->tabFunctions->m_dialogpma, SIGNAL(dlgTocom(const QString&)), ui->tabCom, SLOT(dealData(const QString&)));
-//	connect(ui->tabTcpClient, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
-//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
-//	connect(ui->tabTcpServer, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
-//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
-//	connect(ui->tabUdpClient, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
-//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
-//	connect(ui->tabUdpServer, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
-//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
-//	connect(ui->tabCom, SIGNAL(dlgTodialogsenddata(const QString&, const QString&)),
-//			ui->tabFunctions->m_dialogpma, SLOT(dealData(const QString&, const QString&)));
+	connect(ui->page_iec104master, &frmIEC104Master::ToTcpClient, ui->page_tcpclient, &frmTcpClient::dealData);
+	connect(ui->page_iec104master, &frmIEC104Master::ToTcpServer, ui->page_tcpserver, &frmTcpServer::dealData);
+	connect(ui->page_iec104master, &frmIEC104Master::ToUdpClient, ui->page_udpclient, &frmUdpClient::dealData);
+	connect(ui->page_iec104master, &frmIEC104Master::ToUdpServer, ui->page_udpserver, &frmUdpServer::dealData);
+	connect(ui->page_iec104master, &frmIEC104Master::ToCom, ui->page_com, &frmComTool::dealData);
+
+	connect(ui->page_tcpclient, &frmTcpClient::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
+	connect(ui->page_tcpserver, &frmTcpServer::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
+	connect(ui->page_udpclient, &frmUdpClient::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
+	connect(ui->page_udpserver, &frmUdpServer::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
+	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
 }
 
 void frmMain::initStyle()
@@ -210,23 +206,7 @@ void frmMain::initProtocolConfig()
 	MyBase::mConfig.groups.append(datagroup);
 }
 
-void frmMain::ConfigHide()
-{
-	ui->pushButton_hide->setText("打开配置");
-	ui->action_HandleData->setChecked(false);
-	ui->action_Config->setChecked(false);
-	ui->stackedWidget_config->hide();
-}
 
-void frmMain::ConfigShow(int index)
-{
-	ui->pushButton_hide->setText("隐藏配置");
-	ui->stackedWidget_config->setCurrentIndex(index);
-	if(ui->stackedWidget_config->isHidden())
-	{
-		ui->stackedWidget_config->show();
-	}
-}
 
 bool frmMain::eventFilter(QObject *obj, QEvent *ev)
 {
@@ -534,39 +514,12 @@ void frmMain::on_pushButton_hide_clicked()
 			index = 1;
 		}
 		ConfigShow(index);
-
 	}
 }
 
 void frmMain::on_pushButton_clicked()
 {
 	modbusdlg->exec();
-}
-
-void frmMain::on_action_HandleData_triggered(bool checked)
-{
-	if(checked == true)
-	{
-		ConfigShow(2);
-		ui->action_Config->setChecked(false);
-	}
-	else
-	{
-		ConfigHide();
-	}
-}
-
-void frmMain::on_action_Config_triggered(bool checked)
-{
-	if(checked == true)
-	{
-		ConfigShow(3);
-		ui->action_HandleData->setChecked(false);
-	}
-	else
-	{
-		ConfigHide();
-	}
 }
 
 void frmMain::on_pbcrc_clicked()
@@ -839,4 +792,54 @@ void frmMain::on_action_COM_triggered()
 void frmMain::on_action_Analys_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(0);
+}
+
+void frmMain::ConfigHide()
+{
+	ui->pushButton_hide->setText("打开配置");
+	ui->stackedWidget_config->hide();
+
+	ui->action_HandleData->setChecked(false);
+	ui->action_SendData->setChecked(false);
+	ui->action_IEC104Master->setChecked(false);
+}
+
+void frmMain::ConfigShow(int index)
+{
+	ui->pushButton_hide->setText("隐藏配置");
+	ui->stackedWidget_config->setCurrentIndex(index);
+	if(ui->stackedWidget_config->isHidden())
+	{
+		ui->stackedWidget_config->show();
+	}
+}
+
+void frmMain::on_action_HandleData_triggered(bool checked)
+{
+	ConfigHide();
+	if(checked == true)
+	{
+		ui->action_HandleData->setChecked(true);
+		ConfigShow(2);
+	}
+}
+
+void frmMain::on_action_SendData_triggered(bool checked)
+{
+	ConfigHide();
+	if(checked == true)
+	{
+		ui->action_SendData->setChecked(true);
+		ConfigShow(3);
+	}
+}
+
+void frmMain::on_action_IEC104Master_triggered(bool checked)
+{
+	ConfigHide();
+	if(checked == true)
+	{
+		ui->action_IEC104Master->setChecked(true);
+		ConfigShow(4);
+	}
 }

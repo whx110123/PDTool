@@ -33,7 +33,7 @@ private:
 	QTimer *timercycle;
 	int recflag;
 
-	void initfrom();
+	void initfrm();
 	void initdataList();
 public slots:
 	void dealData(const QString& data, const QString& title);
