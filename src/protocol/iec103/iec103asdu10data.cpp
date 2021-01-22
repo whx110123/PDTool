@@ -20,21 +20,21 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 	switch(gdd[0])
 	{
 	case 1:
-		{
-			QByteArray ba(buff.data() + len, gdd[1]);
-			QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-			gbkstr = gbk->toUnicode(ba);
-			mText.append(CharToHexStr(buff.data() + len, gdd[1]) + "\tOS8(ASCII8位码):" + gbkstr + "\r\n");
-			len += gdd[1];
-		}
+	{
+		QByteArray ba(buff.data() + len, gdd[1]);
+		QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+		gbkstr = gbk->toUnicode(ba);
+		mText.append(CharToHexStr(buff.data() + len, gdd[1]) + "\tOS8(ASCII8位码):" + gbkstr + "\r\n");
+		len += gdd[1];
 		break;
+	}
 	case 2:
-		{
-			bit8 = QString("%1").arg(QString::number(*(uchar *)(buff.data() + len), 2), 8, '0');
-			mText.append(CharToHexStr(buff.data() + len) + "\t成组8位串:" + bit8 + "\r\n");
-			len++;
-		}
+	{
+		bit8 = QString("%1").arg(QString::number(*(uchar *)(buff.data() + len), 2), 8, '0');
+		mText.append(CharToHexStr(buff.data() + len) + "\t成组8位串:" + bit8 + "\r\n");
+		len++;
 		break;
+	}
 	case 3:
 		datauint = charTouint(buff.data() + len, gdd[1]);
 		mText.append(CharToHexStr(buff.data() + len, gdd[1]) + "\tGID:无符号整数:" + QString::number(datauint) + "\r\n");

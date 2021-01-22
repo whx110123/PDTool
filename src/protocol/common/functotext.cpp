@@ -731,7 +731,7 @@ QString kodToText(uchar ch)
 	switch(ch)
 	{
 	case 0:
-		text.append("无所指定的描述类别");
+		text.append("目录(保信规约专用)");
 		break;
 	case 1:
 		text.append("实际值");
@@ -1935,5 +1935,127 @@ QString myTime2ToText(uchar *time, int timelen)
 	text.append(CharToHexStr(time[2]) + "\t日:" + QString::number(datetime.date().day()) + "\r\n");
 	text.append(CharToHexStr(time[3]) + "\t月:" + QString::number(datetime.date().month()) + "\r\n");
 	text.append(CharToHexStr(&time[4], 2) + "\t年:" + QString::number(datetime.date().year()) + "\r\n");
+	return text;
+}
+
+QString fptToText(uchar ch)
+{
+	QString text = "故障相别及类型FPT";
+
+	text.append("\r\n\t(bit1):" + QString::number(ch & 0x01, 16).toUpper() + " ");
+	if(ch & 0x01)
+	{
+		text.append("A相故障");
+	}
+	else
+	{
+		text.append("A相正常");
+	}
+	text.append("\r\n\t(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ");
+	if(ch & 0x02)
+	{
+		text.append("B相故障");
+	}
+	else
+	{
+		text.append("B相正常");
+	}
+	text.append("\r\n\t(bit3):" + QString::number(ch & 0x04, 16).toUpper() + " ");
+	if(ch & 0x04)
+	{
+		text.append("C相故障");
+	}
+	else
+	{
+		text.append("C相正常");
+	}
+	text.append("\r\n\t(bit4):" + QString::number(ch & 0x08, 16).toUpper() + " ");
+	if(ch & 0x08)
+	{
+		text.append("接地故障");
+	}
+	else
+	{
+		text.append("非接地故障");
+	}
+	text.append("\r\n\t(bit5):" + QString::number(ch & 0x10, 16).toUpper() + " ");
+	if(ch & 0x10)
+	{
+		text.append("区外故障");
+	}
+	else
+	{
+		text.append("区内故障");
+	}
+	text.append("\r\n\t(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
+	{
+		text.append("有效");
+	}
+	else
+	{
+		text.append("无效");
+	}
+	return text;
+}
+
+QString jptToText(uchar ch)
+{
+	QString text = "跳闸相别JPT ";
+
+	text.append("\r\n\t(bit1):" + QString::number(ch & 0x01, 16).toUpper() + " ");
+	if(ch & 0x01)
+	{
+		text.append("A相跳闸");
+	}
+	else
+	{
+		text.append("A相正常");
+	}
+	text.append("\r\n\t(bit2):" + QString::number(ch & 0x02, 16).toUpper() + " ");
+	if(ch & 0x02)
+	{
+		text.append("B相跳闸");
+	}
+	else
+	{
+		text.append("B相正常");
+	}
+	text.append("\r\n\t(bit3):" + QString::number(ch & 0x04, 16).toUpper() + " ");
+	if(ch & 0x04)
+	{
+		text.append("C相跳闸");
+	}
+	else
+	{
+		text.append("C相正常");
+	}
+	text.append("\r\n\t(bit8):" + QString::number(ch & 0x80, 16).toUpper() + " ");
+	if(ch & 0x80)
+	{
+		text.append("有效");
+	}
+	else
+	{
+		text.append("无效");
+	}
+	return text;
+}
+
+QString dpichToText(uchar ch)
+{
+	QString text = "重合闸DPI(bit1-2):" + QString::number(ch & 0x03) + " ";
+	switch(ch & 0x03)
+	{
+	case 1:
+		text.append("故障后没有重合闸");
+		break;
+	case 2:
+		text.append("有重合闸");
+		break;
+	default:
+		text.append("无定义");
+		break;
+	}
 	return text;
 }

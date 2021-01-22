@@ -473,6 +473,9 @@ QString IEC103Asdu::typeToText()
 	case 11:
 		text.append("通用分类标识");
 		break;
+	case 12:
+		text.append("简要录波报告(南网保信103)");
+		break;
 	case 20:
 		text.append("一般命令");
 		endflag = IEC103END_RII;
@@ -674,7 +677,7 @@ QString IEC103Asdu::cotToText()
 		text.append("电源合上");
 		break;
 	case 7:
-		text.append("测试模式");
+		text.append("测试模式，检修状态下的突变");
 		break;
 	case 8:
 		text.append("时间同步 主站启动或子站响应");
@@ -744,6 +747,10 @@ QString IEC103Asdu::endToText()
 		break;
 	case IEC103END_SIN:
 		text.append("附加信息SIN:");
+		if(protocolName == IEC_103BAOXINNET)
+		{
+			text.append(fptToText(endflag));
+		}
 		break;
 	default:
 		break;
