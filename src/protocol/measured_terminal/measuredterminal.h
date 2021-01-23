@@ -11,7 +11,6 @@ public:
 	~MeasuredTerminal();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	MTApci apci;

@@ -10,7 +10,6 @@ public:
 	MTApci();
 	~MTApci();
 	virtual bool init(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar flag;				//启动字符

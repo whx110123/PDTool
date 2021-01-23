@@ -11,7 +11,6 @@ public:
 	IEC101Asdu19Data();
 	~IEC101Asdu19Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar oci;

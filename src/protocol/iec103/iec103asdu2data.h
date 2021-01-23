@@ -9,7 +9,6 @@ public:
 	IEC103Asdu2Data();
 	~IEC103Asdu2Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar dpi;

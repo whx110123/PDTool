@@ -11,7 +11,6 @@ public:
 	IEC101Asdu33Data();
 	~IEC101Asdu33Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 };
 
 #endif // IEC101ASDU33DATA_H

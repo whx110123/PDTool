@@ -11,7 +11,6 @@ public:
 	~IEC103Asdu10DataSetGid();
 	bool initgid(const QByteArray& buff, uchar *ch);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	QString gbkstr;
@@ -19,11 +18,14 @@ public:
 	float datafloat;
 	short datashort;
 	uint datauint;
-	uint datauint1;
+	uint datauint2;
 	int dataint;
 	uchar datauchar;
-	uchar datauchar1;
+	uchar datauchar2;
+	uchar datauchar3;
+	uchar datauchar4;
 	QDateTime datet;
+	QDateTime datet2;
 	QList<IEC103Asdu10DataSetGdd *> gddlist;
 };
 
@@ -34,7 +36,6 @@ public:
 	~IEC103Asdu10DataSetGdd();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar gdd[3];
@@ -49,7 +50,6 @@ public:
 	~IEC103Asdu10DataSet();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar gin[2];

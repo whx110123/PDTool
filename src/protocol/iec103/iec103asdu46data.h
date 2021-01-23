@@ -9,7 +9,6 @@ public:
 	IEC103Asdu46Data();
 	~IEC103Asdu46Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	QString yx8ToText();

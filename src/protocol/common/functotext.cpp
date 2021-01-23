@@ -787,6 +787,9 @@ QString kodToText(uchar ch)
 	case 103:
 		text.append("属性结构(保信规约专用)");
 		break;
+	case 168:
+		text.append("从子站数据库取实际值(保信规约专用)");
+		break;
 	default:
 		text.append("备用");
 		break;
@@ -2059,3 +2062,4 @@ QString dpichToText(uchar ch)
 	}
 	return text;
 }
+

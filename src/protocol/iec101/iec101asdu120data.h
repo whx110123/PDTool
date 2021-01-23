@@ -11,7 +11,6 @@ public:
 	IEC101Asdu120Data();
 	~IEC101Asdu120Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	uchar frq;

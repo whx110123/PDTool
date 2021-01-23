@@ -9,7 +9,6 @@ public:
 	IEC103Asdu222Data();
 	~IEC103Asdu222Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	ushort fnam;

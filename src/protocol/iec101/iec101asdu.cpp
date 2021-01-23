@@ -42,6 +42,7 @@
 #include "iec101asdu137data.h"
 #include "iec101asdu167data.h"
 #include "iec101asdu104data.h"
+#include "iec101asdu116data.h"
 
 IEC101AsduData::IEC101AsduData()
 {
@@ -190,6 +191,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
+		mdata->type = type;
 		mdata->index = index;
 		bool isOk;
 		if(index == 0 || sqflag == 0)
@@ -457,6 +459,9 @@ QString IEC101Asdu::typeToText()
 	case 113:
 		text.append("参数激活");
 		break;
+	case 116:
+		text.append("源端维护");
+		break;
 	case 120:
 		text.append("文件淮备就绪");
 		break;
@@ -556,14 +561,6 @@ QString IEC101Asdu::cotToText()
 	case 13:
 		text.append("文件传输");
 		break;
-	case 14:
-	case 15:
-	case 16:
-	case 17:
-	case 18:
-	case 19:
-		text.append("保留");
-		break;
 	case 20:
 		text.append("响应站召唤");
 		break;
@@ -629,10 +626,6 @@ QString IEC101Asdu::cotToText()
 		break;
 	case 41:
 		text.append("响应第4组计数量(累积量)召唤");
-		break;
-	case 42:
-	case 43:
-		text.append("保留");
 		break;
 	case 44:
 		text.append("未知的类型标识，收到报文的类型标识不正确");
@@ -862,6 +855,9 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 113:
 		asdudata = new IEC101Asdu113Data;
+		break;
+	case 116:
+		asdudata = new IEC101Asdu116Data;
 		break;
 	case 120:
 		asdudata = new IEC101Asdu120Data;

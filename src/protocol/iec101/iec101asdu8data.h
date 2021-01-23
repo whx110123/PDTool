@@ -11,7 +11,6 @@ public:
 	IEC101Asdu8Data();
 	~IEC101Asdu8Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	QDateTime datetime;

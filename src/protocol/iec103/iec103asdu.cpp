@@ -49,10 +49,13 @@
 #include "iec103asdu65data.h"
 #include "iec103asdu66data.h"
 #include "iec103asdu67data.h"
+#include "iec103asdu12data.h"
 
 
 IEC103AsduData::IEC103AsduData()
 {
+	type = 0;
+	fun = 0;
 	inf = 0;
 	masterState = STATE_NORMAL;
 }
@@ -194,6 +197,69 @@ QString IEC103AsduData::infToText()
 			break;
 		}
 	}
+	if(fun == 255)
+	{
+		switch(type)
+		{
+		case 13:
+		case 14:
+		case 15:
+		case 16:
+		case 17:
+		case 18:
+			switch(inf)
+			{
+			case 0:
+				text.append("从保信子站本地调录波列表");
+				break;
+			case 1:
+				text.append("直接从保护装置或录波器调录波列表");
+				break;
+			default:
+				break;
+			}
+			break;
+		case 20:
+			switch(inf)
+			{
+			case 19:
+				text.append("复归");
+				break;
+			default:
+				break;
+			}
+			break;
+		case 101:
+		case 102:
+		case 103:
+		case 104:
+		case 105:
+		case 106:
+		case 107:
+		case 108:
+			switch(inf)
+			{
+			case 0:
+				text.append("不指定文件类型");
+				break;
+			case 1:
+				text.append("系统文件(SVG,CIM)");
+				break;
+			case 2:
+				text.append("子站日志文件");
+				break;
+			case 3:
+				text.append("子站配置文件");
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+
+	}
 	return text;
 }
 
@@ -280,6 +346,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
+		mdata->type = type;
 		mdata->index = index;
 		bool isOk = false;
 		if(index == 0)
@@ -307,8 +374,6 @@ bool IEC103Asdu::init(const QByteArray& buff)
 				sq = 1;
 				break;
 			default:
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此asdu sq方式未知");
-				return false;
 				break;
 			}
 			if(sq == 0)
@@ -337,7 +402,6 @@ bool IEC103Asdu::init(const QByteArray& buff)
 				k = 16;
 				break;
 			default:
-				k = 1;
 				break;
 			}
 			isOk = mdata->init(buff.mid(len), fun, (uchar)(inf + index * k));
@@ -795,6 +859,9 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 11:
 		asdudata = new IEC103Asdu11Data;
+		break;
+	case 12:
+		asdudata = new IEC103Asdu12Data;
 		break;
 	case 20:
 		asdudata = new IEC103Asdu20Data;

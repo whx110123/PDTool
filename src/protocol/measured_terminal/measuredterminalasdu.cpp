@@ -97,10 +97,6 @@ QString MTAsdu::showToText()
 	return text;
 }
 
-bool MTAsdu::createData(IECDataConfig& config)
-{
-
-}
 
 QString MTAsdu::afnToText()
 {

@@ -3,6 +3,10 @@ HEADERS += \
 	$$PWD/iec103asdu10data.h \
 	$$PWD/iec103asdu11data.h \
 	$$PWD/iec103asdu12data.h \
+	$$PWD/iec103asdu13data.h \
+	$$PWD/iec103asdu14data.h \
+	$$PWD/iec103asdu15data.h \
+	$$PWD/iec103asdu16data.h \
 	$$PWD/iec103asdu1data.h \
 	$$PWD/iec103asdu20data.h \
 	$$PWD/iec103asdu21data.h \
@@ -61,6 +65,10 @@ SOURCES += \
 	$$PWD/iec103asdu10data.cpp \
 	$$PWD/iec103asdu11data.cpp \
 	$$PWD/iec103asdu12data.cpp \
+	$$PWD/iec103asdu13data.cpp \
+	$$PWD/iec103asdu14data.cpp \
+	$$PWD/iec103asdu15data.cpp \
+	$$PWD/iec103asdu16data.cpp \
 	$$PWD/iec103asdu1data.cpp \
 	$$PWD/iec103asdu20data.cpp \
 	$$PWD/iec103asdu21data.cpp \

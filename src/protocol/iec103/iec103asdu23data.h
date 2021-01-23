@@ -9,7 +9,6 @@ public:
 	IEC103Asdu23Data();
 	~IEC103Asdu23Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	ushort fan;

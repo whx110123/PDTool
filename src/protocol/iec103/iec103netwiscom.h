@@ -11,7 +11,6 @@ public:
 	~IEC103NetWiscom();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	IEC103NetApciWiscom apci;

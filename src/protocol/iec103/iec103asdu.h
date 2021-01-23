@@ -16,6 +16,7 @@ public:
 public:
 	QString funToText();
 	QString infToText();
+	uchar type;				//保留asdu类型
 	uchar fun;
 	uchar inf;
 

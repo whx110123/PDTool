@@ -11,7 +11,6 @@ public:
 	IEC103Asdu4Data();
 	~IEC103Asdu4Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	float scl;

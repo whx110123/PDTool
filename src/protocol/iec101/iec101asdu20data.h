@@ -11,7 +11,6 @@ public:
 	IEC101Asdu20Data();
 	~IEC101Asdu20Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
 
 public:
 	QString yx16ToText();
