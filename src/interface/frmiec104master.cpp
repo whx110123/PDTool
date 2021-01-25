@@ -42,7 +42,7 @@ void frmIEC104Master::init()
 {
 	handleDataTimer = new QTimer(this);
 	haveData = false;
-	connect(handleDataTimer, SIGNAL(timeout()), this, SLOT(handleData()));
+	connect(handleDataTimer, &QTimer::timeout, this, &frmIEC104Master::handleData);
 }
 
 void frmIEC104Master::dealData(const QString& data, const QString& title)
@@ -101,20 +101,14 @@ void frmIEC104Master::handleData()
 			recvData.remove(0, mProtocol->len);
 		}
 	}
-	if(haveData || (ui->comboBox_protocol->currentText() == QString("104主站") && mProtocol->masterState == STATE_INIT))
+	if(haveData ||  mProtocol->masterState == STATE_INIT)
 	{
 		haveData = false;
 		config.asdutype = 0;
-		if(ui->comboBox_protocol->currentText() == QString("104主站"))
-		{
-			config.isMaster = true;
-			config.masterState = mProtocol->masterState;
-		}
-		else
-		{
-			config.isMaster = false;
-			config.slaveState = mProtocol->slaveState;
-		}
+		config.isMaster = true;
+		config.masterState = mProtocol->masterState;
+
+
 		if(mProtocol->createData(config))
 		{
 			if(config.data.isEmpty())
@@ -146,22 +140,25 @@ void frmIEC104Master::startdebug()
 		delete mProtocolShow;
 		mProtocolShow = NULL;
 	}
-	if(ui->comboBox_protocol->currentText() == QString("104"))
+
+	MyBase::mConfig.lengthType = IEC_SINGLE;
+	MyBase::mConfig.cotlen = 2;
+	MyBase::mConfig.comaddrlen = 2;
+	MyBase::mConfig.infaddrlen = 3;
+
+	mProtocol = new IEC104;
+	mProtocol->masterState = STATE_INIT;
+	mProtocol->slaveState = STATE_NODATA;
+
+	mProtocolShow = new IEC104;
+
+	config.comaddr = ui->lineEdit_comaddr->text().toUInt();
+	if(handleDataTimer->isActive())
 	{
-		MyBase::mConfig.lengthType = IEC_SINGLE;
-		MyBase::mConfig.cotlen = 2;
-		MyBase::mConfig.comaddrlen = 2;
-		MyBase::mConfig.infaddrlen = 3;
-
-		mProtocol = new IEC104;
-		mProtocol->masterState = STATE_INIT;
-		mProtocol->slaveState = STATE_NODATA;
-
-		mProtocolShow = new IEC104;
-
-		config.comaddr = ui->lineEdit_comaddr->text().toUInt();
-		handleDataTimer->start(1000);
+		handleDataTimer->stop();
 	}
+	handleDataTimer->start(1000);
+
 }
 
 void frmIEC104Master::stopdebug()
@@ -191,71 +188,70 @@ void frmIEC104Master::showToText(QByteArray ba)
 		}
 		else
 		{
-			if(1)
+
+			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+			ui->textEdit_data->append(mProtocolShow->mTextS);
+			mProtocolShow->mTextS.clear();
+
+
+			IEC104 *tmp = (IEC104 *)mProtocolShow;
+			if(tmp->asdu.type == 45)
 			{
-				ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				ui->textEdit_data->append(mProtocolShow->showToText());
-			}
-			if(ui->comboBox_protocol->currentText() == QString("104"))
-			{
-				IEC104 *tmp = (IEC104 *)mProtocolShow;
-				if(tmp->asdu.type == 45)
+				IEC101Asdu45Data *iec101data = (IEC101Asdu45Data *)tmp->asdu.datalist.at(0);
+				if(tmp->asdu.cot[0] == 7)
 				{
-					IEC101Asdu45Data *iec101data = (IEC101Asdu45Data *)tmp->asdu.datalist.at(0);
-					if(tmp->asdu.cot[0] == 7)
+					ui->pushButton_104execute->setEnabled(true);
+					if(iec101data->sco & 0x80)
 					{
-						ui->pushButton_104execute->setEnabled(true);
-						if(iec101data->sco & 0x80)
-						{
-							ui->label_select->setText("选择成功");
-						}
-						else
-						{
-							ui->label_execute->setText("执行成功");
-						}
+						ui->label_select->setText("选择成功");
 					}
-					else if((tmp->asdu.cot[0] & 0x0f) == 7)
+					else
 					{
-						ui->pushButton_104execute->setEnabled(false);
-						if(iec101data->sco & 0x80)
-						{
-							ui->label_select->setText("选择失败");
-						}
-						else
-						{
-							ui->label_execute->setText("执行失败");
-						}
+						ui->label_execute->setText("执行成功");
 					}
 				}
-				else if(tmp->asdu.type == 46)
+				else if((tmp->asdu.cot[0] & 0x0f) == 7)
 				{
-					IEC101Asdu46Data *iec101data = (IEC101Asdu46Data *)tmp->asdu.datalist.at(0);
-					if(tmp->asdu.cot[0] == 7)
+					ui->pushButton_104execute->setEnabled(false);
+					if(iec101data->sco & 0x80)
 					{
-						ui->pushButton_104execute->setEnabled(true);
-						if(iec101data->dco & 0x80)
-						{
-							ui->label_select->setText("选择成功");
-						}
-						else
-						{
-							ui->label_execute->setText("执行成功");
-						}
+						ui->label_select->setText("选择失败");
 					}
-					else if((tmp->asdu.cot[0] & 0x0f) == 7)
+					else
 					{
-						ui->pushButton_104execute->setEnabled(false);
-						if(iec101data->dco & 0x80)
-						{
-							ui->label_select->setText("选择失败");
-						}
-						else
-						{
-							ui->label_execute->setText("执行失败");
-						}
+						ui->label_execute->setText("执行失败");
 					}
 				}
 			}
+			else if(tmp->asdu.type == 46)
+			{
+				IEC101Asdu46Data *iec101data = (IEC101Asdu46Data *)tmp->asdu.datalist.at(0);
+				if(tmp->asdu.cot[0] == 7)
+				{
+					ui->pushButton_104execute->setEnabled(true);
+					if(iec101data->dco & 0x80)
+					{
+						ui->label_select->setText("选择成功");
+					}
+					else
+					{
+						ui->label_execute->setText("执行成功");
+					}
+				}
+				else if((tmp->asdu.cot[0] & 0x0f) == 7)
+				{
+					ui->pushButton_104execute->setEnabled(false);
+					if(iec101data->dco & 0x80)
+					{
+						ui->label_select->setText("选择失败");
+					}
+					else
+					{
+						ui->label_execute->setText("执行失败");
+					}
+				}
+			}
+
 			ba.remove(0, mProtocolShow->len);
 		}
 	}
@@ -344,4 +340,16 @@ QByteArray frmIEC104Master::getYKYTData(uchar type)
 
 	}
 	return tmp;
+}
+
+void frmIEC104Master::on_pushButton_start_clicked()
+{
+	if(ui->pushButton_start->text() == QString("开始"))
+	{
+		startdebug();
+	}
+	else
+	{
+		stopdebug();
+	}
 }

@@ -2063,3 +2063,57 @@ QString dpichToText(uchar ch)
 	return text;
 }
 
+
+QString eventTypeToText(uchar ch)
+{
+	QString text = "历史信息类型:" + QString::number(ch) + " ";
+	switch(ch)
+	{
+	case 0:
+		text.append("开关量");
+		break;
+	case 1:
+		text.append("保护动作信息");
+		break;
+	case 3:
+		text.append("装置告警信息");
+		break;
+	case 11:
+		text.append("保护启动信息");
+		break;
+	case 12:
+		text.append("保护出口信息");
+		break;
+	case 13:
+		text.append("保护复归信息");
+		break;
+	case 14:
+		text.append("重合闸动作信息");
+		break;
+	case 21:
+		text.append("开入量");
+		break;
+	case 22:
+		text.append("硬压板");
+		break;
+	case 31:
+		text.append("保护通道告警");
+		break;
+	case 32:
+		text.append("装置自检");
+		break;
+	case 33:
+		text.append("保护告警");
+		break;
+	case 100:
+		text.append("软压板信息");
+		break;
+	case 255:
+		text.append("本装置的所有信息");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}

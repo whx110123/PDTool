@@ -50,11 +50,21 @@
 #include "iec103asdu66data.h"
 #include "iec103asdu67data.h"
 #include "iec103asdu12data.h"
+#include "iec103asdu108data.h"
+#include "iec103asdu107data.h"
+#include "iec103asdu106data.h"
+#include "iec103asdu103data.h"
+#include "iec103asdu102data.h"
+#include "iec103asdu18data.h"
+#include "iec103asdu17data.h"
+#include "iec103asdu16data.h"
+#include "iec103asdu14data.h"
+#include "iec103asdu13data.h"
 
 
 IEC103AsduData::IEC103AsduData()
 {
-	type = 0;
+	asduType = 0;
 	fun = 0;
 	inf = 0;
 	masterState = STATE_NORMAL;
@@ -199,7 +209,7 @@ QString IEC103AsduData::infToText()
 	}
 	if(fun == 255)
 	{
-		switch(type)
+		switch(asduType)
 		{
 		case 13:
 		case 14:
@@ -346,7 +356,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
-		mdata->type = type;
+		mdata->asduType = type;
 		mdata->index = index;
 		bool isOk = false;
 		if(index == 0)
@@ -540,6 +550,24 @@ QString IEC103Asdu::typeToText()
 	case 12:
 		text.append("简要录波报告(南网保信103)");
 		break;
+	case 13:
+		text.append("召唤录波文件(南网保信103)");
+		break;
+	case 14:
+		text.append("上送录波文件(南网保信103)");
+		break;
+	case 15:
+		text.append("召唤录波文件列表(南网保信103)");
+		break;
+	case 16:
+		text.append("上送录波文件列表(南网保信103)");
+		break;
+	case 17:
+		text.append("召唤装置故障历史信息(南网保信103)");
+		break;
+	case 18:
+		text.append("装置故障历史信息(南网保信103)");
+		break;
 	case 20:
 		text.append("一般命令");
 		endflag = IEC103END_RII;
@@ -661,6 +689,30 @@ QString IEC103Asdu::typeToText()
 	case 88:
 		text.append("电能脉冲量召唤或冻结");
 		endflag = IEC103END_RII;
+		break;
+	case 101:
+		text.append("召唤一般文件列表(南网保信103)");
+		break;
+	case 102:
+		text.append("上送一般文件列表(南网保信103)");
+		break;
+	case 103:
+		text.append("召唤一般文件内容(南网保信103)");
+		break;
+	case 104:
+		text.append("上送一般文件内容(南网保信103)");
+		break;
+	case 105:
+		text.append("下传一般文件的基本信息(南网保信103)");
+		break;
+	case 106:
+		text.append("下传一般文件基本信息的确认(南网保信103)");
+		break;
+	case 107:
+		text.append("下传一般文件的内容(南网保信103)");
+		break;
+	case 108:
+		text.append("下传一般文件内容的确认(南网保信103)");
 		break;
 	case 220:
 		text.append("通用历史数据查询（金智103专用）");
@@ -791,6 +843,9 @@ QString IEC103Asdu::cotToText()
 	case 130:
 		text.append("文件传输(金智103专用)");
 		break;
+	case 252:
+		text.append("取消操作(南网保信专用)");
+		break;
 	default:
 		text.append("未知，无法识别当前的传送原因");
 		break;
@@ -862,6 +917,24 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 12:
 		asdudata = new IEC103Asdu12Data;
+		break;
+	case 13:
+		asdudata = new IEC103Asdu13Data;
+		break;
+	case 14:
+		asdudata = new IEC103Asdu14Data;
+		break;
+	case 15:
+		asdudata = new IEC103Asdu15Data;
+		break;
+	case 16:
+		asdudata = new IEC103Asdu16Data;
+		break;
+	case 17:
+		asdudata = new IEC103Asdu17Data;
+		break;
+	case 18:
+		asdudata = new IEC103Asdu18Data;
 		break;
 	case 20:
 		asdudata = new IEC103Asdu20Data;
@@ -967,6 +1040,30 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 		break;
 	case 88:
 		asdudata = new IEC103Asdu88Data;
+		break;
+	case 101:
+		asdudata = new IEC103Asdu101Data;
+		break;
+	case 102:
+		asdudata = new IEC103Asdu102Data;
+		break;
+	case 103:
+		asdudata = new IEC103Asdu103Data;
+		break;
+	case 104:
+		asdudata = new IEC103Asdu104Data;
+		break;
+	case 105:
+		asdudata = new IEC103Asdu105Data;
+		break;
+	case 106:
+		asdudata = new IEC103Asdu106Data;
+		break;
+	case 107:
+		asdudata = new IEC103Asdu107Data;
+		break;
+	case 108:
+		asdudata = new IEC103Asdu108Data;
 		break;
 	case 220:
 		asdudata = new IEC103Asdu220Data;

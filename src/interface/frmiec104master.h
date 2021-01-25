@@ -40,6 +40,8 @@ private slots:
 	void emitsignals(const QString& data);
 	QByteArray getYKYTData(uchar type);
 
+	void on_pushButton_start_clicked();
+
 private:
 	Ui::frmIEC104Master *ui;
 	MyBase *mProtocol;

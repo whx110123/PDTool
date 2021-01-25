@@ -181,8 +181,8 @@ bool IEC104::createData(IECDataConfig& config)
 		config.data.append(config.userdata);
 		config.userdata.clear();
 	}
-	char len = config.data.size() - 2;
-	config.data.replace(1, 1, &len, 1);
+	uchar len = config.data.size() - 2;
+	config.data.replace(1, 1, (char *)&len, 1);
 	return true;
 }
 

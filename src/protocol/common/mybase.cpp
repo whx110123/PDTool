@@ -38,4 +38,5 @@ void MyBase::setDefault(const QByteArray& buff)
 	len = 0;
 }
 QString MyBase::error = QString();
+QString MyBase::mTextS = QString();
 MyConfig MyBase::mConfig = MyConfig();

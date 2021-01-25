@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>362</width>
-    <height>654</height>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,12 +20,10 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_11">
      <item>
-      <widget class="QComboBox" name="comboBox_protocol">
-       <item>
-        <property name="text">
-         <string>104主站</string>
-        </property>
-       </item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>104主站</string>
+       </property>
       </widget>
      </item>
      <item>
@@ -742,19 +740,6 @@
    </item>
    <item>
     <widget class="QTextEdit" name="textEdit_data"/>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_4">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>14</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

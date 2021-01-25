@@ -13,7 +13,7 @@ public:
 	virtual bool handle(const QByteArray& buff);				//单独处理数据
 
 public:
-	uchar type;										//保留asdu类型
+	uchar asduType;										//保留asdu类型
 	uint infaddr;
 
 public:
