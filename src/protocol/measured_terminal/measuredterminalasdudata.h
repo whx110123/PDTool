@@ -15,6 +15,7 @@ public:
 	void dataClear();							//清除所有数据
 	bool handle(const QByteArray& buff);		//处理数据
 	bool handleData_1(const QByteArray& buff);	//处理数据方式1：4字节无符号整数，两位小数点
+	bool handleData_2(const QByteArray& buff);	//处理数据方式2：1字节无符号整数, 00：表示全部肯定 01：表示全部否定
 
 public:
 

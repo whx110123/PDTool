@@ -992,10 +992,10 @@ QString IEC103Asdu::cotToText()
 		text.append("通用分类写确认");
 		break;
 	case 45:
-		text.append("读列表 主站发出或子站肯定认可");
+		text.append("读列表 主站发出或子站肯定认可(保信规约专用)");
 		break;
 	case 46:
-		text.append("读内容 主站发出或子站肯定认可");
+		text.append("读内容 主站发出或子站肯定认可(保信规约专用)");
 		break;
 	case 128:
 		text.append("历史数据查询(金智103专用)");
@@ -1007,7 +1007,7 @@ QString IEC103Asdu::cotToText()
 		text.append("文件传输(金智103专用)");
 		break;
 	case 252:
-		text.append("取消操作(南网保信专用)");
+		text.append("取消操作(保信规约专用)");
 		break;
 	default:
 		text.append("未知，无法识别当前的传送原因");
