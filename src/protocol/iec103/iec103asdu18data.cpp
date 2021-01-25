@@ -19,7 +19,14 @@ bool HisInfo::init(const QByteArray& buff)
 	setlist.clear();
 
 	eventType = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText(eventType) + "\r\n");
+	if(protocolName == IEC_103BAOXINNET_NW)
+	{
+		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText_nw(eventType) + "\r\n");
+	}
+	else
+	{
+		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText(eventType) + "\r\n");
+	}
 	len++;
 
 	fun = *(buff.data() + len);
@@ -101,10 +108,12 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 {
 	qDeleteAll(hisInfos);
 	hisInfos.clear();
-
-	rii = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	len++;
+	if(protocolName == IEC_103BAOXINNET_NW)
+	{
+		rii = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		len++;
+	}
 
 	isLast = *(buff.data() + len) & 0x01;
 	mText.append(CharToHexStr(buff.data() + len) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");

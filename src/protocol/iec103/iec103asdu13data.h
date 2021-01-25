@@ -16,6 +16,7 @@ public:
 	uchar rii;
 	QString waveFileName;
 	uint fileIndex;
+	uint no;
 	QTextCodec *gbk;
 };
 

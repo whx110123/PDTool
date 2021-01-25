@@ -13,12 +13,16 @@ public:
 	virtual bool handle(const QByteArray& buff);
 
 public:
+	uchar reportNum;
+	QStringList fileNames;
+	QDateTime dt;
+	QTextCodec *gbk;
+	/*南网使用*/
 	uchar rii;
 	uchar flag;
 	QString fileName;
-	QDateTime dt;
 	uint fileSize;
-	QTextCodec *gbk;
+
 };
 
 #endif // IEC103ASDU105DATA_H

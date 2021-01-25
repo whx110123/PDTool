@@ -2064,7 +2064,7 @@ QString dpichToText(uchar ch)
 }
 
 
-QString eventTypeToText(uchar ch)
+QString eventTypeToText_nw(uchar ch)
 {
 	QString text = "历史信息类型:" + QString::number(ch) + " ";
 	switch(ch)
@@ -2110,6 +2110,30 @@ QString eventTypeToText(uchar ch)
 		break;
 	case 255:
 		text.append("本装置的所有信息");
+		break;
+	default:
+		text.append("保留");
+		break;
+	}
+	return text;
+}
+
+QString eventTypeToText(uchar ch)
+{
+	QString text = "历史信息类型:" + QString::number(ch) + " ";
+	switch(ch)
+	{
+	case 1:
+		text.append("故障动作信息（带故障量）");
+		break;
+	case 2:
+		text.append("装置自检信息");
+		break;
+	case 3:
+		text.append("开关量变位");
+		break;
+	case 255:
+		text.append("本装置的所有事件");
 		break;
 	default:
 		text.append("保留");

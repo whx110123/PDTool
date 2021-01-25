@@ -281,7 +281,7 @@ void frmMain::on_protocolcbox_currentIndexChanged(const QString& arg1)
 		ui->comboBox_comaddrlen->setCurrentText("1");
 		ui->comboBox_infaddrlen->setCurrentText("1");
 	}
-	else if(arg1 == IEC_103BAOXINNET)
+	else if(arg1 == IEC_103BAOXINNET || arg1 == IEC_103BAOXINNET_NW)
 	{
 		ui->stackedWidget_config->setCurrentIndex(0);
 		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
@@ -471,7 +471,7 @@ MyBase *frmMain::createByName(QString name)
 	{
 		protocol = new IEC103COM;
 	}
-	else if(name == IEC_103BAOXINNET || name == IEC_103XUJINET)
+	else if(name == IEC_103BAOXINNET || name == IEC_103BAOXINNET_NW || name == IEC_103XUJINET)
 	{
 		protocol = new IEC103NetBaoXin;
 	}

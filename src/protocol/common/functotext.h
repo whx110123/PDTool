@@ -28,6 +28,7 @@ QString eiToText(uchar ch);
 QString erToText(uchar ch);
 QString esToText(uchar ch);
 QString eventTypeToText(uchar ch);
+QString eventTypeToText_nw(uchar ch);
 QString fcbToText(uchar ch);
 QString fcvToText(uchar ch);
 QString fptToText(uchar ch);

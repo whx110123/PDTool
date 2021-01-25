@@ -16,15 +16,31 @@ bool IEC103Asdu13Data::handle(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
 	len++;
 
-	QByteArray ba(buff.data() + len, 128);
+	uchar waveFileNameLen;
+	if(protocolName == IEC_103BAOXINNET_NW)
+	{
+		waveFileNameLen = 128;
+	}
+	else
+	{
+		waveFileNameLen = 64;
+	}
+
+	QByteArray ba(buff.data() + len, waveFileNameLen);
 	waveFileName = gbk->toUnicode(ba);
-	mText.append(CharToHexStr(buff.data() + len, 128) + "\t不含扩展名的录波文件名128个字节:   " + waveFileName + "\r\n");
-	len += 128;
+	mText.append(CharToHexStr(buff.data() + len, waveFileNameLen) + "\t不含扩展名的录波文件名:   " + waveFileName + "\r\n");
+	len += waveFileNameLen;
 
 	fileIndex = charTouint(buff.data() + len, 4);
 	mText.append(CharToHexStr(buff.data() + len, 4) + "\t起始传输位置: " + QString::number(fileIndex) + "\r\n");
 	len += 4;
 
+	if(protocolName != IEC_103BAOXINNET_NW)
+	{
+		no = charTouint(buff.data() + len, 4);
+		mText.append(CharToHexStr(buff.data() + len, 4) + "\t录波文件在装置中的编号: " + QString::number(no) + "\r\n");
+		len += 4;
+	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{

@@ -34,25 +34,54 @@ bool IEC103Asdu16Data::handle(const QByteArray& buff)
 	mText.append(timeToText(buff.data() + len, 7));
 	len += 7;
 
-	for(int i = 0; i < fileNum; i++)
+	if(protocolName == IEC_103BAOXINNET_NW)
 	{
-		WaveFileInfo info;
-		info.addr = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t文件" + QString::number(i + 1) + "录波装置地址: " + QString::number(info.addr) + "\r\n");
-		len++;
-		QByteArray ba(buff.data() + len, 128);
-		info.fileName = gbk->toUnicode(ba);
-		mText.append(CharToHexStr(buff.data() + len, 128) + "\t文件" + QString::number(i + 1) + "文件名: " + info.fileName + "\r\n");
-		len += 128;
-		info.dt = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-		mText.append(timeToText(buff.data() + len, 7));
-		len += 7;
-		info.fileSize = charTouint(buff.data() + len, 4);
-		mText.append(CharToHexStr(buff.data() + len, 4) + "\t文件" + QString::number(i + 1) + "文件大小: " + QString::number(info.fileSize) + "\r\n");
-		len += 4;
+		for(int i = 0; i < fileNum; i++)
+		{
+			WaveFileInfo info;
+			info.addr = *(buff.data() + len);
+			mText.append(CharToHexStr(buff.data() + len) + "\t文件" + QString::number(i + 1) + "录波装置地址: " + QString::number(info.addr) + "\r\n");
+			len++;
+			QByteArray ba(buff.data() + len, 128);
+			info.fileName = gbk->toUnicode(ba);
+			mText.append(CharToHexStr(buff.data() + len, 128) + "\t文件" + QString::number(i + 1) + "文件名: " + info.fileName + "\r\n");
+			len += 128;
+			info.dt = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+			mText.append(timeToText(buff.data() + len, 7));
+			len += 7;
+			info.fileSize = charTouint(buff.data() + len, 4);
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t文件" + QString::number(i + 1) + "文件大小: " + QString::number(info.fileSize) + "\r\n");
+			len += 4;
 
-		files.append(info);
+			files.append(info);
 
+		}
+	}
+	else
+	{
+		for(int i = 0; i < fileNum; i++)
+		{
+			WaveFileInfo info;
+			QByteArray ba(buff.data() + len, 64);
+			info.fileName = gbk->toUnicode(ba);
+			mText.append(CharToHexStr(buff.data() + len, 64) + "\t文件" + QString::number(i + 1) + "文件名: " + info.fileName + "\r\n");
+			len += 64;
+			info.dt = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+			mText.append(timeToText(buff.data() + len, 7));
+			len += 7;
+			info.fileSize = charTouint(buff.data() + len, 4);
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t文件" + QString::number(i + 1) + "文件大小: " + QString::number(info.fileSize) + "\r\n");
+			len += 4;
+			info.no = charTouint(buff.data() + len, 4);
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t文件" + QString::number(i + 1) + "在装置中的编号: " + QString::number(info.no) + "\r\n");
+			len += 4;
+			ba.clear();
+			ba.append(buff.data() + len, 50);
+			info.fileInfo = gbk->toUnicode(ba);
+			mText.append(CharToHexStr(buff.data() + len, 50) + "\t文件" + QString::number(i + 1) + "故障概要描述信息: " + info.fileInfo + "\r\n");
+			len += 50;
+			files.append(info);
+		}
 	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())

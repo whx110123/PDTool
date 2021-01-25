@@ -207,66 +207,216 @@ QString IEC103AsduData::infToText()
 			break;
 		}
 	}
-	if(fun == 255)
+	if(protocolName == IEC_103BAOXINNET_NW)
 	{
-		switch(asduType)
+		if(fun == 255)
 		{
-		case 13:
-		case 14:
-		case 15:
-		case 16:
-		case 17:
-		case 18:
-			switch(inf)
+			switch(asduType)
 			{
-			case 0:
-				text.append("从保信子站本地调录波列表");
+			case 13:
+			case 14:
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+				switch(inf)
+				{
+				case 0:
+					text.append("从保信子站本地调录波列表");
+					break;
+				case 1:
+					text.append("直接从保护装置或录波器调录波列表");
+					break;
+				default:
+					break;
+				}
 				break;
-			case 1:
-				text.append("直接从保护装置或录波器调录波列表");
+			case 20:
+				switch(inf)
+				{
+				case 19:
+					text.append("复归");
+					break;
+				default:
+					break;
+				}
+				break;
+			case 101:
+			case 102:
+			case 103:
+			case 104:
+			case 105:
+			case 106:
+			case 107:
+			case 108:
+				switch(inf)
+				{
+				case 0:
+					text.append("不指定文件类型");
+					break;
+				case 1:
+					text.append("系统文件(SVG,CIM)");
+					break;
+				case 2:
+					text.append("子站日志文件");
+					break;
+				case 3:
+					text.append("子站配置文件");
+					break;
+				default:
+					break;
+				}
 				break;
 			default:
 				break;
 			}
-			break;
-		case 20:
-			switch(inf)
+
+		}
+	}
+	else if(protocolName == IEC_103BAOXINNET)
+	{
+		if(fun == 162)
+		{
+			switch(asduType)
 			{
-			case 19:
-				text.append("复归");
+			case 15:
+				switch(inf)
+				{
+				case 0:
+					text.append("从子站本地调录波文件列表");
+					break;
+				case 1:
+					text.append("从子站本地调简化录波列表");
+					break;
+				case 2:
+					text.append("直接从装置调录波文件列表");
+					break;
+				default:
+					break;
+				}
+				break;
+			case 16:
+				switch(inf)
+				{
+				case 0:
+					text.append("子站本地召唤录波文件列表回应");
+					break;
+				case 1:
+					text.append("子站本地调简化录波列表回应");
+					break;
+				case 2:
+					text.append("从装置召唤录波文件列表回应");
+					break;
+				default:
+					break;
+				}
+				break;
+			case 101:
+				switch(inf)
+				{
+				case 0:
+					text.append("调通用文件列表");
+					break;
+				default:
+					break;
+				}
+				break;
+			case 102:
+				switch(inf)
+				{
+				case 0:
+					text.append("调通用文件列表回应");
+					break;
+				default:
+					break;
+				}
 				break;
 			default:
 				break;
 			}
-			break;
-		case 101:
-		case 102:
-		case 103:
-		case 104:
-		case 105:
-		case 106:
-		case 107:
-		case 108:
-			switch(inf)
+
+		}
+		else if(fun == 163)
+		{
+			switch(asduType)
 			{
-			case 0:
-				text.append("不指定文件类型");
+			case 13:
+				switch(inf)
+				{
+				case 0:
+					text.append("从子站本地调录波文件");
+					break;
+				case 1:
+					text.append("从子站本地调简化录波文件");
+					break;
+				case 2:
+					text.append("直接从装置调录波文件");
+					break;
+				default:
+					break;
+				}
 				break;
-			case 1:
-				text.append("系统文件(SVG,CIM)");
+			case 14:
+				switch(inf)
+				{
+				case 0:
+					text.append("从子站本地调录波文件回应");
+					break;
+				case 1:
+					text.append("从子站本地调简化录波文件回应");
+					break;
+				case 2:
+					text.append("从装置调录波文件回应");
+					break;
+				default:
+					break;
+				}
 				break;
-			case 2:
-				text.append("子站日志文件");
+			case 103:
+				switch(inf)
+				{
+				case 0:
+					text.append("调通用文件");
+					break;
+				default:
+					break;
+				}
 				break;
-			case 3:
-				text.append("子站配置文件");
+			case 104:
+				switch(inf)
+				{
+				case 0:
+					text.append("调通用文件回应");
+					break;
+				default:
+					break;
+				}
 				break;
 			default:
 				break;
 			}
-			break;
-		default:
-			break;
+		}
+		else if(fun == 255)
+		{
+			switch(asduType)
+			{
+			case 17:
+			case 18:
+				switch(inf)
+				{
+				case 0:
+					text.append("召唤子站本地保存的历史事件");
+					break;
+				case 1:
+					text.append("直接对装置召唤的历史事件");
+					break;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
 		}
 
 	}
@@ -834,6 +984,12 @@ QString IEC103Asdu::cotToText()
 	case 44:
 		text.append("通用分类写确认");
 		break;
+	case 45:
+		text.append("读列表 主站发出或子站肯定认可");
+		break;
+	case 46:
+		text.append("读内容 主站发出或子站肯定认可");
+		break;
 	case 128:
 		text.append("历史数据查询(金智103专用)");
 		break;
@@ -866,7 +1022,7 @@ QString IEC103Asdu::endToText()
 		break;
 	case IEC103END_SIN:
 		text.append("附加信息SIN:");
-		if(protocolName == IEC_103BAOXINNET)
+		if(protocolName == IEC_103BAOXINNET_NW)
 		{
 			text.append(fptToText(endflag));
 		}

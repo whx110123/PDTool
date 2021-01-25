@@ -12,12 +12,22 @@ IEC103Asdu17Data::~IEC103Asdu17Data()
 
 bool IEC103Asdu17Data::handle(const QByteArray& buff)
 {
-	rii = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	len++;
+	if(protocolName == IEC_103BAOXINNET_NW)
+	{
+		rii = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		len++;
+	}
 
 	eventType = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText(eventType) + "\r\n");
+	if(protocolName == IEC_103BAOXINNET_NW)
+	{
+		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText_nw(eventType) + "\r\n");
+	}
+	else
+	{
+		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText(eventType) + "\r\n");
+	}
 	len++;
 
 	dtBegin = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
