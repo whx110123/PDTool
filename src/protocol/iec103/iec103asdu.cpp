@@ -698,25 +698,25 @@ QString IEC103Asdu::typeToText()
 		text.append("通用分类标识");
 		break;
 	case 12:
-		text.append("简要录波报告(南网保信103)");
+		text.append("简要录波报告(保信规约专用)");
 		break;
 	case 13:
-		text.append("召唤录波文件(南网保信103)");
+		text.append("召唤录波文件(保信规约专用)");
 		break;
 	case 14:
-		text.append("上送录波文件(南网保信103)");
+		text.append("上送录波文件(保信规约专用)");
 		break;
 	case 15:
-		text.append("召唤录波文件列表(南网保信103)");
+		text.append("召唤录波文件列表(保信规约专用)");
 		break;
 	case 16:
-		text.append("上送录波文件列表(南网保信103)");
+		text.append("上送录波文件列表(保信规约专用)");
 		break;
 	case 17:
-		text.append("召唤装置故障历史信息(南网保信103)");
+		text.append("召唤装置故障历史信息(保信规约专用)");
 		break;
 	case 18:
-		text.append("装置故障历史信息(南网保信103)");
+		text.append("装置故障历史信息(保信规约专用)");
 		break;
 	case 20:
 		text.append("一般命令");
@@ -841,19 +841,26 @@ QString IEC103Asdu::typeToText()
 		endflag = IEC103END_RII;
 		break;
 	case 101:
-		text.append("召唤一般文件列表(南网保信103)");
+		text.append("召唤一般文件列表(保信规约专用)");
 		break;
 	case 102:
-		text.append("上送一般文件列表(南网保信103)");
+		text.append("上送一般文件列表(保信规约专用)");
 		break;
 	case 103:
-		text.append("召唤一般文件内容(南网保信103)");
+		text.append("召唤一般文件内容(保信规约专用)");
 		break;
 	case 104:
-		text.append("上送一般文件内容(南网保信103)");
+		text.append("上送一般文件内容(保信规约专用)");
 		break;
 	case 105:
-		text.append("下传一般文件的基本信息(南网保信103)");
+		if(protocolName == IEC_103BAOXINNET_NW)
+		{
+			text.append("下传一般文件的基本信息(南网保信103)");
+		}
+		else
+		{
+			text.append("上送故障归档报告(保信规约专用)");
+		}
 		break;
 	case 106:
 		text.append("下传一般文件基本信息的确认(南网保信103)");
