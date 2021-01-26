@@ -86,6 +86,7 @@ void frmIEC104Master::handleData()
 	}
 	while(!recvData.isEmpty())
 	{
+		MyBase::mConfig.protocolName = IEC_104;
 		if(!mProtocol->init(recvData))
 		{
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
@@ -179,6 +180,7 @@ void frmIEC104Master::showToText(QByteArray ba)
 	}
 	while(!ba.isEmpty())
 	{
+		MyBase::mConfig.protocolName = IEC_104;
 		if(!mProtocolShow->init(ba))
 		{
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
