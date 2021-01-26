@@ -13,6 +13,7 @@ struct ModbusDataGroup
 
 struct MyConfig
 {
+	QString protocolName;		//规约名
 	QString lengthType;			//长度域类型
 	int addrLen;				//地址域字节数
 	int cotlen ;				//cot长度

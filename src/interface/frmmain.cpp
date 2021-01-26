@@ -379,6 +379,7 @@ void frmMain::on_pushButton_Analysis_clicked()
 	{
 		return;
 	}
+	MyBase::mConfig.protocolName = ui->protocolcbox->currentText();
 
 	MyBase *myprotocol = createByName(ui->protocolcbox->currentText());
 
@@ -492,10 +493,6 @@ MyBase *frmMain::createByName(QString name)
 		protocol = new MeasuredTerminal;
 	}
 
-	if(protocol)
-	{
-		protocol->protocolName = ui->protocolcbox->currentText();
-	}
 	return protocol;
 }
 

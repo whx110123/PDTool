@@ -32,6 +32,7 @@ bool MyBase::createData(IECDataConfig& config)
 
 void MyBase::setDefault(const QByteArray& buff)
 {
+	protocolName = mConfig.protocolName;
 	mRecvData = buff;
 	mText.clear();
 	error.clear();
