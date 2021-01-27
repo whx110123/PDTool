@@ -1,7 +1,7 @@
 ﻿#ifndef FRMIEC104MASTER_H
 #define FRMIEC104MASTER_H
 
-#include <QWidget>
+#include <manageriec104master.h>
 #include <mybase.h>
 
 namespace Ui
@@ -43,6 +43,7 @@ private slots:
 	void on_pushButton_start_clicked();
 
 private:
+	ManagerIEC104Master *manager;
 	Ui::frmIEC104Master *ui;
 	MyBase *mProtocol;
 	MyBase *mProtocolShow;

@@ -1,7 +1,9 @@
 ﻿#ifndef GLOBALDEFINE_H
 #define GLOBALDEFINE_H
 
+#include <QWidget>
 #include <QString>
+#include <QTimer>
 #include <QDateTime>
 #include <QTextCodec>
 #include <QVector>

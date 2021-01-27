@@ -40,6 +40,7 @@ void frmIEC104Master::initfrm()
 
 void frmIEC104Master::init()
 {
+	manager = new ManagerIEC104Master;
 	handleDataTimer = new QTimer(this);
 	haveData = false;
 	connect(handleDataTimer, &QTimer::timeout, this, &frmIEC104Master::handleData);
