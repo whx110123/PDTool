@@ -33,7 +33,7 @@ signals:
 	void ToCom(const QString& data);
 
 private slots:
-	void handleData();
+	void handleData(const QByteArray& data);
 	void startdebug();
 	void stopdebug();
 	void showToText(QByteArray ba);
@@ -45,12 +45,12 @@ private slots:
 private:
 	ManagerIEC104Master *manager;
 	Ui::frmIEC104Master *ui;
-	MyBase *mProtocol;
-	MyBase *mProtocolShow;
+//	MyBase *mProtocol;
+//	MyBase *mProtocolShow;
 	IECDataConfig config;
-	QTimer *handleDataTimer;
-	QByteArray recvData;
-	bool haveData;
+//	QTimer *handleDataTimer;
+//	QByteArray recvData;
+//	bool haveData;
 };
 
 #endif // FRMIEC104MASTER_H

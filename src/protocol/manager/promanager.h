@@ -21,7 +21,12 @@ public:
 
 	virtual void timerRcv();
 	virtual void timerSnd();
-private:
+
+signals:
+	void Send(const QByteArray& data);
+
+public:
+	uint flag;						//状态标识
 	QString protocolName;
 	bool isMaster;
 	QByteArray rcvData;
