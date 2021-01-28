@@ -12,6 +12,8 @@ public:
 	~ProManager();
 
 	void init();
+	virtual bool start();
+	bool stop();
 	void setProName(const QString& name);
 	void setMaster(bool Master);
 	void setRcvData(const QByteArray& data);
@@ -29,6 +31,7 @@ public:
 	uint flag;						//状态标识
 	QString protocolName;
 	bool isMaster;
+	bool isRun;
 	QByteArray rcvData;
 	QVector<QByteArray> sndDatas;
 

@@ -11,8 +11,20 @@ ManagerIEC104Master::~ManagerIEC104Master()
 
 }
 
+bool ManagerIEC104Master::start()
+{
+	handleRcvDataTimer->start(1000);
+	handleSndDataTimer->start(200);
+	isRun = true;
+	return true;
+}
+
 void ManagerIEC104Master::timerRcv()
 {
+	if(!isRun)
+	{
+		return;
+	}
 	while(!rcvData.isEmpty())
 	{
 		if(my104.init(rcvData))
@@ -24,6 +36,14 @@ void ManagerIEC104Master::timerRcv()
 				{
 					addSndData(asdu100Create());
 					flag = STATE_CALLALL;
+				}
+				else if(my104.apci.control.code == 0x43)
+				{
+					flag = STATE_TESTCONFIRM;
+				}
+				else if(my104.apci.control.code == 0x83)
+				{
+					flag = STATE_TESTACT;
 				}
 			}
 			else if(my104.apci.control.type == STYPE)
@@ -68,32 +88,36 @@ void ManagerIEC104Master::timerRcv()
 
 void ManagerIEC104Master::timerSnd()
 {
+	if(!isRun)
+	{
+		return;
+	}
 	if(flag == STATE_INIT)
 	{
-		emit Send(SendU(0x07));
+		SendU(0x07);
 	}
 	else if(flag == STATE_NORMAL || (sSend == true && noDataTimes > 10))
 	{
-		emit Send(SendS());
+		SendS();
 		flag = STATE_NODATA;
 		w = 0;
 		sSend = false;
 	}
 	else if(flag == STATE_TESTACT)
 	{
-		emit Send(SendU(0x43));
+		SendU(0x43);
 		flag = STATE_NODATA;
 	}
 	else if(flag == STATE_TESTCONFIRM)
 	{
-		emit Send(SendU(0x83));
+		SendU(0x83);
 		flag = STATE_NODATA;
 	}
 	else if(!sndDatas.isEmpty())
 	{
 		if(k < 12)
 		{
-			emit(SendI(sndDatas.takeFirst()));
+			SendI(sndDatas.takeFirst());
 			k++;
 			sndNo++;
 			w = 0;
@@ -120,6 +144,7 @@ QByteArray ManagerIEC104Master::SendU(uchar ch)
 	ba += '\0';
 	ba += '\0';
 	ba += '\0';
+	emit Send(ba);
 	return ba;
 }
 
@@ -131,6 +156,7 @@ QByteArray ManagerIEC104Master::SendS()
 	ba += 0x01;
 	ba += '\0';
 	ba += uintToBa(rcvNo * 2, 2);
+	emit Send(ba);
 	return ba;
 }
 
@@ -146,6 +172,7 @@ QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
 	ba += uintToBa(sndNo * 2, 2);
 	ba += uintToBa(rcvNo * 2, 2);
 	ba += data;
+	emit Send(ba);
 	return ba;
 }
 

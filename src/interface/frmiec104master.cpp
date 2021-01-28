@@ -40,7 +40,16 @@ void frmIEC104Master::initfrm()
 
 void frmIEC104Master::init()
 {
+	if(!manager)
+	{
+		MyBase::mConfig.lengthType = IEC_SINGLE;
+		MyBase::mConfig.cotlen = 2;
+		MyBase::mConfig.comaddrlen = 2;
+		MyBase::mConfig.infaddrlen = 3;
 
+		manager = new ManagerIEC104Master;
+		connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::handleData);
+	}
 //	handleDataTimer = new QTimer(this);
 //	haveData = false;
 //	connect(handleDataTimer, &QTimer::timeout, this, &frmIEC104Master::handleData);
@@ -137,19 +146,11 @@ void frmIEC104Master::startdebug()
 {
 	ui->pushButton_start->setText("停止");
 
-	MyBase::mConfig.lengthType = IEC_SINGLE;
-	MyBase::mConfig.cotlen = 2;
-	MyBase::mConfig.comaddrlen = 2;
-	MyBase::mConfig.infaddrlen = 3;
-
 	config.comaddr = ui->lineEdit_comaddr->text().toUInt();
-
-	if(!manager)
+	if(manager)
 	{
-		manager = new ManagerIEC104Master;
-		connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::handleData);
+		manager->start();
 	}
-
 //	recvData.clear();
 
 //	if(mProtocol)

@@ -12,6 +12,7 @@ public:
 	ManagerIEC104Master();
 	~ManagerIEC104Master();
 
+	virtual bool start();
 	virtual void timerRcv();
 	virtual void timerSnd();
 
