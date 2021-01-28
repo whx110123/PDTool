@@ -12,8 +12,7 @@ frmIEC104Master::frmIEC104Master(QWidget *parent) :
 	ui(new Ui::frmIEC104Master)
 {
 	ui->setupUi(this);
-//	mProtocol = NULL;
-//	mProtocolShow = NULL;
+	manager = NULL;
 	init();
 	initfrm();
 }
@@ -21,16 +20,6 @@ frmIEC104Master::frmIEC104Master(QWidget *parent) :
 frmIEC104Master::~frmIEC104Master()
 {
 	delete ui;
-//	if(mProtocol)
-//	{
-//		delete mProtocol;
-//		mProtocol = NULL;
-//	}
-//	if(mProtocolShow)
-//	{
-//		delete mProtocolShow;
-//		mProtocolShow = NULL;
-//	}
 }
 
 void frmIEC104Master::initfrm()
@@ -48,11 +37,10 @@ void frmIEC104Master::init()
 		MyBase::mConfig.infaddrlen = 3;
 
 		manager = new ManagerIEC104Master;
-		connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::handleData);
+		connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
+		connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
+		connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);
 	}
-//	handleDataTimer = new QTimer(this);
-//	haveData = false;
-//	connect(handleDataTimer, &QTimer::timeout, this, &frmIEC104Master::handleData);
 }
 
 void frmIEC104Master::dealData(const QString& data, const QString& title)
@@ -65,81 +53,23 @@ void frmIEC104Master::dealData(const QString& data, const QString& title)
 			{
 				manager->addRcvData(QUIHelper::hexStrToByteArray(data));
 			}
-//			recvData.append(QUIHelper::hexStrToByteArray(data));
 		}
 	}
 }
 
 bool frmIEC104Master::createAndSendData(IECDataConfig& config)
 {
-//	if(ui->pushButton_start->text() == QString("停止") && mProtocol)
-//	{
-//		if(mProtocol->createData(config))
-//		{
-//			if(config.data.isEmpty())
-//			{
-//				return true;
-//			}
-//			emitsignals(config.data.toHex(' '));
-//			showToText(config.data);
-//			return true;
-//		}
-//		else
-//		{
-//			ui->textEdit_data->append("错误描述：" + mProtocol->error);
-//		}
-//	}
 	return false;
 }
 
-void frmIEC104Master::handleData(const QByteArray& data)
+void frmIEC104Master::sendData(const QByteArray& data)
 {
+	if(manager)
+	{
+		manager->protocolShow.init(data);
+		showToText(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText(), 1);
+	}
 	emitsignals(data.toHex(' '));
-//	if(!mProtocol)
-//	{
-//		return;
-//	}
-//	while(!recvData.isEmpty())
-//	{
-//		MyBase::mConfig.protocolName = IEC_104;
-//		if(!mProtocol->init(recvData))
-//		{
-//			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-//			ui->textEdit_data->append("收到未识别的报文: " + mProtocol->mRecvData.toHex(' '));
-//			ui->textEdit_data->append("错误描述：" + mProtocol->error);
-//			recvData.clear();
-//			haveData = false;
-//		}
-//		else
-//		{
-//			haveData = true;
-//			showToText(recvData.left(mProtocol->len));
-//			recvData.remove(0, mProtocol->len);
-//		}
-//	}
-//	if(haveData ||  mProtocol->masterState == STATE_INIT)
-//	{
-//		haveData = false;
-//		config.asdutype = 0;
-//		config.isMaster = true;
-//		config.masterState = mProtocol->masterState;
-
-
-//		if(mProtocol->createData(config))
-//		{
-//			if(config.data.isEmpty())
-//			{
-//				return;
-//			}
-//			showToText(config.data);
-//			QString str = config.data.toHex(' ');
-//			emitsignals(str);
-//		}
-//		else
-//		{
-//			ui->textEdit_data->append("错误描述：" + mProtocol->error);
-//		}
-//	}
 }
 
 void frmIEC104Master::startdebug()
@@ -151,52 +81,32 @@ void frmIEC104Master::startdebug()
 	{
 		manager->start();
 	}
-//	recvData.clear();
-
-//	if(mProtocol)
-//	{
-//		delete mProtocol;
-//		mProtocol = NULL;
-//	}
-//	if(mProtocolShow)
-//	{
-//		delete mProtocolShow;
-//		mProtocolShow = NULL;
-//	}
-
-
-
-//	mProtocol = new IEC104;
-//	mProtocol->masterState = STATE_INIT;
-//	mProtocol->slaveState = STATE_NODATA;
-
-//	mProtocolShow = new IEC104;
-
-
-//	if(handleDataTimer->isActive())
-//	{
-//		handleDataTimer->stop();
-//	}
-//	handleDataTimer->start(1000);
-
 }
 
 void frmIEC104Master::stopdebug()
 {
 	ui->pushButton_start->setText("开始");
 
-	delete manager;
-	manager = NULL;
+	if(manager)
+	{
+		manager->stop();
+	}
 
-//	if(handleDataTimer->isActive())
-//	{
-//		handleDataTimer->stop();
-//	}
-//	recvData.clear();
 }
 
-void frmIEC104Master::showToText(QByteArray ba)
+void frmIEC104Master::showToText(const QString& data, int type) //type 0接收 1发送
 {
+	if(type == 1)
+	{
+		ui->textEdit_data->setTextColor(QColor("darkgreen"));
+		ui->textEdit_data->append(QString("[发送报文][%1]").arg(DATETIME));
+	}
+	else
+	{
+		ui->textEdit_data->setTextColor(QColor("red"));
+		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
+	}
+	ui->textEdit_data->append(data);
 //	if(!mProtocolShow)
 //	{
 //		return;
@@ -279,8 +189,16 @@ void frmIEC104Master::showToText(QByteArray ba)
 
 //			ba.remove(0, mProtocolShow->len);
 //		}
-//	}
+	//	}
 }
+
+void frmIEC104Master::showLog(const QString& data)
+{
+	ui->textEdit_data->setTextColor(QColor("Magenta"));
+	ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
+	ui->textEdit_data->append(data);
+}
+
 
 void frmIEC104Master::emitsignals(const QString& data)
 {

@@ -26,6 +26,8 @@ public:
 
 signals:
 	void Send(const QByteArray& data);
+	void toText(const QString& text, int type);			//报文的解析,type 0接收 1发送
+	void toLog(const QString& text);					//发送报告
 
 public:
 	uint flag;						//状态标识

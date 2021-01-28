@@ -33,10 +33,11 @@ signals:
 	void ToCom(const QString& data);
 
 private slots:
-	void handleData(const QByteArray& data);
+	void sendData(const QByteArray& data);
 	void startdebug();
 	void stopdebug();
-	void showToText(QByteArray ba);
+	void showToText(const QString& data, int type);		//type 0接收 1发送
+	void showLog(const QString& data);
 	void emitsignals(const QString& data);
 	QByteArray getYKYTData(uchar type);
 
@@ -45,8 +46,6 @@ private slots:
 private:
 	ManagerIEC104Master *manager;
 	Ui::frmIEC104Master *ui;
-//	MyBase *mProtocol;
-//	MyBase *mProtocolShow;
 	IECDataConfig config;
 //	QTimer *handleDataTimer;
 //	QByteArray recvData;

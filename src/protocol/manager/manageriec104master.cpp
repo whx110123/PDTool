@@ -4,6 +4,7 @@
 ManagerIEC104Master::ManagerIEC104Master()
 {
 	sSend = false;
+	isMaster = true;
 }
 
 ManagerIEC104Master::~ManagerIEC104Master()
@@ -16,6 +17,7 @@ bool ManagerIEC104Master::start()
 	handleRcvDataTimer->start(1000);
 	handleSndDataTimer->start(200);
 	isRun = true;
+	flag = STATE_INIT;
 	return true;
 }
 
@@ -29,6 +31,7 @@ void ManagerIEC104Master::timerRcv()
 	{
 		if(my104.init(rcvData))
 		{
+			emit toText(my104.mRecvData.toHex(' ') + "\r\n" + my104.showToText(), 0);
 			noDataTimes = 0;
 			if(my104.apci.control.type == UTYPE)
 			{
@@ -78,9 +81,17 @@ void ManagerIEC104Master::timerRcv()
 			rcvData.remove(0, my104.len);
 			noDataTimes = 0;
 		}
+		else if(*rcvData.data() == 0x68 && (rcvData.size() == 1 || *(uchar *)(rcvData.data() + 1) + 2 > rcvData.size()))
+		{
+			break;
+		}
 		else
 		{
-			rcvData.clear();
+			if(*rcvData.data() == 0x68 &&  *(uchar *)(rcvData.data() + 1) + 2 <= rcvData.size())
+			{
+				emit toLog("未识别的报文: " + rcvData.toHex(' '));
+			}
+			rcvData.remove(0, 1);
 		}
 	}
 	noDataTimes++;
@@ -94,7 +105,13 @@ void ManagerIEC104Master::timerSnd()
 	}
 	if(flag == STATE_INIT)
 	{
-		SendU(0x07);
+		static int i = 0;
+		i++;
+		if(i > 10)
+		{
+			i = 0;
+			SendU(0x07);
+		}
 	}
 	else if(flag == STATE_NORMAL || (sSend == true && noDataTimes > 10))
 	{

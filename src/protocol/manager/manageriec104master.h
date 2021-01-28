@@ -23,9 +23,9 @@ public:
 	QByteArray SendI(const QByteArray& data);
 
 	QByteArray asdu100Create();
-
+public:
+	IEC104 protocolShow;
 private:
-
 	IEC104 my104;
 	uint asduAddr;
 	int noDataTimes;

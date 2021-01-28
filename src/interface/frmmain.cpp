@@ -764,31 +764,37 @@ void frmMain::on_Bt_clear_clicked()
 void frmMain::on_action_TCPClient_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(1);
+	setWindowTitle("TCP客户端    Protocol Debug Tool V3.00     作者: 王洪星");
 }
 
 void frmMain::on_action_TCPServer_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(2);
+	setWindowTitle("TCP服务端    Protocol Debug Tool V3.00     作者: 王洪星");
 }
 
 void frmMain::on_action_UDPClient_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(3);
+	setWindowTitle("UDP客户端    Protocol Debug Tool V3.00     作者: 王洪星");
 }
 
 void frmMain::on_action_UDPServer_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(4);
+	setWindowTitle("UDP服务端    Protocol Debug Tool V3.00     作者: 王洪星");
 }
 
 void frmMain::on_action_COM_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(5);
+	setWindowTitle("COM串口    Protocol Debug Tool V3.00     作者: 王洪星");
 }
 
 void frmMain::on_action_Analys_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(0);
+	setWindowTitle("报文解析    Protocol Debug Tool V3.00     作者: 王洪星");
 }
 
 void frmMain::ConfigHide()
