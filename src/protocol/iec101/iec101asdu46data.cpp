@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu46data.h"
 
-IEC101Asdu46Data::IEC101Asdu46Data()
+IEC101Asdu46Data::IEC101Asdu46Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	dco = 0;
 }

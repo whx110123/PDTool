@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu45data.h"
 
-IEC101Asdu45Data::IEC101Asdu45Data()
+IEC101Asdu45Data::IEC101Asdu45Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	sco = 0;
 }

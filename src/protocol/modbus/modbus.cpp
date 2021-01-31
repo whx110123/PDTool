@@ -1,6 +1,6 @@
 ﻿#include "modbus.h"
 
-Modbus::Modbus()
+Modbus::Modbus(const MyConfig& Config): MyBase(Config)
 {
 	isMaster = false;
 }
@@ -87,13 +87,13 @@ bool Modbus::init(const QByteArray& buff)
 		mText.append(CharToHexStr(buff.data() + len) + "\t长度: " + QString::number(mgroup.dataLen) + "\r\n");
 		len++;
 
-		for(ModbusDataGroup *g : mConfig.groups)
+		for(ModbusDataGroup g : mConfig.groups)
 		{
-			if(g->dataLen == mgroup.dataLen)
+			if(g.dataLen == mgroup.dataLen)
 			{
-				mgroup.type = g->type;
-				mgroup.analysis = g->analysis;
-				mgroup.sort = g->sort;
+				mgroup.type = g.type;
+				mgroup.analysis = g.analysis;
+				mgroup.sort = g.sort;
 				break;
 			}
 		}
@@ -107,7 +107,7 @@ bool Modbus::init(const QByteArray& buff)
 			int mindex = 0;
 			while(len < mgroup.dataLen + 3)
 			{
-				ModbusData *mdata = new ModbusData;
+				ModbusData *mdata = new ModbusData(mConfig);
 				if(!mdata)
 				{
 					error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！申请内存失败");

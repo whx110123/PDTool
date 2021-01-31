@@ -9,10 +9,9 @@ class ManagerIEC104Master : public ProManager
 {
 	Q_OBJECT
 public:
-	ManagerIEC104Master();
+	explicit ManagerIEC104Master(const MyConfig& Config);
 	~ManagerIEC104Master();
 
-	virtual bool start();
 	virtual void timerRcv();
 	virtual void timerSnd();
 
@@ -32,8 +31,9 @@ private:
 	bool sSend;			//可以发送S帧
 	ushort sndNo;		//发送序号
 	ushort rcvNo;		//接收序号
-	ushort k;		//未被确认I报文最大数目
-	ushort w;		//最迟确认I报文最大数目
+	ushort k;			//未被确认I报文最大数目
+	ushort w;			//最迟确认I报文最大数目
+	MyConfig mConfig;
 };
 
 #endif // MANAGERIEC104MASTER_H

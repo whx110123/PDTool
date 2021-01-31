@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu42data.h"
 
-IEC103Asdu42Data::IEC103Asdu42Data()
+IEC103Asdu42Data::IEC103Asdu42Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	diq = 0;
 }

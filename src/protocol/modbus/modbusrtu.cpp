@@ -1,6 +1,6 @@
 ﻿#include "modbusrtu.h"
 
-ModbusRTU::ModbusRTU()
+ModbusRTU::ModbusRTU(const MyConfig& Config): MyBase(Config), mb(Config)
 {
 	crc = 0;
 }

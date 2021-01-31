@@ -241,7 +241,7 @@
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>5</number>
        </property>
        <widget class="QWidget" name="page_config1">
         <layout class="QGridLayout" name="gridLayout_5">
@@ -693,6 +693,7 @@
        </widget>
        <widget class="frmDebug" name="page_debug"/>
        <widget class="frmIEC104Master" name="page_iec104master"/>
+       <widget class="frmMeasuredTerminalMaster" name="page_MTMaster"/>
       </widget>
      </widget>
     </item>
@@ -745,6 +746,7 @@
      <string>规约模拟</string>
     </property>
     <addaction name="action_IEC104Master"/>
+    <addaction name="action_MeasuredTerminalMaster"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_E"/>
@@ -877,6 +879,17 @@
     <string>IEC104主站</string>
    </property>
   </action>
+  <action name="action_MeasuredTerminalMaster">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>南网计量主站</string>
+   </property>
+   <property name="toolTip">
+    <string>南网计量主站</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -919,6 +932,12 @@
    <class>frmIEC104Master</class>
    <extends>QWidget</extends>
    <header location="global">frmiec104master.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmMeasuredTerminalMaster</class>
+   <extends>QWidget</extends>
+   <header location="global">frmmeasuredterminalmaster.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

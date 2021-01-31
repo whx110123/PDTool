@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu105data.h"
 
-IEC103Asdu105Data::IEC103Asdu105Data()
+IEC103Asdu105Data::IEC103Asdu105Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	gbk = QTextCodec::codecForName("GB18030");
 }
@@ -12,7 +12,7 @@ IEC103Asdu105Data::~IEC103Asdu105Data()
 
 bool IEC103Asdu105Data::handle(const QByteArray& buff)
 {
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		rii = *(buff.data() + len);
 		mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");

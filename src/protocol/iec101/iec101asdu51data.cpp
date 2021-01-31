@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu51data.h"
 
-IEC101Asdu51Data::IEC101Asdu51Data()
+IEC101Asdu51Data::IEC101Asdu51Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	uintdata = 0;
 }

@@ -6,7 +6,7 @@
 class MTAsdu : public MyBase
 {
 public:
-	MTAsdu();
+	MTAsdu(const MyConfig& Config);
 	~MTAsdu();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

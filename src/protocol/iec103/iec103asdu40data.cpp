@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu40data.h"
 
-IEC103Asdu40Data::IEC103Asdu40Data()
+IEC103Asdu40Data::IEC103Asdu40Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	siq = 0;
 }

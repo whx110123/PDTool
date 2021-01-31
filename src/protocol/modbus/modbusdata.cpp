@@ -1,6 +1,6 @@
 ﻿#include "modbusdata.h"
 
-ModbusData::ModbusData()
+ModbusData::ModbusData(const MyConfig& Config): MyBase(Config)
 {
 
 }

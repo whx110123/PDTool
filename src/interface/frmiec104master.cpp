@@ -29,21 +29,34 @@ void frmIEC104Master::initfrm()
 
 void frmIEC104Master::init()
 {
-	if(!manager)
+	if(manager)
 	{
-		MyBase::mConfig.lengthType = IEC_SINGLE;
-		MyBase::mConfig.cotlen = 2;
-		MyBase::mConfig.comaddrlen = 2;
-		MyBase::mConfig.infaddrlen = 3;
-
-		manager = new ManagerIEC104Master;
-		connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
-		connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
-		connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);
+		delete manager;
+		manager = NULL;
 	}
+
+	MyConfig Config = initConfig();
+	manager = new ManagerIEC104Master(Config);
+	connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
+	connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
+	connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);
+
 }
 
-void frmIEC104Master::dealData(const QString& data, const QString& title)
+MyConfig frmIEC104Master::initConfig()
+{
+	config.comaddr = ui->lineEdit_comaddr->text().toUInt();
+
+	MyConfig Config;
+	Config.protocolName = IEC_104;
+	Config.lengthType = IEC_SINGLE;
+	Config.cotlen = 2;
+	Config.comaddrlen = 2;
+	Config.infaddrlen = 3;
+	return Config;
+}
+
+void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
 {
 	if(ui->comboBox->currentText().contains(title))
 	{
@@ -76,9 +89,11 @@ void frmIEC104Master::startdebug()
 {
 	ui->pushButton_start->setText("停止");
 
-	config.comaddr = ui->lineEdit_comaddr->text().toUInt();
+	init();
+
 	if(manager)
 	{
+		manager->flag = STATE_INIT;
 		manager->start();
 	}
 }
@@ -90,6 +105,8 @@ void frmIEC104Master::stopdebug()
 	if(manager)
 	{
 		manager->stop();
+		delete manager;
+		manager = NULL;
 	}
 
 }

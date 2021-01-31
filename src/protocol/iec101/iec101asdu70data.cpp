@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu70data.h"
 
-IEC101Asdu70Data::IEC101Asdu70Data()
+IEC101Asdu70Data::IEC101Asdu70Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	coi = 0;
 	infaddr = 0;

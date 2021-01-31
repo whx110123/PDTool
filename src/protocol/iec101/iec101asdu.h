@@ -6,7 +6,7 @@
 class IEC101AsduData : public MyBase
 {
 public:
-	IEC101AsduData();
+	IEC101AsduData(const MyConfig& Config);
 	virtual ~IEC101AsduData();
 	virtual bool init(const QByteArray& buff);
 	virtual bool init(const QByteArray& buff, uint addr);
@@ -23,7 +23,7 @@ public:
 class IEC101Asdu : public MyBase
 {
 public:
-	IEC101Asdu();
+	IEC101Asdu(const MyConfig& Config);
 	~IEC101Asdu();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

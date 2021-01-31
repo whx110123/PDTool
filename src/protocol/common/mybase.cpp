@@ -1,11 +1,8 @@
 ﻿#include "mybase.h"
 
-MyBase::MyBase()
+MyBase::MyBase(const MyConfig& Config): mConfig(Config)
 {
-	setDefault(NULL);
-	masterState = STATE_NORMAL;
-	slaveState = STATE_NORMAL;
-	index = 0;
+
 }
 
 MyBase::~MyBase()
@@ -32,7 +29,6 @@ bool MyBase::createData(IECDataConfig& config)
 
 void MyBase::setDefault(const QByteArray& buff)
 {
-	protocolName = mConfig.protocolName;
 	mRecvData = buff;
 	mText.clear();
 	error.clear();
@@ -40,4 +36,3 @@ void MyBase::setDefault(const QByteArray& buff)
 }
 QString MyBase::error = QString();
 QString MyBase::mTextS = QString();
-MyConfig MyBase::mConfig = MyConfig();

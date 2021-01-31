@@ -1,6 +1,6 @@
 ﻿#include "iec101.h"
 
-IEC101::IEC101()
+IEC101::IEC101(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	masterState = STATE_INIT;
 	crc = 0;

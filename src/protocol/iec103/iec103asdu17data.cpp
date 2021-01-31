@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu17data.h"
 
-IEC103Asdu17Data::IEC103Asdu17Data()
+IEC103Asdu17Data::IEC103Asdu17Data(const MyConfig& Config): IEC103Asdu15Data(Config)
 {
 
 }
@@ -12,7 +12,7 @@ IEC103Asdu17Data::~IEC103Asdu17Data()
 
 bool IEC103Asdu17Data::handle(const QByteArray& buff)
 {
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		rii = *(buff.data() + len);
 		mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
@@ -20,7 +20,7 @@ bool IEC103Asdu17Data::handle(const QByteArray& buff)
 	}
 
 	eventType = *(buff.data() + len);
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText_nw(eventType) + "\r\n");
 	}

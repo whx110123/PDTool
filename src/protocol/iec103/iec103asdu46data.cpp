@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu46data.h"
 
-IEC103Asdu46Data::IEC103Asdu46Data()
+IEC103Asdu46Data::IEC103Asdu46Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	yx8 = 0;
 	yx8flag = 0;

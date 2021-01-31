@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu137data.h"
 
-IEC101Asdu137Data::IEC101Asdu137Data()
+IEC101Asdu137Data::IEC101Asdu137Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	shortdata = 0;
 	qos = 0;

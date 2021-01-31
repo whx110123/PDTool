@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu64data.h"
 
-IEC103Asdu64Data::IEC103Asdu64Data()
+IEC103Asdu64Data::IEC103Asdu64Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	dcc = 0;
 }

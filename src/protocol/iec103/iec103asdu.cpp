@@ -62,7 +62,7 @@
 #include "iec103asdu13data.h"
 
 
-IEC103AsduData::IEC103AsduData()
+IEC103AsduData::IEC103AsduData(const MyConfig& Config): MyBase(Config)
 {
 	asduType = 0;
 	fun = 0;
@@ -207,7 +207,7 @@ QString IEC103AsduData::infToText()
 			break;
 		}
 	}
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		if(fun == 255)
 		{
@@ -273,7 +273,7 @@ QString IEC103AsduData::infToText()
 
 		}
 	}
-	else if(protocolName == IEC_103BAOXINNET)
+	else if(mConfig.protocolName == IEC_103BAOXINNET)
 	{
 		if(fun == 162)
 		{
@@ -423,7 +423,7 @@ QString IEC103AsduData::infToText()
 	return text;
 }
 
-IEC103Asdu::IEC103Asdu()
+IEC103Asdu::IEC103Asdu(const MyConfig& Config): MyBase(Config)
 {
 	type = 0;
 	vsq = 0;
@@ -522,7 +522,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			case 41:
 			case 42:
 			case 43:
-				if(protocolName == IEC_103XUJINET)
+				if(mConfig.protocolName == IEC_103XUJINET)
 				{
 					sq = 1;
 				}
@@ -853,7 +853,7 @@ QString IEC103Asdu::typeToText()
 		text.append("上送一般文件内容(保信规约专用)");
 		break;
 	case 105:
-		if(protocolName == IEC_103BAOXINNET_NW)
+		if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 		{
 			text.append("下传一般文件的基本信息(南网保信103)");
 		}
@@ -1029,7 +1029,7 @@ QString IEC103Asdu::endToText()
 		break;
 	case IEC103END_SIN:
 		text.append("附加信息SIN:");
-		if(protocolName == IEC_103BAOXINNET_NW)
+		if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 		{
 			text.append(fptToText(endflag));
 		}
@@ -1046,211 +1046,211 @@ IEC103AsduData *IEC103Asdu::CreateAsduData(uchar type)
 	switch(type)
 	{
 	case 1:
-		asdudata = new IEC103Asdu1Data;
+		asdudata = new IEC103Asdu1Data(mConfig);
 		break;
 	case 2:
-		asdudata = new IEC103Asdu2Data;
+		asdudata = new IEC103Asdu2Data(mConfig);
 		break;
 	case 3:
-		asdudata = new IEC103Asdu50Data;
+		asdudata = new IEC103Asdu50Data(mConfig);
 		break;
 	case 4:
-		asdudata = new IEC103Asdu4Data;
+		asdudata = new IEC103Asdu4Data(mConfig);
 		break;
 	case 5:
-		asdudata = new IEC103Asdu5Data;
+		asdudata = new IEC103Asdu5Data(mConfig);
 		break;
 	case 6:
-		asdudata = new IEC103Asdu6Data;
+		asdudata = new IEC103Asdu6Data(mConfig);
 		break;
 	case 7:
-		asdudata = new IEC103Asdu7Data;
+		asdudata = new IEC103Asdu7Data(mConfig);
 		break;
 	case 8:
-		asdudata = new IEC103Asdu8Data;
+		asdudata = new IEC103Asdu8Data(mConfig);
 		break;
 	case 9:
-		asdudata = new IEC103Asdu50Data;
+		asdudata = new IEC103Asdu50Data(mConfig);
 		break;
 	case 10:
-		asdudata = new IEC103Asdu10Data;
+		asdudata = new IEC103Asdu10Data(mConfig);
 		break;
 	case 11:
-		asdudata = new IEC103Asdu11Data;
+		asdudata = new IEC103Asdu11Data(mConfig);
 		break;
 	case 12:
-		asdudata = new IEC103Asdu12Data;
+		asdudata = new IEC103Asdu12Data(mConfig);
 		break;
 	case 13:
-		asdudata = new IEC103Asdu13Data;
+		asdudata = new IEC103Asdu13Data(mConfig);
 		break;
 	case 14:
-		asdudata = new IEC103Asdu14Data;
+		asdudata = new IEC103Asdu14Data(mConfig);
 		break;
 	case 15:
-		asdudata = new IEC103Asdu15Data;
+		asdudata = new IEC103Asdu15Data(mConfig);
 		break;
 	case 16:
-		asdudata = new IEC103Asdu16Data;
+		asdudata = new IEC103Asdu16Data(mConfig);
 		break;
 	case 17:
-		asdudata = new IEC103Asdu17Data;
+		asdudata = new IEC103Asdu17Data(mConfig);
 		break;
 	case 18:
-		asdudata = new IEC103Asdu18Data;
+		asdudata = new IEC103Asdu18Data(mConfig);
 		break;
 	case 20:
-		asdudata = new IEC103Asdu20Data;
+		asdudata = new IEC103Asdu20Data(mConfig);
 		break;
 	case 21:
-		asdudata = new IEC103Asdu21Data;
+		asdudata = new IEC103Asdu21Data(mConfig);
 		break;
 	case 23:
-		asdudata = new IEC103Asdu23Data;
+		asdudata = new IEC103Asdu23Data(mConfig);
 		break;
 	case 24:
-		asdudata = new IEC103Asdu24Data;
+		asdudata = new IEC103Asdu24Data(mConfig);
 		break;
 	case 25:
-		asdudata = new IEC103Asdu24Data;
+		asdudata = new IEC103Asdu24Data(mConfig);
 		break;
 	case 26:
-		asdudata = new IEC103Asdu26Data;
+		asdudata = new IEC103Asdu26Data(mConfig);
 		break;
 	case 27:
-		asdudata = new IEC103Asdu27Data;
+		asdudata = new IEC103Asdu27Data(mConfig);
 		break;
 	case 28:
-		asdudata = new IEC103Asdu28Data;
+		asdudata = new IEC103Asdu28Data(mConfig);
 		break;
 	case 29:
-		asdudata = new IEC103Asdu29Data;
+		asdudata = new IEC103Asdu29Data(mConfig);
 		break;
 	case 30:
-		asdudata = new IEC103Asdu30Data;
+		asdudata = new IEC103Asdu30Data(mConfig);
 		break;
 	case 31:
-		asdudata = new IEC103Asdu24Data;
+		asdudata = new IEC103Asdu24Data(mConfig);
 		break;
 	case 32:
-		asdudata = new IEC103Asdu32Data;
+		asdudata = new IEC103Asdu32Data(mConfig);
 		break;
 	case 33:
-		asdudata = new IEC103Asdu33Data;
+		asdudata = new IEC103Asdu33Data(mConfig);
 		break;
 	case 34:
-		asdudata = new IEC103Asdu34Data;
+		asdudata = new IEC103Asdu34Data(mConfig);
 		break;
 	case 35:
-		asdudata = new IEC103Asdu35Data;
+		asdudata = new IEC103Asdu35Data(mConfig);
 		break;
 	case 36:
-		asdudata = new IEC103Asdu36Data;
+		asdudata = new IEC103Asdu36Data(mConfig);
 		break;
 	case 37:
-		asdudata = new IEC103Asdu37Data;
+		asdudata = new IEC103Asdu37Data(mConfig);
 		break;
 	case 38:
-		asdudata = new IEC103Asdu38Data;
+		asdudata = new IEC103Asdu38Data(mConfig);
 		break;
 	case 39:
-		asdudata = new IEC103Asdu39Data;
+		asdudata = new IEC103Asdu39Data(mConfig);
 		break;
 	case 40:
-		asdudata = new IEC103Asdu40Data;
+		asdudata = new IEC103Asdu40Data(mConfig);
 		break;
 	case 41:
-		asdudata = new IEC103Asdu41Data;
+		asdudata = new IEC103Asdu41Data(mConfig);
 		break;
 	case 42:
-		asdudata = new IEC103Asdu42Data;
+		asdudata = new IEC103Asdu42Data(mConfig);
 		break;
 	case 43:
-		asdudata = new IEC103Asdu43Data;
+		asdudata = new IEC103Asdu43Data(mConfig);
 		break;
 	case 44:
-		asdudata = new IEC103Asdu44Data;
+		asdudata = new IEC103Asdu44Data(mConfig);
 		break;
 	case 45:
-		asdudata = new IEC103Asdu45Data;
+		asdudata = new IEC103Asdu45Data(mConfig);
 		break;
 	case 46:
-		asdudata = new IEC103Asdu46Data;
+		asdudata = new IEC103Asdu46Data(mConfig);
 		break;
 	case 47:
-		asdudata = new IEC103Asdu47Data;
+		asdudata = new IEC103Asdu47Data(mConfig);
 		break;
 	case 48:
-		asdudata = new IEC103Asdu48Data;
+		asdudata = new IEC103Asdu48Data(mConfig);
 		break;
 	case 50:
-		asdudata = new IEC103Asdu50Data;
+		asdudata = new IEC103Asdu50Data(mConfig);
 		break;
 	case 51:
-		asdudata = new IEC103Asdu51Data;
+		asdudata = new IEC103Asdu51Data(mConfig);
 		break;
 	case 64:
-		asdudata = new IEC103Asdu64Data;
+		asdudata = new IEC103Asdu64Data(mConfig);
 		break;
 	case 65:
-		asdudata = new IEC103Asdu65Data;
+		asdudata = new IEC103Asdu65Data(mConfig);
 		break;
 	case 66:
-		asdudata = new IEC103Asdu66Data;
+		asdudata = new IEC103Asdu66Data(mConfig);
 		break;
 	case 67:
-		asdudata = new IEC103Asdu67Data;
+		asdudata = new IEC103Asdu67Data(mConfig);
 		break;
 	case 88:
-		asdudata = new IEC103Asdu88Data;
+		asdudata = new IEC103Asdu88Data(mConfig);
 		break;
 	case 101:
-		asdudata = new IEC103Asdu101Data;
+		asdudata = new IEC103Asdu101Data(mConfig);
 		break;
 	case 102:
-		asdudata = new IEC103Asdu102Data;
+		asdudata = new IEC103Asdu102Data(mConfig);
 		break;
 	case 103:
-		asdudata = new IEC103Asdu103Data;
+		asdudata = new IEC103Asdu103Data(mConfig);
 		break;
 	case 104:
-		asdudata = new IEC103Asdu104Data;
+		asdudata = new IEC103Asdu104Data(mConfig);
 		break;
 	case 105:
-		asdudata = new IEC103Asdu105Data;
+		asdudata = new IEC103Asdu105Data(mConfig);
 		break;
 	case 106:
-		asdudata = new IEC103Asdu106Data;
+		asdudata = new IEC103Asdu106Data(mConfig);
 		break;
 	case 107:
-		asdudata = new IEC103Asdu107Data;
+		asdudata = new IEC103Asdu107Data(mConfig);
 		break;
 	case 108:
-		asdudata = new IEC103Asdu108Data;
+		asdudata = new IEC103Asdu108Data(mConfig);
 		break;
 	case 220:
-		asdudata = new IEC103Asdu220Data;
+		asdudata = new IEC103Asdu220Data(mConfig);
 		break;
 	case 221:
-		asdudata = new IEC103Asdu221Data;
+		asdudata = new IEC103Asdu221Data(mConfig);
 		break;
 	case 222:
-		asdudata = new IEC103Asdu222Data;
+		asdudata = new IEC103Asdu222Data(mConfig);
 		break;
 	case 223:
-		asdudata = new IEC103Asdu223Data;
+		asdudata = new IEC103Asdu223Data(mConfig);
 		break;
 	case 224:
-		asdudata = new IEC103Asdu224Data;
+		asdudata = new IEC103Asdu224Data(mConfig);
 		break;
 	case 225:
-		asdudata = new IEC103Asdu225Data;
+		asdudata = new IEC103Asdu225Data(mConfig);
 		break;
 	case 226:
-		asdudata = new IEC103Asdu226Data;
+		asdudata = new IEC103Asdu226Data(mConfig);
 		break;
 	case 227:
-		asdudata = new IEC103Asdu227Data;
+		asdudata = new IEC103Asdu227Data(mConfig);
 		break;
 	default:
 		break;

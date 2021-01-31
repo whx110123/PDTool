@@ -1,6 +1,6 @@
 ﻿#include "measuredterminalasdudata.h"
 
-MTAsduData::MTAsduData()
+MTAsduData::MTAsduData(const MyConfig& Config): MyBase(Config)
 {
 	memset(DA, 0, sizeof(DA));
 	memset(DI, 0, sizeof(DI));

@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu32data.h"
 
-IEC103Asdu32Data::IEC103Asdu32Data()
+IEC103Asdu32Data::IEC103Asdu32Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	shortdata = 0;
 	qds = 0;

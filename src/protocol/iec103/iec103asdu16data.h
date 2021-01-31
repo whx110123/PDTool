@@ -16,7 +16,7 @@ struct WaveFileInfo
 class IEC103Asdu16Data : public IEC103Asdu15Data
 {
 public:
-	IEC103Asdu16Data();
+	IEC103Asdu16Data(const MyConfig& Config);
 	~IEC103Asdu16Data();
 	virtual bool handle(const QByteArray& buff);
 

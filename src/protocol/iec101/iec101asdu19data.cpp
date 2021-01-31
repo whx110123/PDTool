@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu19data.h"
 
-IEC101Asdu19Data::IEC101Asdu19Data()
+IEC101Asdu19Data::IEC101Asdu19Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	oci = 0;
 	qdp = 0;

@@ -22,7 +22,10 @@ void ProManager::init()
 
 bool ProManager::start()
 {
-	return false;
+	handleRcvDataTimer->start(1000);
+	handleSndDataTimer->start(200);
+	isRun = true;
+	return true;
 }
 
 bool ProManager::stop()

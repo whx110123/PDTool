@@ -1,6 +1,6 @@
 ﻿#include "iec103netapciwiscom.h"
 
-IEC103NetApciWiscom::IEC103NetApciWiscom()
+IEC103NetApciWiscom::IEC103NetApciWiscom(const MyConfig& Config): IEC104Apci(Config)
 {
 	masterState = STATE_INIT;
 	first = 0;

@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu5data.h"
 
-IEC103Asdu5Data::IEC103Asdu5Data()
+IEC103Asdu5Data::IEC103Asdu5Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	col = 0;
 	memset(ch, 0, sizeof(ch));

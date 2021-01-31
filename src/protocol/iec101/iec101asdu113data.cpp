@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu113data.h"
 
-IEC101Asdu113Data::IEC101Asdu113Data()
+IEC101Asdu113Data::IEC101Asdu113Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	qpa = 0;
 }

@@ -1,6 +1,6 @@
 ﻿#include "measuredterminal.h"
 
-MeasuredTerminal::MeasuredTerminal()
+MeasuredTerminal::MeasuredTerminal(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	crc = 0;
 	end = 0;

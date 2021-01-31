@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu5data.h"
 
-IEC101Asdu5Data::IEC101Asdu5Data()
+IEC101Asdu5Data::IEC101Asdu5Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	vti = 0;
 	qds = 0;

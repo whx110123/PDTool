@@ -1,6 +1,6 @@
 ﻿#include "iec103netwiscom.h"
 
-IEC103NetWiscom::IEC103NetWiscom()
+IEC103NetWiscom::IEC103NetWiscom(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	masterState = STATE_INIT;
 

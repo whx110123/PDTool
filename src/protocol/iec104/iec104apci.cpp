@@ -1,6 +1,6 @@
 ﻿#include "iec104apci.h"
 
-IEC104Control::IEC104Control()
+IEC104Control::IEC104Control(const MyConfig& Config) : MyBase(Config)
 {
 	type = 0;
 	code = 0;
@@ -47,70 +47,70 @@ bool IEC104Control::init(const QByteArray& buff)
 	switch(type)
 	{
 	case UTYPE:
+	{
+		mText.append(CharToHexStr(buff.data() + len) + "\tU帧报文(bit1-2):3 无编号，起控制链路等功能\r\n\t");
+		int sum = 0;
+		if(code & 0x80)
 		{
-			mText.append(CharToHexStr(buff.data() + len) + "\tU帧报文(bit1-2):3 无编号，起控制链路等功能\r\n\t");
-			int sum = 0;
-			if(code & 0x80)
-			{
-				mText.append("(bit8):80 确认TESTFR，响应测试\r\n");
-				masterState = STATE_TESTACT;
-				slaveState = STATE_TESTACT;
-				sum++;
-			}
-			if(code & 0x40)
-			{
-				mText.append("(bit7):40 激活TESTFR，启用测试\r\n");
-				masterState = STATE_TESTCONFIRM;
-				slaveState = STATE_TESTCONFIRM;
-				sum++;
-			}
-			if(code & 0x20)
-			{
-				mText.append("(bit6):20 子站确认STOPDT，子站响应停止链路\r\n");
-				sum++;
-			}
-			if(code & 0x10)
-			{
-				mText.append("(bit5):10 主站激活STOPDT，主站停止链路\r\n");
-				sum++;
-			}
-			if(code & 0x08)
-			{
-				mText.append("(bit4):8 子站确认STARTDT，子站响应激活链路\r\n");
-				masterState = STATE_CALLALL;
-				sum++;
-			}
-			if(code & 0x04)
-			{
-				mText.append("(bit3):4 主站激活STARTDT，主站激活链路\r\n");
-				slaveState = STATE_INIT;
-				sum++;
-			}
-
-			if(sum == 0)
-			{
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文未包含任何控制功能");
-				return false;
-			}
-			else if(sum > 1)
-			{
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文包含2种或2种以上控制功能");
-				return false;
-			}
-			len++;
-
-			for(int i = 0; i < 3; i++)
-			{
-				if(*(buff.data() + len) != 0)
-				{
-					error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！U帧控制域后3个字节出现不为0的数据");
-					return false;
-				}
-				mText.append(CharToHexStr(buff.data() + len) + "\t固定为0x00\r\n");
-				len++;
-			}
-			break;
+			mText.append("(bit8):80 确认TESTFR，响应测试\r\n");
+			masterState = STATE_TESTACT;
+			slaveState = STATE_TESTACT;
+			sum++;
 		}
+		if(code & 0x40)
+		{
+			mText.append("(bit7):40 激活TESTFR，启用测试\r\n");
+			masterState = STATE_TESTCONFIRM;
+			slaveState = STATE_TESTCONFIRM;
+			sum++;
+		}
+		if(code & 0x20)
+		{
+			mText.append("(bit6):20 子站确认STOPDT，子站响应停止链路\r\n");
+			sum++;
+		}
+		if(code & 0x10)
+		{
+			mText.append("(bit5):10 主站激活STOPDT，主站停止链路\r\n");
+			sum++;
+		}
+		if(code & 0x08)
+		{
+			mText.append("(bit4):8 子站确认STARTDT，子站响应激活链路\r\n");
+			masterState = STATE_CALLALL;
+			sum++;
+		}
+		if(code & 0x04)
+		{
+			mText.append("(bit3):4 主站激活STARTDT，主站激活链路\r\n");
+			slaveState = STATE_INIT;
+			sum++;
+		}
+
+		if(sum == 0)
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文未包含任何控制功能");
+			return false;
+		}
+		else if(sum > 1)
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！此U帧报文包含2种或2种以上控制功能");
+			return false;
+		}
+		len++;
+
+		for(int i = 0; i < 3; i++)
+		{
+			if(*(buff.data() + len) != 0)
+			{
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！U帧控制域后3个字节出现不为0的数据");
+				return false;
+			}
+			mText.append(CharToHexStr(buff.data() + len) + "\t固定为0x00\r\n");
+			len++;
+		}
+		break;
+	}
 	case STYPE:
 
 		if(code != 0x01)
@@ -284,7 +284,7 @@ bool IEC104Control::createData(IECDataConfig& config)
 
 	return true;
 }
-IEC104Apci::IEC104Apci()
+IEC104Apci::IEC104Apci(const MyConfig& Config): MyBase(Config), control(Config)
 {
 	first = 0;
 	length = 0;

@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu21data.h"
 
-IEC101Asdu21Data::IEC101Asdu21Data()
+IEC101Asdu21Data::IEC101Asdu21Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	shortdata = 0;
 }

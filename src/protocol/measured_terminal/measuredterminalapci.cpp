@@ -1,6 +1,6 @@
 ﻿#include "measuredterminalapci.h"
 
-MTApci::MTApci()
+MTApci::MTApci(const MyConfig& Config): MyBase(Config), code(Config)
 {
 	flag = 0;
 	length = 0;

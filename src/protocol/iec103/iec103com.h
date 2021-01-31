@@ -7,7 +7,7 @@
 class IEC103COM : public MyBase
 {
 public:
-	IEC103COM();
+	IEC103COM(const MyConfig& Config);
 	~IEC103COM();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

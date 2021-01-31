@@ -7,7 +7,7 @@
 class IEC103NetWiscom : public MyBase
 {
 public:
-	IEC103NetWiscom();
+	IEC103NetWiscom(const MyConfig& Config);
 	~IEC103NetWiscom();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

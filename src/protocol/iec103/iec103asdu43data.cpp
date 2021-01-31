@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu43data.h"
 
-IEC103Asdu43Data::IEC103Asdu43Data()
+IEC103Asdu43Data::IEC103Asdu43Data(const MyConfig& Config): IEC103Asdu42Data(Config)
 {
 
 }

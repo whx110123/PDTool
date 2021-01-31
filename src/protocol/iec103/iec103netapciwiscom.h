@@ -7,7 +7,7 @@
 class IEC103NetApciWiscom  : public IEC104Apci
 {
 public:
-	IEC103NetApciWiscom();
+	IEC103NetApciWiscom(const MyConfig& Config);
 	~IEC103NetApciWiscom();
 	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据
 	virtual QString showToText();

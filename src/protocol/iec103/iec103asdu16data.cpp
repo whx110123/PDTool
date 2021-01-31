@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu16data.h"
 
-IEC103Asdu16Data::IEC103Asdu16Data()
+IEC103Asdu16Data::IEC103Asdu16Data(const MyConfig& Config): IEC103Asdu15Data(Config)
 {
 	gbk = QTextCodec::codecForName("GB18030");
 }
@@ -34,7 +34,7 @@ bool IEC103Asdu16Data::handle(const QByteArray& buff)
 	mText.append(timeToText(buff.data() + len, 7));
 	len += 7;
 
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		for(int i = 0; i < fileNum; i++)
 		{

@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu20data.h"
 
-IEC101Asdu20Data::IEC101Asdu20Data()
+IEC101Asdu20Data::IEC101Asdu20Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	yx16 = 0;
 	yx16flag = 0;

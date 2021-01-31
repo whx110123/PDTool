@@ -1,6 +1,6 @@
 ﻿#include "measuredterminalasdu.h"
 
-MTAsdu::MTAsdu()
+MTAsdu::MTAsdu(const MyConfig& Config): MyBase(Config)
 {
 	afn = 0;
 	seq = 0;
@@ -42,7 +42,7 @@ bool MTAsdu::init(const QByteArray& buff)
 	int index = 0;
 	while(len < buff.length() - pwFlag * 16 - tpFlag * 5)
 	{
-		MTAsduData *mdata = new MTAsduData;
+		MTAsduData *mdata = new MTAsduData(mConfig);
 		if(!mdata)
 		{
 			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！申请内存失败");

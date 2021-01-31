@@ -1,6 +1,6 @@
 ﻿#include "modbustcp.h"
 
-ModbusTCP::ModbusTCP()
+ModbusTCP::ModbusTCP(const MyConfig& Config): MyBase(Config), mb(Config)
 {
 	flagIndex = 0;
 	flag = 0;

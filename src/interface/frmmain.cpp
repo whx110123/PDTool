@@ -33,8 +33,7 @@ frmMain::~frmMain()
 {
 	delete highlighter1;
 	delete highlighter2;
-	qDeleteAll(MyBase::mConfig.groups);
-	MyBase::mConfig.groups.clear();
+
 	delete ui;
 }
 
@@ -118,11 +117,23 @@ void frmMain::initSignalAndSlots()
 	connect(ui->page_iec104master, &frmIEC104Master::ToUdpServer, ui->page_udpserver, &frmUdpServer::dealData);
 	connect(ui->page_iec104master, &frmIEC104Master::ToCom, ui->page_com, &frmComTool::dealData);
 
-	connect(ui->page_tcpclient, &frmTcpClient::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
-	connect(ui->page_tcpserver, &frmTcpServer::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
-	connect(ui->page_udpclient, &frmUdpClient::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
-	connect(ui->page_udpserver, &frmUdpServer::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
-	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealData);
+	connect(ui->page_tcpclient, &frmTcpClient::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealRcvData);
+	connect(ui->page_tcpserver, &frmTcpServer::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealRcvData);
+	connect(ui->page_udpclient, &frmUdpClient::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealRcvData);
+	connect(ui->page_udpserver, &frmUdpServer::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealRcvData);
+	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_iec104master, &frmIEC104Master::dealRcvData);
+
+	connect(ui->page_MTMaster, &frmMeasuredTerminalMaster::ToTcpClient, ui->page_tcpclient, &frmTcpClient::dealData);
+	connect(ui->page_MTMaster, &frmMeasuredTerminalMaster::ToTcpServer, ui->page_tcpserver, &frmTcpServer::dealData);
+	connect(ui->page_MTMaster, &frmMeasuredTerminalMaster::ToUdpClient, ui->page_udpclient, &frmUdpClient::dealData);
+	connect(ui->page_MTMaster, &frmMeasuredTerminalMaster::ToUdpServer, ui->page_udpserver, &frmUdpServer::dealData);
+	connect(ui->page_MTMaster, &frmMeasuredTerminalMaster::ToCom, ui->page_com, &frmComTool::dealData);
+
+	connect(ui->page_tcpclient, &frmTcpClient::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
+	connect(ui->page_tcpserver, &frmTcpServer::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
+	connect(ui->page_udpclient, &frmUdpClient::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
+	connect(ui->page_udpserver, &frmUdpServer::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
+	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
 }
 
 void frmMain::initStyle()
@@ -176,34 +187,36 @@ void frmMain::SaveAll()
 	qDebug() << "保存";
 }
 
-void frmMain::initProtocolConfig()
+MyConfig frmMain::initProtocolConfig()
 {
-	MyBase::mConfig.lengthType = ui->comboBox_lengthtype->currentText();
-	MyBase::mConfig.addrLen = ui->comboBox_addrlen->currentText().toInt();
-	MyBase::mConfig.cotlen = ui->comboBox_cotlen->currentText().toInt();
-	MyBase::mConfig.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
-	MyBase::mConfig.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
+	MyConfig Config;
+	Config.protocolName = ui->protocolcbox->currentText();
+	Config.lengthType = ui->comboBox_lengthtype->currentText();
+	Config.addrLen = ui->comboBox_addrlen->currentText().toInt();
+	Config.cotlen = ui->comboBox_cotlen->currentText().toInt();
+	Config.comaddrlen = ui->comboBox_comaddrlen->currentText().toInt();
+	Config.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 
-	qDeleteAll(MyBase::mConfig.groups);
-	MyBase::mConfig.groups.clear();
-	ModbusDataGroup *datagroup = new ModbusDataGroup;
-	datagroup->dataLen = ui->lineEdit1_modbuslen->text().toUInt();
-	datagroup->type = ui->comboBox1_modbus->currentText();
-	datagroup->analysis = ui->lineEdit1_modbusanalysis->text();
-	datagroup->sort = ui->comboBox_sort->currentText();
-	MyBase::mConfig.groups.append(datagroup);
-	datagroup = new ModbusDataGroup;
-	datagroup->dataLen = ui->lineEdit2_modbuslen->text().toUInt();
-	datagroup->type = ui->comboBox2_modbus->currentText();
-	datagroup->analysis = ui->lineEdit2_modbusanalysis->text();
-	datagroup->sort = ui->comboBox_sort->currentText();
-	MyBase::mConfig.groups.append(datagroup);
-	datagroup = new ModbusDataGroup;
-	datagroup->dataLen = ui->lineEdit3_modbuslen->text().toUInt();
-	datagroup->type = ui->comboBox3_modbus->currentText();
-	datagroup->analysis = ui->lineEdit3_modbusanalysis->text();
-	datagroup->sort = ui->comboBox_sort->currentText();
-	MyBase::mConfig.groups.append(datagroup);
+	Config.groups.clear();
+	ModbusDataGroup datagroup;
+	datagroup.dataLen = ui->lineEdit1_modbuslen->text().toUInt();
+	datagroup.type = ui->comboBox1_modbus->currentText();
+	datagroup.analysis = ui->lineEdit1_modbusanalysis->text();
+	datagroup.sort = ui->comboBox_sort->currentText();
+	Config.groups.append(datagroup);
+
+	datagroup.dataLen = ui->lineEdit2_modbuslen->text().toUInt();
+	datagroup.type = ui->comboBox2_modbus->currentText();
+	datagroup.analysis = ui->lineEdit2_modbusanalysis->text();
+	datagroup.sort = ui->comboBox_sort->currentText();
+	Config.groups.append(datagroup);
+
+	datagroup.dataLen = ui->lineEdit3_modbuslen->text().toUInt();
+	datagroup.type = ui->comboBox3_modbus->currentText();
+	datagroup.analysis = ui->lineEdit3_modbusanalysis->text();
+	datagroup.sort = ui->comboBox_sort->currentText();
+	Config.groups.append(datagroup);
+	return Config;
 }
 
 
@@ -379,7 +392,6 @@ void frmMain::on_pushButton_Analysis_clicked()
 	{
 		return;
 	}
-	MyBase::mConfig.protocolName = ui->protocolcbox->currentText();
 
 	MyBase *myprotocol = createByName(ui->protocolcbox->currentText());
 
@@ -452,45 +464,46 @@ void frmMain::on_pushButton_clean_clicked()
 
 MyBase *frmMain::createByName(QString name)
 {
-	initProtocolConfig();
+	MyConfig Config = initProtocolConfig();
+
 
 	MyBase *protocol = NULL;
 	if(name == IEC_104)           //分析104报文
 	{
-		protocol = new IEC104;
+		protocol = new IEC104(Config);
 	}
 	else if(name == IEC_101)		//分析101报文
 	{
-		protocol = new IEC101;
+		protocol = new IEC101(Config);
 	}
 	else if(name == IEC_103WISCOMNET)//分析金智网络103报文
 	{
-		protocol = new IEC103NetWiscom;
+		protocol = new IEC103NetWiscom(Config);
 	}
 	else if(name == IEC_103COM ||		//分析串口103报文
 			name == IEC_103HUABEI)      //分析华北103报文
 	{
-		protocol = new IEC103COM;
+		protocol = new IEC103COM(Config);
 	}
 	else if(name == IEC_103BAOXINNET || name == IEC_103BAOXINNET_NW || name == IEC_103XUJINET)
 	{
-		protocol = new IEC103NetBaoXin;
+		protocol = new IEC103NetBaoXin(Config);
 	}
 	else if(name == IEC_103ASDU || name == IEC_103NANZINET)
 	{
-		protocol = new IEC103Asdu;
+		protocol = new IEC103Asdu(Config);
 	}
 	else if(name == MODBUS_RTU)
 	{
-		protocol = new ModbusRTU;
+		protocol = new ModbusRTU(Config);
 	}
 	else if(name == MODBUS_TCP)
 	{
-		protocol = new ModbusTCP;
+		protocol = new ModbusTCP(Config);
 	}
 	else if(name == MEASUREDTERMINAL_NW_NET)
 	{
-		protocol = new MeasuredTerminal;
+		protocol = new MeasuredTerminal(Config);
 	}
 
 	return protocol;
@@ -805,6 +818,7 @@ void frmMain::ConfigHide()
 	ui->action_HandleData->setChecked(false);
 	ui->action_SendData->setChecked(false);
 	ui->action_IEC104Master->setChecked(false);
+	ui->action_MeasuredTerminalMaster->setChecked(false);
 }
 
 void frmMain::ConfigShow(int index)
@@ -844,5 +858,15 @@ void frmMain::on_action_IEC104Master_triggered(bool checked)
 	{
 		ui->action_IEC104Master->setChecked(true);
 		ConfigShow(4);
+	}
+}
+
+void frmMain::on_action_MeasuredTerminalMaster_triggered(bool checked)
+{
+	ConfigHide();
+	if(checked == true)
+	{
+		ui->action_MeasuredTerminalMaster->setChecked(true);
+		ConfigShow(5);
 	}
 }

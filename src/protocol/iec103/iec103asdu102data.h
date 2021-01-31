@@ -13,7 +13,7 @@ struct NormalFileInfo
 class IEC103Asdu102Data : public IEC103Asdu101Data
 {
 public:
-	IEC103Asdu102Data();
+	IEC103Asdu102Data(const MyConfig& Config);
 	~IEC103Asdu102Data();
 	virtual bool handle(const QByteArray& buff);
 

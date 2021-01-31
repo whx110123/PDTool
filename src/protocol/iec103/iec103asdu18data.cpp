@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu18data.h"
 
-HisInfo::HisInfo()
+HisInfo::HisInfo(const MyConfig& Config): MyBase(Config)
 {
 
 }
@@ -19,7 +19,7 @@ bool HisInfo::init(const QByteArray& buff)
 	setlist.clear();
 
 	eventType = *(buff.data() + len);
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText_nw(eventType) + "\r\n");
 	}
@@ -62,7 +62,7 @@ bool HisInfo::init(const QByteArray& buff)
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < eventNum; index++)
 	{
-		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet;
+		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
 		bool isOk = mset->init(buff.mid(len));
 		if(!isOk)
 		{
@@ -94,7 +94,7 @@ QString HisInfo::showToText()
 }
 
 
-IEC103Asdu18Data::IEC103Asdu18Data()
+IEC103Asdu18Data::IEC103Asdu18Data(const MyConfig& Config): IEC103Asdu15Data(Config)
 {
 
 }
@@ -109,7 +109,7 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 {
 	qDeleteAll(hisInfos);
 	hisInfos.clear();
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		rii = *(buff.data() + len);
 		mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
@@ -135,7 +135,7 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < hisNum; index++)
 	{
-		HisInfo *minfo = new HisInfo;
+		HisInfo *minfo = new HisInfo(mConfig);
 		bool isOk = minfo->init(buff.mid(len));
 		if(!isOk)
 		{

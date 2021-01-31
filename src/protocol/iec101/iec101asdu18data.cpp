@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu18data.h"
 
-IEC101Asdu18Data::IEC101Asdu18Data()
+IEC101Asdu18Data::IEC101Asdu18Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	spe = 0;
 	qdp = 0;

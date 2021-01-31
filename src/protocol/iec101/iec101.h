@@ -7,7 +7,7 @@
 class IEC101 : public MyBase
 {
 public:
-	IEC101();
+	IEC101(const MyConfig& Config);
 	~IEC101();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

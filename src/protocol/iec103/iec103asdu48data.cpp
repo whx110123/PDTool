@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu48data.h"
 
-IEC103Asdu48Data::IEC103Asdu48Data()
+IEC103Asdu48Data::IEC103Asdu48Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	dataFloat = 0;
 	qds = 0;

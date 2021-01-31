@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu167data.h"
 
-IEC101Asdu167Data::IEC101Asdu167Data()
+IEC101Asdu167Data::IEC101Asdu167Data(const MyConfig& Config): IEC101AsduData(Config), asdu(Config)
 {
 	ctrl = 0;
 	memset(devaddr, 0, sizeof(devaddr));

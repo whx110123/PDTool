@@ -1,6 +1,6 @@
 ﻿#include "iec103com.h"
 
-IEC103COM::IEC103COM()
+IEC103COM::IEC103COM(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	masterState = STATE_INIT;
 	crc = 0;

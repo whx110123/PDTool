@@ -1,7 +1,7 @@
 ﻿#include "iec103asdu11data.h"
 
 
-IEC103Asdu11DataSet::IEC103Asdu11DataSet()
+IEC103Asdu11DataSet::IEC103Asdu11DataSet(const MyConfig& Config): IEC103Asdu10DataSet(Config)
 {
 
 }
@@ -44,7 +44,7 @@ QString IEC103Asdu11DataSet::showToText()
 }
 
 
-IEC103Asdu11Data::IEC103Asdu11Data()
+IEC103Asdu11Data::IEC103Asdu11Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	rii = 0;
 	memset(gin, 0, sizeof(gin));
@@ -77,7 +77,7 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < setnum; index++)
 	{
-		IEC103Asdu11DataSet *mset = new IEC103Asdu11DataSet;
+		IEC103Asdu11DataSet *mset = new IEC103Asdu11DataSet(mConfig);
 		bool isOk = mset->init(buff.mid(len));
 		if(!isOk)
 		{

@@ -7,7 +7,7 @@
 class IEC103NetBaoXin : public MyBase
 {
 public:
-	IEC103NetBaoXin();
+	IEC103NetBaoXin(const MyConfig& Config);
 	~IEC103NetBaoXin();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

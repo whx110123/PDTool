@@ -6,7 +6,7 @@
 class IEC101Asdu15Data : public IEC101AsduData
 {
 public:
-	IEC101Asdu15Data();
+	IEC101Asdu15Data(const MyConfig& Config);
 	~IEC101Asdu15Data();
 	virtual bool handle(const QByteArray& buff);
 

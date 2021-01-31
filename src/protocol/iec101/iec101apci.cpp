@@ -1,6 +1,6 @@
 ﻿#include "iec101apci.h"
 
-IEC101Code::IEC101Code()
+IEC101Code::IEC101Code(const MyConfig& Config): MyBase(Config)
 {
 	mcode = 0;
 }
@@ -32,7 +32,7 @@ bool IEC101Code::init(const QByteArray& buff)
 	return true;
 }
 
-IEC101Apci::IEC101Apci()
+IEC101Apci::IEC101Apci(const MyConfig& Config): MyBase(Config), code(Config)
 {
 	flag = 0;
 	length = 0;

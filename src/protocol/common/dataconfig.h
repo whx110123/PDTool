@@ -11,18 +11,18 @@ struct ModbusDataGroup
 	QString sort;		//顺序
 };
 
-struct MyConfig
+struct MyConfig			//配置信息
 {
-	QString protocolName;		//规约名
-	QString lengthType;			//长度域类型
-	int addrLen;				//地址域字节数
-	int cotlen ;				//cot长度
-	int comaddrlen ;			//公共地址长度
-	int infaddrlen ;			//信息体地址长度
-	QList<ModbusDataGroup *> groups;	//界面提供的解析方式
+	QString protocolName;				//规约名
+	QString lengthType;					//长度域类型
+	int addrLen;						//地址域字节数
+	int cotlen ;						//cot长度
+	int comaddrlen ;					//公共地址长度
+	int infaddrlen ;					//信息体地址长度
+	QVector<ModbusDataGroup> groups;	//界面提供的解析方式
 };
 
-class IECDataConfig
+class IECDataConfig			//数据信息
 {
 public:
 	IECDataConfig();

@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu225data.h"
 
-IEC103Asdu225Data::IEC103Asdu225Data()
+IEC103Asdu225Data::IEC103Asdu225Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	fnam = 0;
 	snam = 0;

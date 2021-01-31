@@ -6,7 +6,7 @@
 class IEC104Control : public MyBase
 {
 public:
-	IEC104Control();
+	IEC104Control(const MyConfig& Config);
 	~IEC104Control();
 	virtual bool init(const QByteArray& buff);
 	virtual bool createData(IECDataConfig& config);
@@ -23,7 +23,7 @@ public:
 class IEC104Apci : public MyBase
 {
 public:
-	IEC104Apci();
+	IEC104Apci(const MyConfig& Config);
 	~IEC104Apci();
 	virtual bool init(const QByteArray& buff);
 	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据

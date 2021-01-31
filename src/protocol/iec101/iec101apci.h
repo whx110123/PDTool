@@ -6,7 +6,7 @@
 class IEC101Code : public MyBase
 {
 public:
-	IEC101Code();
+	IEC101Code(const MyConfig& Config);
 	~IEC101Code();
 	virtual bool init(const QByteArray& buff);
 
@@ -17,7 +17,7 @@ public:
 class IEC101Apci : public MyBase
 {
 public:
-	IEC101Apci();
+	IEC101Apci(const MyConfig& Config);
 	~IEC101Apci();
 	virtual bool init(const QByteArray& buff);
 

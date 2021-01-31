@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu2data.h"
 
-IEC103Asdu2Data::IEC103Asdu2Data()
+IEC103Asdu2Data::IEC103Asdu2Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	dpi = 0;
 	ret = 0;

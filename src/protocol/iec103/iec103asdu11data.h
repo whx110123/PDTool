@@ -6,7 +6,7 @@
 class IEC103Asdu11DataSet : public IEC103Asdu10DataSet
 {
 public:
-	IEC103Asdu11DataSet();
+	IEC103Asdu11DataSet(const MyConfig& Config);
 	~IEC103Asdu11DataSet();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
@@ -16,7 +16,7 @@ public:
 class IEC103Asdu11Data : public IEC103AsduData
 {
 public:
-	IEC103Asdu11Data();
+	IEC103Asdu11Data(const MyConfig& Config);
 	~IEC103Asdu11Data();
 	virtual bool handle(const QByteArray& buff);
 	virtual QString showToText();

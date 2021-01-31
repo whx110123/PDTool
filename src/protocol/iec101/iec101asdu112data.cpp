@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu112data.h"
 
-IEC101Asdu112Data::IEC101Asdu112Data()
+IEC101Asdu112Data::IEC101Asdu112Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	floatdata = 0;
 	qpm = 0;

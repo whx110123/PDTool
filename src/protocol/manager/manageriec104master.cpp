@@ -1,24 +1,18 @@
 ﻿#include "manageriec104master.h"
 #include "QtDebug"
 
-ManagerIEC104Master::ManagerIEC104Master()
+ManagerIEC104Master::ManagerIEC104Master(const MyConfig& Config): protocolShow(Config), my104(Config)
 {
 	sSend = false;
 	isMaster = true;
+	mConfig = Config;
+	asduAddr = 0;
+	noDataTimes = 0;
 }
 
 ManagerIEC104Master::~ManagerIEC104Master()
 {
 
-}
-
-bool ManagerIEC104Master::start()
-{
-	handleRcvDataTimer->start(1000);
-	handleSndDataTimer->start(200);
-	isRun = true;
-	flag = STATE_INIT;
-	return true;
 }
 
 void ManagerIEC104Master::timerRcv()
@@ -79,7 +73,6 @@ void ManagerIEC104Master::timerRcv()
 				sSend = true;
 			}
 			rcvData.remove(0, my104.len);
-			noDataTimes = 0;
 		}
 		else if(*rcvData.data() == 0x68 && (rcvData.size() == 1 || *(uchar *)(rcvData.data() + 1) + 2 > rcvData.size()))
 		{

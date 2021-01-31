@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu29data.h"
 
-IEC103Asdu29Data::IEC103Asdu29Data()
+IEC103Asdu29Data::IEC103Asdu29Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	fan = 0;
 	_not = 0;
@@ -33,7 +33,7 @@ bool IEC103Asdu29Data::handle(const QByteArray& buff)
 
 	for(int index = 0; index < _not; index++)
 	{
-		IEC103Asdu1Data *mset = new IEC103Asdu1Data;
+		IEC103Asdu1Data *mset = new IEC103Asdu1Data(mConfig);
 		bool isOk = mset->init(buff.mid(len, 3));
 		if(!isOk)
 		{

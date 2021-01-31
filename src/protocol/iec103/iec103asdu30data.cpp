@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu30data.h"
 
-IEC103Asdu30Data::IEC103Asdu30Data()
+IEC103Asdu30Data::IEC103Asdu30Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	datauchar = 0;
 	tov = 0;

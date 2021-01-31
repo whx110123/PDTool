@@ -1,6 +1,6 @@
 ﻿#include "iec103netbaoxin.h"
 
-IEC103NetBaoXin::IEC103NetBaoXin()
+IEC103NetBaoXin::IEC103NetBaoXin(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	masterState = STATE_INIT;
 

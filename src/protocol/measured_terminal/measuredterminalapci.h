@@ -7,7 +7,7 @@
 class MTApci : public MyBase
 {
 public:
-	MTApci();
+	MTApci(const MyConfig& Config);
 	~MTApci();
 	virtual bool init(const QByteArray& buff);
 

@@ -6,7 +6,7 @@
 class ModbusTCP : public MyBase
 {
 public:
-	ModbusTCP();
+	ModbusTCP(const MyConfig& Config);
 	~ModbusTCP();
 	virtual bool init(const QByteArray& buff);			//初始化
 	virtual QString showToText();						//显示解析结果

@@ -89,10 +89,12 @@ private slots:
 
 	void on_action_IEC104Master_triggered(bool checked);
 
+	void on_action_MeasuredTerminalMaster_triggered(bool checked);
+
 public:
 	MyBase *createByName(QString name);
 	void SaveAll();
-	void initProtocolConfig();
+	MyConfig initProtocolConfig();
 	void ConfigHide();
 	void ConfigShow(int index);
 

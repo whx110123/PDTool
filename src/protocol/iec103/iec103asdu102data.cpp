@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu102data.h"
 
-IEC103Asdu102Data::IEC103Asdu102Data()
+IEC103Asdu102Data::IEC103Asdu102Data(const MyConfig& Config): IEC103Asdu101Data(Config)
 {
 	gbk = QTextCodec::codecForName("GB18030");
 }

@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu38data.h"
 
-IEC103Asdu38Data::IEC103Asdu38Data()
+IEC103Asdu38Data::IEC103Asdu38Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	vti = 0;
 	qds = 0;

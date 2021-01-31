@@ -13,7 +13,7 @@ public:
 
 	void init();
 	virtual bool start();
-	bool stop();
+	virtual bool stop();
 	void setProName(const QString& name);
 	void setMaster(bool Master);
 	void setRcvData(const QByteArray& data);

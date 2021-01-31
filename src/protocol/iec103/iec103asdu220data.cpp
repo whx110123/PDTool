@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu220data.h"
 
-IEC103Asdu220Data::IEC103Asdu220Data()
+IEC103Asdu220Data::IEC103Asdu220Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	typ = 0;
 }

@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu120data.h"
 
-IEC101Asdu120Data::IEC101Asdu120Data()
+IEC101Asdu120Data::IEC101Asdu120Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	frq = 0;
 }

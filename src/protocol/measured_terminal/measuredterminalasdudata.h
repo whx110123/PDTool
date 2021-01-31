@@ -6,7 +6,7 @@
 class MTAsduData : public MyBase
 {
 public:
-	MTAsduData();
+	MTAsduData(const MyConfig& Config);
 	~MTAsduData();
 	virtual bool init(const QByteArray& buff);
 

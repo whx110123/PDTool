@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu17data.h"
 
-IEC101Asdu17Data::IEC101Asdu17Data()
+IEC101Asdu17Data::IEC101Asdu17Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	sep = 0;
 }

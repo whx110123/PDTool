@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu55data.h"
 
-IEC101Asdu55Data::IEC101Asdu55Data()
+IEC101Asdu55Data::IEC101Asdu55Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	code = 0;
 	mindex = 0;

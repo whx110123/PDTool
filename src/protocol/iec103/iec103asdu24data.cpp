@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu24data.h"
 
-IEC103Asdu24Data::IEC103Asdu24Data()
+IEC103Asdu24Data::IEC103Asdu24Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	too = 0;
 	tov = 0;

@@ -8,7 +8,7 @@
 class IEC103Asdu106Data : public IEC103Asdu105Data
 {
 public:
-	IEC103Asdu106Data();
+	IEC103Asdu106Data(const MyConfig& Config);
 	~IEC103Asdu106Data();
 };
 

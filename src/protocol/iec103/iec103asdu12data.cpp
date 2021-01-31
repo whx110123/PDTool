@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu12data.h"
 
-IEC103Asdu12Data::IEC103Asdu12Data()
+IEC103Asdu12Data::IEC103Asdu12Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 
 }
@@ -112,7 +112,7 @@ bool IEC103Asdu12Data::handle(const QByteArray& buff)
 	len += 7;
 
 	uchar waveFileNameLen;
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		waveFileNameLen = 128;
 	}

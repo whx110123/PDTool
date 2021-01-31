@@ -6,7 +6,7 @@
 class ModbusData : public MyBase
 {
 public:
-	ModbusData();
+	ModbusData(const MyConfig& Config);
 	~ModbusData();
 	bool initData(const QByteArray& buff, ModbusDataGroup *group);
 

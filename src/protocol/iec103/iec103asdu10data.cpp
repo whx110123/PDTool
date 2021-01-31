@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu10data.h"
 
-IEC103Asdu10DataSetGid::IEC103Asdu10DataSetGid()
+IEC103Asdu10DataSetGid::IEC103Asdu10DataSetGid(const MyConfig& Config): MyBase(Config)
 {
 }
 
@@ -20,21 +20,21 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 	switch(gdd[0])
 	{
 	case 1:
-		{
-			QByteArray ba(buff.data() + len, gdd[1]);
-			QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-			gbkstr = gbk->toUnicode(ba);
-			mText.append(CharToHexStr(buff.data() + len, gdd[1]) + "\tOS8(ASCII8位码):" + gbkstr + "\r\n");
-			len += gdd[1];
-			break;
-		}
+	{
+		QByteArray ba(buff.data() + len, gdd[1]);
+		QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+		gbkstr = gbk->toUnicode(ba);
+		mText.append(CharToHexStr(buff.data() + len, gdd[1]) + "\tOS8(ASCII8位码):" + gbkstr + "\r\n");
+		len += gdd[1];
+		break;
+	}
 	case 2:
-		{
-			bit8 = QString("%1").arg(QString::number(*(uchar *)(buff.data() + len), 2), 8, '0');
-			mText.append(CharToHexStr(buff.data() + len) + "\t成组8位串:" + bit8 + "\r\n");
-			len++;
-			break;
-		}
+	{
+		bit8 = QString("%1").arg(QString::number(*(uchar *)(buff.data() + len), 2), 8, '0');
+		mText.append(CharToHexStr(buff.data() + len) + "\t成组8位串:" + bit8 + "\r\n");
+		len++;
+		break;
+	}
 	case 3:
 		datauint = charTouint(buff.data() + len, gdd[1]);
 		mText.append(CharToHexStr(buff.data() + len, gdd[1]) + "\tGID:无符号整数:" + QString::number(datauint) + "\r\n");
@@ -212,7 +212,7 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 	case 23:
 		while(len < gdd[1])
 		{
-			IEC103Asdu10DataSetGdd *mgdd = new IEC103Asdu10DataSetGdd;
+			IEC103Asdu10DataSetGdd *mgdd = new IEC103Asdu10DataSetGdd(mConfig);
 			if(!mgdd->init(buff.mid(len)))
 			{
 				delete mgdd;
@@ -335,28 +335,28 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		len += 7;
 		break;
 	case 217:
-		{
-			QByteArray ba(buff.data() + len, 40);
-			QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-			gbkstr = gbk->toUnicode(ba);
-			mText.append(CharToHexStr(buff.data() + len, 40) + "\t字符值(转为gbk格式显示):   " + gbkstr + "\r\n");
-			len += 40;
+	{
+		QByteArray ba(buff.data() + len, 40);
+		QTextCodec *gbk = QTextCodec::codecForName("GB18030");
+		gbkstr = gbk->toUnicode(ba);
+		mText.append(CharToHexStr(buff.data() + len, 40) + "\t字符值(转为gbk格式显示):   " + gbkstr + "\r\n");
+		len += 40;
 
-			datauint = charTouint(buff.data() + len, 2);
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:相对时间RET:" + QString::number(datauint));
-			mText.append("   秒:" + QString::number(datauint / 1000) + "   毫秒:" + QString::number(datauint % 1000) + " \r\n");
-			len += 2;
-			datauint2 = charTouint(buff.data() + len, 2);
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:电网故障序号NOF:" + QString::number(datauint2) + "\r\n");
-			len += 2;
-			datet = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-			mText.append(timeToText(buff.data() + len, 7));
-			len += 7;
-			datet2 = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-			mText.append(timeToText(buff.data() + len, 7));
-			len += 7;
-			break;
-		}
+		datauint = charTouint(buff.data() + len, 2);
+		mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:相对时间RET:" + QString::number(datauint));
+		mText.append("   秒:" + QString::number(datauint / 1000) + "   毫秒:" + QString::number(datauint % 1000) + " \r\n");
+		len += 2;
+		datauint2 = charTouint(buff.data() + len, 2);
+		mText.append(CharToHexStr(buff.data() + len, 2) + "\tGID:电网故障序号NOF:" + QString::number(datauint2) + "\r\n");
+		len += 2;
+		datet = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + len, 7));
+		len += 7;
+		datet2 = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + len, 7));
+		len += 7;
+		break;
+	}
 	default:
 		error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的GDD1").arg(gdd[0]);
 		return false;
@@ -382,7 +382,7 @@ QString IEC103Asdu10DataSetGid::showToText()
 }
 
 
-IEC103Asdu10DataSetGdd::IEC103Asdu10DataSetGdd()
+IEC103Asdu10DataSetGdd::IEC103Asdu10DataSetGdd(const MyConfig& Config): MyBase(Config)
 {
 	gidnum = 0;
 	memset(gdd, 0, sizeof(gdd));
@@ -419,7 +419,7 @@ bool IEC103Asdu10DataSetGdd::init(const QByteArray& buff)
 
 	for(int index = 0; index < gidnum; index++)
 	{
-		IEC103Asdu10DataSetGid *mgid = new IEC103Asdu10DataSetGid;
+		IEC103Asdu10DataSetGid *mgid = new IEC103Asdu10DataSetGid(mConfig);
 		bool isOk = mgid->initgid(buff.mid(len), gdd);
 		if(!isOk)
 		{
@@ -450,7 +450,7 @@ QString IEC103Asdu10DataSetGdd::showToText()
 }
 
 
-IEC103Asdu10DataSet::IEC103Asdu10DataSet()
+IEC103Asdu10DataSet::IEC103Asdu10DataSet(const MyConfig& Config): MyBase(Config), mygdd(Config)
 {
 	memset(gin, 0, sizeof(gin));
 	kod = 0;
@@ -499,7 +499,7 @@ QString IEC103Asdu10DataSet::showToText()
 
 
 
-IEC103Asdu10Data::IEC103Asdu10Data()
+IEC103Asdu10Data::IEC103Asdu10Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	rii = 0;
 	ngd = 0;
@@ -530,7 +530,7 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < setnum; index++)
 	{
-		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet;
+		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
 		bool isOk = mset->init(buff.mid(len));
 		if(!isOk)
 		{

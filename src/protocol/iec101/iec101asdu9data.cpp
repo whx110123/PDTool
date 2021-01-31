@@ -1,6 +1,6 @@
 ﻿#include "iec101asdu9data.h"
 
-IEC101Asdu9Data::IEC101Asdu9Data()
+IEC101Asdu9Data::IEC101Asdu9Data(const MyConfig& Config): IEC101Asdu21Data(Config)
 {
 	qds = 0;
 }

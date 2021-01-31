@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu36data.h"
 
-IEC103Asdu36Data::IEC103Asdu36Data()
+IEC103Asdu36Data::IEC103Asdu36Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	intdata = 0;
 	bcr = 0;

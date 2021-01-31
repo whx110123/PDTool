@@ -1,6 +1,6 @@
 ﻿#include "iec103asdu13data.h"
 
-IEC103Asdu13Data::IEC103Asdu13Data()
+IEC103Asdu13Data::IEC103Asdu13Data(const MyConfig& Config): IEC103AsduData(Config)
 {
 	gbk = QTextCodec::codecForName("GB18030");
 }
@@ -17,7 +17,7 @@ bool IEC103Asdu13Data::handle(const QByteArray& buff)
 	len++;
 
 	uchar waveFileNameLen;
-	if(protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		waveFileNameLen = 128;
 	}
@@ -35,7 +35,7 @@ bool IEC103Asdu13Data::handle(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len, 4) + "\t起始传输位置: " + QString::number(fileIndex) + "\r\n");
 	len += 4;
 
-	if(protocolName != IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName != IEC_103BAOXINNET_NW)
 	{
 		no = charTouint(buff.data() + len, 4);
 		mText.append(CharToHexStr(buff.data() + len, 4) + "\t录波文件在装置中的编号: " + QString::number(no) + "\r\n");

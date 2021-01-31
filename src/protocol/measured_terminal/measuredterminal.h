@@ -7,7 +7,7 @@
 class MeasuredTerminal : public MyBase
 {
 public:
-	MeasuredTerminal();
+	MeasuredTerminal(const MyConfig& Config);
 	~MeasuredTerminal();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

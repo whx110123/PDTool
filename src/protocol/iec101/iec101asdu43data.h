@@ -8,7 +8,7 @@
 class IEC101Asdu43Data : public IEC101AsduData
 {
 public:
-	IEC101Asdu43Data();
+	IEC101Asdu43Data(const MyConfig& Config);
 	~IEC101Asdu43Data();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();

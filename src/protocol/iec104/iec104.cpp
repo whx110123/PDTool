@@ -1,6 +1,6 @@
 ﻿#include "iec104.h"
 
-IEC104::IEC104()
+IEC104::IEC104(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	masterState = STATE_INIT;
 
