@@ -11,7 +11,7 @@ struct ModbusDataGroup
 	QString sort;		//顺序
 };
 
-struct MyConfig			//配置信息
+struct MyConfig			//报文格式
 {
 	QString protocolName;				//规约名
 	QString lengthType;					//长度域类型

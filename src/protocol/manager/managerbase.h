@@ -1,21 +1,30 @@
-﻿#ifndef PROMANAGER_H
-#define PROMANAGER_H
+﻿#ifndef MANAGERBASE_H
+#define MANAGERBASE_H
 
 #include "dataconfig.h"
 #include "functotext.h"
 
-class ProManager : public QObject
+class ManagerConfig
+{
+public:
+	ManagerConfig();
+	~ManagerConfig();
+	QString protocolName;
+	bool isMaster;
+};
+
+class ManagerBase : public QObject
 {
 	Q_OBJECT
 public:
-	ProManager();
-	~ProManager();
+	ManagerBase();
+	~ManagerBase();
 
 	void init();
 	virtual bool start();
 	virtual bool stop();
-	void setProName(const QString& name);
-	void setMaster(bool Master);
+	void initConfig(ManagerConfig *config);
+	virtual void initMyConfig(ManagerConfig *config);
 	void setRcvData(const QByteArray& data);
 	void addRcvData(const QByteArray& data);
 	void addSndData(const QByteArray& data);
@@ -42,4 +51,4 @@ public:
 
 };
 
-#endif // PROMANAGER_H
+#endif // MANAGERBASE_H

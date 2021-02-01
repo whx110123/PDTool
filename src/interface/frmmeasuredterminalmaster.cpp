@@ -28,16 +28,21 @@ void frmMeasuredTerminalMaster::init()
 
 }
 
-MyConfig frmMeasuredTerminalMaster::initConfig()
+void frmMeasuredTerminalMaster::initConfig()
 {
-	MyConfig Config;
-	Config.protocolName = MEASUREDTERMINAL_NW_NET;
-	Config.lengthType = IEC_DOUBLEDIFF;
-	Config.addrLen = 7;
-	Config.cotlen = 1;
-	Config.comaddrlen = 1;
-	Config.infaddrlen = 1;
-	return Config;
+	managerConfig.protocolName = IEC_104;
+	managerConfig.isMaster = true;
+	managerConfig.A1 = ui->lineEdit_A1->text().toUInt();
+	managerConfig.A2 = ui->lineEdit_A2->text().toUInt();
+	managerConfig.A3 = ui->lineEdit_A3->text().toUInt();
+
+	myConfig.protocolName = MEASUREDTERMINAL_NW_NET;
+	myConfig.lengthType = IEC_FOURDIFF;
+	myConfig.addrLen = 7;
+	myConfig.cotlen = 1;
+	myConfig.comaddrlen = 1;
+	myConfig.infaddrlen = 1;
+
 }
 
 void frmMeasuredTerminalMaster::dealRcvData(const QString& data, const QString& title)

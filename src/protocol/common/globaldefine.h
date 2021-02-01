@@ -116,4 +116,5 @@ int stringToInt(QString data);
 #define IEC_SINGLE "单字节"
 #define IEC_DOUBLESAME "双字节 重复"
 #define IEC_DOUBLEDIFF "双字节 组合"
+#define IEC_FOURDIFF "四字节 组合"
 #endif // GLOBALDEFINE_H

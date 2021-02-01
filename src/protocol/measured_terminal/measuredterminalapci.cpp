@@ -60,6 +60,22 @@ bool MTApci::init(const QByteArray& buff)
 			mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
 			len += lengthlen;
 		}
+		else if(mLengthType == IEC_FOURDIFF)
+		{
+			length = charTouint(buff.data() + len, 2);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域:" + QString::number(length) + "\r\n");
+			len += 2;
+
+			ushort length2 = charTouint(buff.data() + len, 2);
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域2:" + QString::number(length2) + "\r\n");
+			len += 2;
+
+			if(length != length2)
+			{
+				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度域不同");
+				return false;
+			}
+		}
 
 		if(buff.count() < 10 + lengthlen)
 		{

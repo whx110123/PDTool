@@ -20,7 +20,7 @@ public:
 private:
 	void initfrm();
 	void init();
-	MyConfig initConfig();
+	void initConfig();
 
 signals:
 	void ToTcpClient(const QString& data);
@@ -32,7 +32,7 @@ signals:
 
 public slots:
 	void dealRcvData(const QString& data, const QString& title);
-	bool createAndSendData(IECDataConfig& config);
+//	bool createAndSendData(IECDataConfig& config);
 private slots:
 	void sendData(const QByteArray& data);
 	void startdebug();
@@ -45,9 +45,11 @@ private slots:
 	void on_pushButton_start_clicked();
 
 private:
-	ManagerIEC104Master *manager;
 	Ui::frmIEC104Master *ui;
-	IECDataConfig config;
+	ManagerIEC104Master *manager;
+	ConfigIEC104Master managerConfig;		//参数配置
+	MyConfig myConfig;						//报文格式
+
 };
 
 #endif // FRMIEC104MASTER_H

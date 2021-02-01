@@ -2,6 +2,7 @@
 #define FRMMEASUREDTERMINALMASTER_H
 
 #include <QWidget>
+#include <managermtmaster.h>
 #include <mybase.h>
 
 namespace Ui
@@ -19,7 +20,7 @@ public:
 private:
 	void initfrm();
 	void init();
-	MyConfig initConfig();
+	void initConfig();
 
 signals:
 	void ToTcpClient(const QString& data);
@@ -40,6 +41,9 @@ private slots:
 
 private:
 	Ui::frmMeasuredTerminalMaster *ui;
+	ManagerMTMaster *manager;
+	ConfigMTMaster managerConfig;		//参数配置
+	MyConfig myConfig;						//报文格式
 };
 
 #endif // FRMMEASUREDTERMINALMASTER_H

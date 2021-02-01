@@ -1,9 +1,10 @@
 ﻿#include "managermtmaster.h"
 
-ManagerMTMaster::ManagerMTMaster(const MyConfig& Config): protocolShow(Config), myMT(Config)
+ManagerMTMaster::ManagerMTMaster(const MyConfig& Config): protocolShow(Config), myPro(Config)
 {
 	noDataTimes = 0;
 	pseq = 0;
+	fcb = 0;
 }
 
 ManagerMTMaster::~ManagerMTMaster()
@@ -19,11 +20,16 @@ void ManagerMTMaster::timerRcv()
 	}
 	while(!rcvData.isEmpty())
 	{
-		if(myMT.init(rcvData))
+		if(myPro.init(rcvData))
 		{
-			emit toText(myMT.mRecvData.toHex(' ') + "\r\n" + myMT.showToText(), 0);
+			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText(), 0);
 			noDataTimes = 0;
-			rcvData.remove(0, myMT.len);
+			if(myPro.asdu.afn == 0)
+			{
+				flag = STATE_NODATA;
+			}
+			fcbchange();
+			rcvData.remove(0, myPro.len);
 		}
 		else if(*rcvData.data() == 0x68 && (rcvData.size() < 3 || charToint(rcvData.data() + 1, 2) + 4 > rcvData.size()))
 		{
@@ -54,7 +60,7 @@ void ManagerMTMaster::timerSnd()
 		if(i > 10)
 		{
 			i = 0;
-//			SendU(0x07);
+			addSndData(afn2Create(0));
 		}
 	}
 	else if(!sndDatas.isEmpty())
@@ -68,11 +74,12 @@ void ManagerMTMaster::timerSnd()
 	}
 }
 
-void ManagerMTMaster::setAddr(uint a1, uint a2, uchar a3)
+void ManagerMTMaster::initMyConfig(ManagerConfig *config)
 {
-	A1 = a1;
-	A2 = a2;
-	A3 = a3;
+	ConfigMTMaster *myConfig = (ConfigMTMaster *)config;
+	A1 = myConfig->A1;
+	A2 = myConfig->A2;
+	A3 = myConfig->A3;
 }
 
 QByteArray ManagerMTMaster::SendAFN(const QByteArray& data)
@@ -85,13 +92,14 @@ QByteArray ManagerMTMaster::SendAFN(const QByteArray& data)
 	QByteArray ba;
 	ba += 0x68;
 	ba += uintToBa(length, 2);
+	ba += uintToBa(length, 2);
 	ba += 0x68;
 	ba += createCode(*(uchar *)data.data());
 	ba += uintToBa(A1, 3);
 	ba += uintToBa(A2, 3);
 	ba += uintToBa(A3, 1);
 	ba += data;
-	ba += crcsum(ba.data(), 4, data.size() + 11);
+	ba += crcsum(ba.data(), 6, data.size() + 13);
 	ba += 0x16;
 	emit Send(ba);
 	return ba;
@@ -132,19 +140,42 @@ uchar ManagerMTMaster::createCode(uchar afn)
 	}
 	if(fcv)
 	{
-		code += fcv;	//帧计数有效位FCV
-		code |= fcb;
+		code += fcv | fcb;	//帧计数有效位FCV
 	}
 
 	code += 0x40;	//启动标志位PRM
 	return code;
 }
 
-QByteArray ManagerMTMaster::afn2Create()
+QByteArray ManagerMTMaster::afn2Create(uchar DI0)
 {
 	QByteArray ba;
 	ba += 0x02;
 	ba += 0x70 + pseq & 0x0f;
-
+	ba += uintToBa(0, 2);
+	ba += DI0;
+	ba += uintToBa(0xe00010, 3);
 	return ba;
+}
+
+void ManagerMTMaster::fcbchange()
+{
+	if(fcb)
+	{
+		fcb = 0;
+	}
+	else
+	{
+		fcb = 0x20;
+	}
+}
+
+ConfigMTMaster::ConfigMTMaster()
+{
+
+}
+
+ConfigMTMaster::~ConfigMTMaster()
+{
+
 }

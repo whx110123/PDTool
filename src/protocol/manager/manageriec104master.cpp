@@ -1,7 +1,18 @@
 ﻿#include "manageriec104master.h"
 #include "QtDebug"
 
-ManagerIEC104Master::ManagerIEC104Master(const MyConfig& Config): protocolShow(Config), my104(Config)
+
+ConfigIEC104Master::ConfigIEC104Master()
+{
+
+}
+
+ConfigIEC104Master::~ConfigIEC104Master()
+{
+
+}
+
+ManagerIEC104Master::ManagerIEC104Master(const MyConfig& Config): protocolShow(Config), myPro(Config)
 {
 	sSend = false;
 	isMaster = true;
@@ -23,44 +34,44 @@ void ManagerIEC104Master::timerRcv()
 	}
 	while(!rcvData.isEmpty())
 	{
-		if(my104.init(rcvData))
+		if(myPro.init(rcvData))
 		{
-			emit toText(my104.mRecvData.toHex(' ') + "\r\n" + my104.showToText(), 0);
+			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText(), 0);
 			noDataTimes = 0;
-			if(my104.apci.control.type == UTYPE)
+			if(myPro.apci.control.type == UTYPE)
 			{
-				if(my104.apci.control.code == 0x0b)
+				if(myPro.apci.control.code == 0x0b)
 				{
 					addSndData(asdu100Create());
 					flag = STATE_CALLALL;
 				}
-				else if(my104.apci.control.code == 0x43)
+				else if(myPro.apci.control.code == 0x43)
 				{
 					flag = STATE_TESTCONFIRM;
 				}
-				else if(my104.apci.control.code == 0x83)
+				else if(myPro.apci.control.code == 0x83)
 				{
 					flag = STATE_TESTACT;
 				}
 			}
-			else if(my104.apci.control.type == STYPE)
+			else if(myPro.apci.control.type == STYPE)
 			{
-				if(sndNo >= my104.apci.control.remoteRecvNo)
+				if(sndNo >= myPro.apci.control.remoteRecvNo)
 				{
-					k = sndNo - my104.apci.control.remoteRecvNo;
+					k = sndNo - myPro.apci.control.remoteRecvNo;
 				}
 				else
 				{
 					k = 0;
 				}
 			}
-			else if(my104.apci.control.type == ITYPE)
+			else if(myPro.apci.control.type == ITYPE)
 			{
-				rcvNo = my104.apci.control.remoteSendNo + 1;
+				rcvNo = myPro.apci.control.remoteSendNo + 1;
 				w++;
-				if(sndNo >= my104.apci.control.remoteRecvNo)
+				if(sndNo >= myPro.apci.control.remoteRecvNo)
 				{
-					k = sndNo - my104.apci.control.remoteRecvNo;
+					k = sndNo - myPro.apci.control.remoteRecvNo;
 				}
 				else
 				{
@@ -72,7 +83,7 @@ void ManagerIEC104Master::timerRcv()
 				}
 				sSend = true;
 			}
-			rcvData.remove(0, my104.len);
+			rcvData.remove(0, myPro.len);
 		}
 		else if(*rcvData.data() == 0x68 && (rcvData.size() == 1 || *(uchar *)(rcvData.data() + 1) + 2 > rcvData.size()))
 		{
@@ -140,9 +151,10 @@ void ManagerIEC104Master::timerSnd()
 	}
 }
 
-void ManagerIEC104Master::setAsduAddr(uint addr)
+void ManagerIEC104Master::initMyConfig(ManagerConfig *config)
 {
-	asduAddr = addr;
+	ConfigIEC104Master *myConfig = (ConfigIEC104Master *)config;
+	asduAddr = myConfig->asduAddr;
 }
 
 QByteArray ManagerIEC104Master::SendU(uchar ch)
@@ -200,3 +212,4 @@ QByteArray ManagerIEC104Master::asdu100Create()
 	ba += 0x14;
 	return ba;
 }
+

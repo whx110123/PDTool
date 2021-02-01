@@ -1,11 +1,21 @@
 ﻿#ifndef MANAGERMTMASTER_H
 #define MANAGERMTMASTER_H
 
-#include "promanager.h"
+#include "managerbase.h"
 
 #include <measuredterminal.h>
+class ConfigMTMaster: public ManagerConfig
+{
+public:
+	ConfigMTMaster();
+	~ConfigMTMaster();
+public:
+	uint A1;				//省地市区县码
+	uint A2;				//终端地址
+	uchar A3;				//主站地址
+};
 
-class ManagerMTMaster : public ProManager
+class ManagerMTMaster : public ManagerBase
 {
 	Q_OBJECT
 public:
@@ -14,17 +24,16 @@ public:
 
 	virtual void timerRcv();
 	virtual void timerSnd();
-
-	void setAddr(uint a1, uint a2, uchar a3);
+	virtual void initMyConfig(ManagerConfig *config);
 
 	QByteArray SendAFN(const QByteArray& data);
 	uchar createCode(uchar afn);
-	QByteArray afn2Create();
-
+	QByteArray afn2Create(uchar DI0);
+	void fcbchange();
 public:
 	MeasuredTerminal protocolShow;
 private:
-	MeasuredTerminal myMT;
+	MeasuredTerminal myPro;
 	uint A1;				//省地市区县码
 	uint A2;				//终端地址
 	uchar A3;				//主站地址

@@ -55,7 +55,7 @@ void frmMain::initForm()
 	list << "3";
 	ui->comboBox_infaddrlen->addItems(list);
 	QStringList list1 = QStringList();
-	list1 << IEC_SINGLE << IEC_DOUBLESAME << IEC_DOUBLEDIFF;
+	list1 << IEC_SINGLE << IEC_DOUBLESAME << IEC_DOUBLEDIFF << IEC_FOURDIFF;
 	ui->comboBox_lengthtype->addItems(list1);
 	QStringList list2 = QStringList();
 	list2 << YC << YX << YM;
@@ -328,7 +328,7 @@ void frmMain::on_protocolcbox_currentIndexChanged(const QString& arg1)
 	else if(arg1 == MEASUREDTERMINAL_NW_NET)
 	{
 		ui->stackedWidget_config->setCurrentIndex(0);
-		ui->comboBox_lengthtype->setCurrentText(IEC_DOUBLEDIFF);
+		ui->comboBox_lengthtype->setCurrentText(IEC_FOURDIFF);
 		ui->comboBox_addrlen->setCurrentText("7");
 		ui->comboBox_cotlen->setCurrentText("1");
 		ui->comboBox_comaddrlen->setCurrentText("1");

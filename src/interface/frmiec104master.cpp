@@ -35,25 +35,25 @@ void frmIEC104Master::init()
 		manager = NULL;
 	}
 
-	MyConfig Config = initConfig();
-	manager = new ManagerIEC104Master(Config);
+	initConfig();
+	manager = new ManagerIEC104Master(myConfig);
 	connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
 	connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
 	connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);
 
 }
 
-MyConfig frmIEC104Master::initConfig()
+void frmIEC104Master::initConfig()
 {
-	config.comaddr = ui->lineEdit_comaddr->text().toUInt();
+	managerConfig.protocolName = IEC_104;
+	managerConfig.isMaster = true;
+	managerConfig.asduAddr = ui->lineEdit_comaddr->text().toUInt();
 
-	MyConfig Config;
-	Config.protocolName = IEC_104;
-	Config.lengthType = IEC_SINGLE;
-	Config.cotlen = 2;
-	Config.comaddrlen = 2;
-	Config.infaddrlen = 3;
-	return Config;
+	myConfig.protocolName = IEC_104;
+	myConfig.lengthType = IEC_SINGLE;
+	myConfig.cotlen = 2;
+	myConfig.comaddrlen = 2;
+	myConfig.infaddrlen = 3;
 }
 
 void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
@@ -70,10 +70,10 @@ void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
 	}
 }
 
-bool frmIEC104Master::createAndSendData(IECDataConfig& config)
-{
-	return false;
-}
+//bool frmIEC104Master::createAndSendData(IECDataConfig& config)
+//{
+//	return false;
+//}
 
 void frmIEC104Master::sendData(const QByteArray& data)
 {

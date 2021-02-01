@@ -1,11 +1,21 @@
 ﻿#ifndef MANAGERIEC104MASTER_H
 #define MANAGERIEC104MASTER_H
 
-#include "promanager.h"
+#include "managerbase.h"
 
 #include <iec104.h>
 
-class ManagerIEC104Master : public ProManager
+class ConfigIEC104Master: public ManagerConfig
+{
+public:
+	ConfigIEC104Master();
+	~ConfigIEC104Master();
+public:
+	uint asduAddr;
+
+};
+
+class ManagerIEC104Master : public ManagerBase
 {
 	Q_OBJECT
 public:
@@ -14,8 +24,7 @@ public:
 
 	virtual void timerRcv();
 	virtual void timerSnd();
-
-	void setAsduAddr(uint addr);
+	virtual void initMyConfig(ManagerConfig *config);
 
 	QByteArray SendU(uchar ch);
 	QByteArray SendS();
@@ -25,7 +34,7 @@ public:
 public:
 	IEC104 protocolShow;
 private:
-	IEC104 my104;
+	IEC104 myPro;
 	uint asduAddr;
 	int noDataTimes;
 	bool sSend;			//可以发送S帧
