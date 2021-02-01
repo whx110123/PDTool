@@ -37,6 +37,7 @@ void frmIEC104Master::init()
 
 	initConfig();
 	manager = new ManagerIEC104Master(myConfig);
+	manager->initConfig(&managerConfig);
 	connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
 	connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
 	connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);

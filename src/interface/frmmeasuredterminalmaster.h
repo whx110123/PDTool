@@ -39,6 +39,18 @@ private slots:
 	void showLog(const QString& data);
 	void emitsignals(const QString& data);
 
+	void on_pushButton_startdebug_clicked();
+
+	void on_pushButton_MTstart_clicked();
+
+	void on_pushButton_MTread1_clicked();
+
+	void on_pushButton_MTread2_clicked();
+
+	void on_pushButton_MTreaddata_clicked();
+
+	void on_pushButton_MTreadhisdata_clicked();
+
 private:
 	Ui::frmMeasuredTerminalMaster *ui;
 	ManagerMTMaster *manager;

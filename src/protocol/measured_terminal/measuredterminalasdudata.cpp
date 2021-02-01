@@ -151,6 +151,18 @@ QString MTAsduData::DIToText()
 		text.append("全部确定/否定");
 		dataTpye = 2;
 		break;
+	case 0xe0001000:
+		text.append("表示终端登录，数值为规约版本号");
+		dataTpye = 3;
+		break;
+	case 0xe0001001:
+		text.append("表示终端心跳，无数据体");
+		dataTpye = 255;
+		break;
+	case 0xe0001002:
+		text.append("表示登录退出，无数据体");
+		dataTpye = 255;
+		break;
 	default:
 		break;
 	}
@@ -160,28 +172,36 @@ QString MTAsduData::DIToText()
 
 bool MTAsduData::handle(const QByteArray& buff)
 {
+	if(flag & ISMASTER && afn == 0x0d)
+	{
+
+	}
+	bool ret = true;
 	switch(dataTpye)
 	{
 	case 1:
-		if(flag & ISMASTER)
-		{
-			break;
-		}
-		if(!handleData_1(buff))
-		{
-			return false;
-		}
+		ret = handleData_1(buff);
 		break;
 	case 2:
-		if(!handleData_2(buff))
-		{
-			return false;
-		}
+		ret = handleData_2(buff);
+		break;
+	case 3:
+		ret = handleData_3(buff);
+		break;
+	case 255:
 		break;
 	default:
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！未知的数据标识编码"));
 		return false;
 		break;
+	}
+	if(!ret)
+	{
+		return ret;
+	}
+	if(!(flag & ISMASTER) && afn == 0x0d)
+	{
+
 	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
@@ -194,6 +214,10 @@ bool MTAsduData::handle(const QByteArray& buff)
 
 bool MTAsduData::handleData_1(const QByteArray& buff)
 {
+	if(flag & ISMASTER)
+	{
+		return true;
+	}
 	uint data = charTouint(buff.data() + len, 4);
 	uint dataH = data / 100;
 	uint dataL = data % 100;
@@ -214,6 +238,23 @@ bool MTAsduData::handleData_2(const QByteArray& buff)
 	uchar confirm = *(buff.data() + len) & 0x01;
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + QString(confirm ? "全部否定" : "全部肯定") + "\r\n");
 	len++;
+	if(len > buff.length())
+	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		return false;
+	}
+	return true;
+}
+
+bool MTAsduData::handleData_3(const QByteArray& buff)
+{
+	if(flag & ISMASTER)
+	{
+		return true;
+	}
+	ushort data = charTouint(buff.data() + len, 2);
+	mText.append(CharToHexStr(buff.data() + len, 2) + "\t值:" + QString::number(data) + "\r\n");
+	len += 2;
 	if(len > buff.length())
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));

@@ -1,5 +1,15 @@
 ﻿#include "managermtmaster.h"
 
+ConfigMTMaster::ConfigMTMaster()
+{
+
+}
+
+ConfigMTMaster::~ConfigMTMaster()
+{
+
+}
+
 ManagerMTMaster::ManagerMTMaster(const MyConfig& Config): protocolShow(Config), myPro(Config)
 {
 	noDataTimes = 0;
@@ -31,13 +41,13 @@ void ManagerMTMaster::timerRcv()
 			fcbchange();
 			rcvData.remove(0, myPro.len);
 		}
-		else if(*rcvData.data() == 0x68 && (rcvData.size() < 3 || charToint(rcvData.data() + 1, 2) + 4 > rcvData.size()))
+		else if(*rcvData.data() == 0x68 && (rcvData.size() < 3 || charToint(rcvData.data() + 1, 2) + 6 > rcvData.size()))
 		{
 			break;
 		}
 		else
 		{
-			if(*rcvData.data() == 0x68 &&  *(uchar *)(rcvData.data() + 1) + 2 <= rcvData.size())
+			if(*rcvData.data() == 0x68 && charToint(rcvData.data() + 1, 2) + 6 <= rcvData.size())
 			{
 				emit toLog("未识别的报文: " + rcvData.toHex(' '));
 			}
@@ -53,7 +63,12 @@ void ManagerMTMaster::timerSnd()
 	{
 		return;
 	}
-	if(flag == STATE_INIT)
+
+	if(!sndDatas.isEmpty())
+	{
+		SendAFN(sndDatas.takeFirst());
+	}
+	else if(flag == STATE_INIT)
 	{
 		static int i = 0;
 		i++;
@@ -62,10 +77,6 @@ void ManagerMTMaster::timerSnd()
 			i = 0;
 			addSndData(afn2Create(0));
 		}
-	}
-	else if(!sndDatas.isEmpty())
-	{
-		SendAFN(sndDatas.takeFirst());
 	}
 	else if(noDataTimes > 20)
 	{
@@ -99,6 +110,10 @@ QByteArray ManagerMTMaster::SendAFN(const QByteArray& data)
 	ba += uintToBa(A2, 3);
 	ba += uintToBa(A3, 1);
 	ba += data;
+
+	uchar *mdata = (uchar *)ba.data();
+	mdata[15] |= (pseq++ & 0x0f);
+
 	ba += crcsum(ba.data(), 6, data.size() + 13);
 	ba += 0x16;
 	emit Send(ba);
@@ -151,7 +166,7 @@ QByteArray ManagerMTMaster::afn2Create(uchar DI0)
 {
 	QByteArray ba;
 	ba += 0x02;
-	ba += 0x70 + pseq & 0x0f;
+	ba += 0x70;
 	ba += uintToBa(0, 2);
 	ba += DI0;
 	ba += uintToBa(0xe00010, 3);
@@ -170,12 +185,4 @@ void ManagerMTMaster::fcbchange()
 	}
 }
 
-ConfigMTMaster::ConfigMTMaster()
-{
 
-}
-
-ConfigMTMaster::~ConfigMTMaster()
-{
-
-}

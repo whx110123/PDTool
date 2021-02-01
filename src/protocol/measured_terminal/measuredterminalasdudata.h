@@ -16,9 +16,10 @@ public:
 	bool handle(const QByteArray& buff);		//处理数据
 	bool handleData_1(const QByteArray& buff);	//处理数据方式1：4字节无符号整数，两位小数点
 	bool handleData_2(const QByteArray& buff);	//处理数据方式2：1字节无符号整数, 00：表示全部肯定 01：表示全部否定
+	bool handleData_3(const QByteArray& buff);	//处理数据方式3：2个字节无符号整数
 
 public:
-
+	uchar afn;								//保留afn类型
 	uchar flag;								//功能标志，用于记录功能码对应的报文内容
 	uchar DA[2];							//信息点标识
 	uchar DI[4];							//数据标识编码

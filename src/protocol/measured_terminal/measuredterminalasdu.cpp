@@ -49,6 +49,7 @@ bool MTAsdu::init(const QByteArray& buff)
 			return false;
 		}
 		mdata->flag = flag;
+		mdata->afn = afn;
 		mdata->index = index;
 		if(!mdata->init(buff.mid(len)))
 		{

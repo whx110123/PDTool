@@ -140,20 +140,20 @@
          <property name="title">
           <string>快捷操作</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0" colspan="2">
            <widget class="QPushButton" name="pushButton_MTstart">
             <property name="text">
              <string>启动链路</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="0" colspan="2">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>信息点DA</string>
+               <string>信息点DA(16进制)</string>
               </property>
              </widget>
             </item>
@@ -166,63 +166,110 @@
             </item>
            </layout>
           </item>
-          <item>
+          <item row="2" column="0">
            <widget class="QPushButton" name="pushButton_MTread1">
             <property name="text">
              <string>正向有功总电能</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="1">
            <widget class="QPushButton" name="pushButton_MTread2">
             <property name="text">
              <string>反向有功总电能</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>自定义功能码AFN</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_MTAFN"/>
-            </item>
-           </layout>
-          </item>
-          <item>
+          <item row="3" column="0" colspan="2">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>自定义数据标识DI</string>
+               <string>数据标识DI(16进制)</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_MTDI"/>
+             <widget class="QLineEdit" name="lineEdit_MTDI">
+              <property name="text">
+               <string>00010000</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
-          <item>
+          <item row="4" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>起始时间(16进制)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_MTTimeBegin">
+              <property name="text">
+               <string>202001010000</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>结束时间(16进制)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_MTTimeEnd">
+              <property name="text">
+               <string>202201010000</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="6" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>数据密度(16进制)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_MTm">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1 1分钟&lt;/p&gt;&lt;p&gt;2 5分钟&lt;/p&gt;&lt;p&gt;3 15分钟&lt;/p&gt;&lt;p&gt;4 30分钟&lt;/p&gt;&lt;p&gt;5 60分钟&lt;/p&gt;&lt;p&gt;6 1日&lt;/p&gt;&lt;p&gt;7 1月&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>6</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="7" column="0">
            <widget class="QPushButton" name="pushButton_MTreaddata">
             <property name="text">
-             <string>发送读自定义数据报文</string>
+             <string>读实时数据</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="7" column="1">
+           <widget class="QPushButton" name="pushButton_MTreadhisdata">
+            <property name="text">
+             <string>读历史数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
