@@ -96,6 +96,7 @@ public:
 	void SaveAll();
 	MyConfig initProtocolConfig();
 	void ConfigHide();
+	void ActionHide();
 	void ConfigShow(int index);
 
 };

@@ -20,8 +20,6 @@ public:
 	uchar A3;				//主站地址
 private:
 	QString A1ToText();
-public:
-	QString mLengthType;			//长度域类型
 };
 
 #endif // MEASUREDTERMINALAPCI_H

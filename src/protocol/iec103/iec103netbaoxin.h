@@ -16,8 +16,6 @@ public:
 	IEC104Apci apci;
 	IEC103Asdu asdu;
 
-public:
-	QString mLengthType;
 };
 
 #endif // IEC103NETBAOXIN_H

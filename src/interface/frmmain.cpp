@@ -249,6 +249,7 @@ void frmMain::on_clearBtn_clicked()
 
 void frmMain::on_protocolcbox_currentIndexChanged(const QString& arg1)
 {
+	ActionHide();
 	if(arg1 == IEC_104)
 	{
 		ui->stackedWidget_config->setCurrentIndex(0);
@@ -777,44 +778,49 @@ void frmMain::on_Bt_clear_clicked()
 void frmMain::on_action_TCPClient_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(1);
-	setWindowTitle("TCP客户端    Protocol Debug Tool V3.00     作者: 王洪星");
+	setWindowTitle("TCP客户端    " + APPTITLE);
 }
 
 void frmMain::on_action_TCPServer_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(2);
-	setWindowTitle("TCP服务端    Protocol Debug Tool V3.00     作者: 王洪星");
+	setWindowTitle("TCP服务端    " + APPTITLE);
 }
 
 void frmMain::on_action_UDPClient_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(3);
-	setWindowTitle("UDP客户端    Protocol Debug Tool V3.00     作者: 王洪星");
+	setWindowTitle("UDP客户端    " + APPTITLE);
 }
 
 void frmMain::on_action_UDPServer_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(4);
-	setWindowTitle("UDP服务端    Protocol Debug Tool V3.00     作者: 王洪星");
+	setWindowTitle("UDP服务端    " + APPTITLE);
 }
 
 void frmMain::on_action_COM_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(5);
-	setWindowTitle("COM串口    Protocol Debug Tool V3.00     作者: 王洪星");
+	setWindowTitle("COM串口    " + APPTITLE);
 }
 
 void frmMain::on_action_Analys_triggered()
 {
 	ui->stackedWidget->setCurrentIndex(0);
-	setWindowTitle("报文解析    Protocol Debug Tool V3.00     作者: 王洪星");
+	setWindowTitle("报文解析    " + APPTITLE);
 }
 
 void frmMain::ConfigHide()
 {
 	ui->pushButton_hide->setText("打开配置");
 	ui->stackedWidget_config->hide();
+	ActionHide();
 
+}
+
+void frmMain::ActionHide()
+{
 	ui->action_HandleData->setChecked(false);
 	ui->action_SendData->setChecked(false);
 	ui->action_IEC104Master->setChecked(false);

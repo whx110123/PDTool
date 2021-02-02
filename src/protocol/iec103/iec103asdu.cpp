@@ -434,9 +434,6 @@ IEC103Asdu::IEC103Asdu(const MyConfig& Config): MyBase(Config)
 	masterState = STATE_NORMAL;
 	endflag = 0;
 	end = 0;
-
-	mCotlen = mConfig.cotlen;				//cot长度
-	mComaddrlen = mConfig.comaddrlen ;			//公共地址长度
 }
 
 IEC103Asdu::~IEC103Asdu()
@@ -467,24 +464,24 @@ bool IEC103Asdu::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
 	len++;
 
-	if(mCotlen > 0)
+	if(mConfig.cotlen > 0)
 	{
 		cot = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len, mCotlen) + "\t" + cotToText() + "\r\n");
+		mText.append(CharToHexStr(buff.data() + len, mConfig.cotlen) + "\t" + cotToText() + "\r\n");
 	}
 	else
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
-	len += mCotlen;
+	len += mConfig.cotlen;
 
-	commonaddr = charTouint(buff.data() + len, mComaddrlen);
-	if(mComaddrlen == 1)
+	commonaddr = charTouint(buff.data() + len, mConfig.comaddrlen);
+	if(mConfig.comaddrlen == 1)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址:" + QString::number(commonaddr & 0xff) + "\r\n");
 	}
-	else if(mComaddrlen == 2)
+	else if(mConfig.comaddrlen == 2)
 	{
 		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址低位:" + QString::number(commonaddr & 0xff) + "\r\n");
 		mText.append(CharToHexStr(buff.data() + len + 1) + "\t公共地址高位:" + QString::number((commonaddr >> 8) & 0xff) + " 装置地址\r\n");
@@ -494,7 +491,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
-	len += mComaddrlen;
+	len += mConfig.comaddrlen;
 
 	uchar fun = *(buff.data() + len);
 	uchar inf = *(buff.data() + len + 1);;

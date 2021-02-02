@@ -15,9 +15,6 @@ public:
 public:
 	uchar asduType;										//保留asdu类型
 	uint infaddr;
-
-public:
-	int mInfaddrlen ;			//信息体地址长度
 };
 
 class IEC101Asdu : public MyBase
@@ -40,11 +37,6 @@ public:
 	int sqflag;                 //SQ 0：每个信息元素都带地址 1：只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1
 	int datanum;                //信息元素的数量
 	QList<IEC101AsduData *> datalist;
-
-public:
-	int mCotlen ;				//cot长度
-	int mComaddrlen ;			//公共地址长度
-	int mInfaddrlen ;			//信息体地址长度
 
 private:
 	IEC101AsduData *CreateAsduData(uchar type);

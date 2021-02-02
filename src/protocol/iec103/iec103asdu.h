@@ -46,10 +46,6 @@ public:
 	uchar end;
 	QList<IEC103AsduData *> datalist;
 
-public:
-	int mCotlen ;				//cot长度
-	int mComaddrlen ;			//公共地址长度
-
 private:
 	IEC103AsduData *CreateAsduData(uchar type);
 };

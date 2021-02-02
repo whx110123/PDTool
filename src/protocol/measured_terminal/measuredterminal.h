@@ -17,9 +17,6 @@ public:
 	MTAsdu asdu;
 	uchar crc;
 	uchar end;
-
-public:
-	QString mLengthType;		//长度域类型
 };
 
 #endif // MEASUREDTERMINAL_H

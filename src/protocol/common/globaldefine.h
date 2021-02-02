@@ -99,6 +99,8 @@ uint bcdTouint(const char *bcd, int len);
 uint bcdTouint(uchar *bcd, int len);
 int stringToInt(QString data);
 
+#define APPTITLE QString("Protocol Debug Tool V3.01     作者: 王洪星")
+
 #define IEC_104 "104"
 #define IEC_101 "101"
 #define IEC_103WISCOMNET "金智网络103"

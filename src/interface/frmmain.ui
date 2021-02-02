@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>758</width>
-    <height>537</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -241,7 +241,7 @@
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="page_config1">
         <layout class="QGridLayout" name="gridLayout_5">
@@ -515,7 +515,7 @@
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>40</height>
+                <height>70</height>
                </size>
               </property>
              </widget>
@@ -528,7 +528,7 @@
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>40</height>
+                <height>70</height>
                </size>
               </property>
               <property name="readOnly">
@@ -668,7 +668,7 @@
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>40</height>
+                <height>70</height>
                </size>
               </property>
              </widget>

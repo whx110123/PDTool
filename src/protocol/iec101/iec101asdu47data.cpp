@@ -28,7 +28,7 @@ bool IEC101Asdu47Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu47Data::createData(IECDataConfig& config)
 {
-	config.data += uintToBa(config.infaddr, mInfaddrlen);
+	config.data += uintToBa(config.infaddr, mConfig.infaddrlen);
 	config.data += config.infdata;
 	return true;
 }

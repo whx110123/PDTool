@@ -32,7 +32,7 @@ bool IEC101Asdu100Data::createData(IECDataConfig& config)
 	if(config.isfirst || (config.vsq & 0x80) == 0)
 	{
 		infaddr = 0;
-		config.data += uintToBa(infaddr, mInfaddrlen);
+		config.data += uintToBa(infaddr, mConfig.infaddrlen);
 	}
 
 	if(config.isMaster)

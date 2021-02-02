@@ -3,8 +3,6 @@
 IEC104::IEC104(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
 	masterState = STATE_INIT;
-
-	mLengthType = mConfig.lengthType;
 }
 
 IEC104::~IEC104()
@@ -16,7 +14,7 @@ bool IEC104::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	int LENGTH_LEN = stringToInt(mLengthType);	//长度域字节数
+	int LENGTH_LEN = stringToInt(mConfig.lengthType);	//长度域字节数
 	int APCI_LEN = LENGTH_LEN + 5;					//APCI总字节数
 
 	if(buff.count() < APCI_LEN)

@@ -85,18 +85,27 @@ void ManagerIEC104Master::timerRcv()
 			}
 			rcvData.remove(0, myPro.len);
 		}
-		else if(*rcvData.data() == 0x68 && (rcvData.size() == 1 || *(uchar *)(rcvData.data() + 1) + 2 > rcvData.size()))
+		else if(rcvData.size() < 6)
 		{
 			break;
 		}
-		else
+		else if(*rcvData.data() == 0x68)
 		{
-			if(*rcvData.data() == 0x68 &&  *(uchar *)(rcvData.data() + 1) + 2 <= rcvData.size())
+			if(*(uchar *)(rcvData.data() + 1) + 2 > rcvData.size())
+			{
+				break;
+			}
+			else
 			{
 				emit toLog("未识别的报文: " + rcvData.toHex(' '));
 			}
 			rcvData.remove(0, 1);
 		}
+		else
+		{
+			rcvData.remove(0, 1);
+		}
+
 	}
 	noDataTimes++;
 }
