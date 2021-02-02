@@ -12,6 +12,7 @@ public:
 
 	QString DAToText();
 	QString DIToText();
+	QString densityToText();
 	void dataClear();							//清除所有数据
 	bool handle(const QByteArray& buff);		//处理数据
 	bool handleData_1(const QByteArray& buff);	//处理数据方式1：4字节无符号整数，两位小数点
@@ -24,7 +25,7 @@ public:
 	uchar DA[2];							//信息点标识
 	uchar DI[4];							//数据标识编码
 
-	ushort dataTpye;						//数据类型
+	ushort dataType;						//数据类型
 
 	QVector<uint> uintLst;
 

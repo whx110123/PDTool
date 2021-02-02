@@ -206,6 +206,10 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 	default:
 		break;
 	}
+	if(years == 0)
+	{
+		years = 1900;
+	}
 	datetime.setDate(QDate(years, months, dayofmonths));
 	datetime.setTime(QTime(hours, minutes, second, milliseconds));
 	return datetime;

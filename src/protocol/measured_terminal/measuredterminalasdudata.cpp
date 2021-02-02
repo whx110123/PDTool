@@ -74,96 +74,132 @@ QString MTAsduData::DAToText()
 
 QString MTAsduData::DIToText()
 {
-	dataTpye = 0;
+	dataType = 0;
 	QString text = "数据标识编码DI: ";
 	uint tmp = charTouint(DI, 4);
 	switch(tmp)
 	{
 	case 0x00010000:
 		text.append("(当前)正向有功总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00020000:
 		text.append("(当前)反向有功总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00030000:
 		text.append("(当前)组合无功1总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00040000:
 		text.append("(当前)组合无功2总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00050000:
 		text.append("(当前)第一象限无功总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00060000:
 		text.append("(当前)第二象限无功总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00070000:
 		text.append("(当前)第三象限无功总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00080000:
 		text.append("(当前)第四象限无功总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00090000:
 		text.append("(当前)正向视在总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x000a0000:
 		text.append("(当前)反向视在总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00800000:
 		text.append("(当前)关联总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00810000:
 		text.append("(当前)正向有功基波总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00820000:
 		text.append("(当前)反向有功基波总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00830000:
 		text.append("(当前)正向有功谐波总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00840000:
 		text.append("(当前)反向有功谐波总电能");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00850000:
 		text.append("(当前)铜损有功总电能补偿量");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0x00860000:
 		text.append("(当前)铁损有功总电能补偿量");
-		dataTpye = 1;
+		dataType = 1;
 		break;
 	case 0xe0000000:
 		text.append("全部确定/否定");
-		dataTpye = 2;
+		dataType = 2;
 		break;
 	case 0xe0001000:
 		text.append("表示终端登录，数值为规约版本号");
-		dataTpye = 3;
+		dataType = 3;
 		break;
 	case 0xe0001001:
 		text.append("表示终端心跳，无数据体");
-		dataTpye = 255;
+		dataType = 255;
 		break;
 	case 0xe0001002:
 		text.append("表示登录退出，无数据体");
-		dataTpye = 255;
+		dataType = 255;
 		break;
 	default:
+		break;
+	}
+	return text;
+}
+
+QString MTAsduData::densityToText()
+{
+	QString text = "数据密度: " + QString::number(density) + "---";
+	switch(density)
+	{
+	case 0:
+		text.append("终端历史数据存储密度");
+		break;
+	case 1:
+		text.append("1分钟");
+		break;
+	case 2:
+		text.append("5分钟");
+		break;
+	case 3:
+		text.append("15分钟");
+		break;
+	case 4:
+		text.append("30分钟");
+		break;
+	case 5:
+		text.append("60分钟");
+		break;
+	case 6:
+		text.append("1天");
+		break;
+	case 7:
+		text.append("1月");
+		break;
+	default:
+		text.append("出错!未识别的数据密度");
 		break;
 	}
 	return text;
@@ -174,10 +210,19 @@ bool MTAsduData::handle(const QByteArray& buff)
 {
 	if(flag & ISMASTER && afn == 0x0d)
 	{
+		dt1 = charToDateTime(buff.data() + len, 6, MYTIME2);
+		mText.append(myTime2ToText(buff.data() + len, 6));
+		len += 6;
+		dt2 = charToDateTime(buff.data() + len, 6, MYTIME2);
+		mText.append(myTime2ToText(buff.data() + len, 6));
+		len += 6;
+		density = *(buff.data() + len);
+		mText.append(CharToHexStr(buff.data() + len) + "\t" + densityToText() + "\r\n");
+		len++;
 
 	}
 	bool ret = true;
-	switch(dataTpye)
+	switch(dataType)
 	{
 	case 1:
 		ret = handleData_1(buff);
@@ -199,10 +244,12 @@ bool MTAsduData::handle(const QByteArray& buff)
 	{
 		return ret;
 	}
-	if(!(flag & ISMASTER) && afn == 0x0d)
-	{
-
-	}
+//	if(!(flag & ISMASTER) && afn == 0x0d)
+//	{
+//		dt1 = charToDateTime(buff.data() + len, 6, MYTIME2);
+//		mText.append(myTime2ToText(buff.data() + len, 6));
+//		len += 6;
+//	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{

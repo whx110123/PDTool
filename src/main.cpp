@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	App::readDeviceData();
 
 	frmMain w;
-	w.setWindowTitle("Protocol Debug Tool V3.00     作者: 王洪星");
+	w.setWindowTitle("Protocol Debug Tool V3.01     作者: 王洪星");
 	w.show();
 
 	//居中显示窗体

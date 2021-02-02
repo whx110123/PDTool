@@ -729,7 +729,7 @@
    </widget>
    <widget class="QMenu" name="menu_B">
     <property name="title">
-     <string>配置(&amp;B)</string>
+     <string>工具(&amp;B)</string>
     </property>
     <addaction name="action_SendData"/>
     <addaction name="action_HandleData"/>

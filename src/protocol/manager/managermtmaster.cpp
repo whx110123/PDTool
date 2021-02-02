@@ -41,16 +41,27 @@ void ManagerMTMaster::timerRcv()
 			fcbchange();
 			rcvData.remove(0, myPro.len);
 		}
-		else if(*rcvData.data() == 0x68 && (rcvData.size() < 3 || charToint(rcvData.data() + 1, 2) + 6 > rcvData.size()))
+		else if(rcvData.size() < 6)
 		{
 			break;
 		}
+		else if(*rcvData.data() == 0x68 && *(rcvData.data() + 5) == 0x68)
+		{
+			if(charToint(rcvData.data() + 1, 2) == charToint(rcvData.data() + 3, 2))
+			{
+				if(charToint(rcvData.data() + 1, 2) + 6 > rcvData.size())
+				{
+					break;
+				}
+				else
+				{
+					emit toLog("未识别的报文: " + rcvData.toHex(' '));
+				}
+			}
+			rcvData.remove(0, 1);
+		}
 		else
 		{
-			if(*rcvData.data() == 0x68 && charToint(rcvData.data() + 1, 2) + 6 <= rcvData.size())
-			{
-				emit toLog("未识别的报文: " + rcvData.toHex(' '));
-			}
 			rcvData.remove(0, 1);
 		}
 	}
