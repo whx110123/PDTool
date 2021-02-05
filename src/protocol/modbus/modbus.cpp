@@ -91,9 +91,7 @@ bool Modbus::init(const QByteArray& buff)
 		{
 			if(g.dataLen == mgroup.dataLen)
 			{
-				mgroup.type = g.type;
-				mgroup.analysis = g.analysis;
-				mgroup.sort = g.sort;
+				mgroup = g;
 				break;
 			}
 		}
@@ -123,8 +121,6 @@ bool Modbus::init(const QByteArray& buff)
 				mindex++;
 			}
 		}
-
-
 	}
 	else
 	{

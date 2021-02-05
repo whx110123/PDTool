@@ -54,7 +54,7 @@
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -295,7 +295,7 @@
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>手动输入ASDU报文</string>
+          <string>手动输入AFN报文</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="1" column="2">
