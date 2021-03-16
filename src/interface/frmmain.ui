@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>758</width>
-    <height>611</height>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -753,6 +753,23 @@
    <addaction name="menu_B"/>
    <addaction name="menu"/>
    <addaction name="menu_H"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>BottomToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_Analys"/>
+   <addaction name="action_TCPClient"/>
+   <addaction name="action_TCPServer"/>
+   <addaction name="action_UDPClient"/>
+   <addaction name="action_UDPServer"/>
+   <addaction name="action_COM"/>
   </widget>
   <action name="action_New">
    <property name="text">

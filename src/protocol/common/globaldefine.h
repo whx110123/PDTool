@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QTextCodec>
 #include <QVector>
+#include <QMutexLocker>
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;

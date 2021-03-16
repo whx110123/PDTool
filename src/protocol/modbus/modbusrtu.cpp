@@ -43,6 +43,20 @@ bool ModbusRTU::init(const QByteArray& buff)
 		mb.isMaster = true;
 	}
 
+	if(mb.isMaster && len < 6)
+	{
+		crc = charTouint(buff.data() + 6, 2);
+		if(crc16((uchar *)buff.data(), 6) == crc)
+		{
+			len = 6;
+		}
+		else
+		{
+			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU下发报文校验错误");
+			return false;
+		}
+	}
+
 	if(!mb.init(buff.left(len)))
 	{
 		return false;

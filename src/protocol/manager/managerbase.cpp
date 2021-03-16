@@ -17,6 +17,7 @@ ManagerBase::ManagerBase()
 
 ManagerBase::~ManagerBase()
 {
+	QMutexLocker locker(&mutexSD);
 	sndDatas.clear();
 }
 
@@ -64,6 +65,7 @@ void ManagerBase::setRcvData(const QByteArray& data)
 	{
 		return;
 	}
+	QMutexLocker locker(&mutexRD);
 	rcvData = data;
 }
 
@@ -73,6 +75,7 @@ void ManagerBase::addRcvData(const QByteArray& data)
 	{
 		return;
 	}
+	QMutexLocker locker(&mutexRD);
 	rcvData.append(data);
 }
 
@@ -82,6 +85,7 @@ void ManagerBase::addSndData(const QByteArray& data)
 	{
 		return;
 	}
+	QMutexLocker locker(&mutexSD);
 	sndDatas.append(data);
 }
 
@@ -91,6 +95,7 @@ void ManagerBase::clearData()
 	{
 		return;
 	}
+	QMutexLocker locker(&mutexRD);
 	rcvData.clear();
 }
 

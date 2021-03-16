@@ -83,7 +83,9 @@ void ManagerIEC104Master::timerRcv()
 				}
 				sSend = true;
 			}
+			mutexRD.lock();
 			rcvData.remove(0, myPro.len);
+			mutexRD.unlock();
 		}
 		else if(rcvData.size() < 6)
 		{
@@ -99,11 +101,15 @@ void ManagerIEC104Master::timerRcv()
 			{
 				emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.error);
 			}
+			mutexRD.lock();
 			rcvData.remove(0, 1);
+			mutexRD.unlock();
 		}
 		else
 		{
+			mutexRD.lock();
 			rcvData.remove(0, 1);
+			mutexRD.unlock();
 		}
 
 	}
@@ -147,7 +153,11 @@ void ManagerIEC104Master::timerSnd()
 	{
 		if(k < 12)
 		{
-			SendI(sndDatas.takeFirst());
+			mutexSD.lock();
+			QByteArray Ba = sndDatas.takeFirst();
+			mutexSD.unlock();
+
+			SendI(Ba);
 			k++;
 			sndNo++;
 			w = 0;

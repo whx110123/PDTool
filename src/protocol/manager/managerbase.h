@@ -39,11 +39,14 @@ signals:
 	void toLog(const QString& text);					//发送报告
 
 public:
+
 	uint flag;						//状态标识
 	QString protocolName;
 	bool isMaster;
 	bool isRun;
+	QMutex mutexRD;
 	QByteArray rcvData;
+	QMutex mutexSD;
 	QVector<QByteArray> sndDatas;
 
 	QTimer *handleRcvDataTimer;

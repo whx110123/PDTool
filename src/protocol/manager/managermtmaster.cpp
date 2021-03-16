@@ -39,7 +39,9 @@ void ManagerMTMaster::timerRcv()
 				flag = STATE_NODATA;
 			}
 			fcbchange();
+			mutexRD.lock();
 			rcvData.remove(0, myPro.len);
+			mutexRD.unlock();
 		}
 		else if(rcvData.size() < 6)
 		{
@@ -58,11 +60,15 @@ void ManagerMTMaster::timerRcv()
 					emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.error);
 				}
 			}
+			mutexRD.lock();
 			rcvData.remove(0, 1);
+			mutexRD.unlock();
 		}
 		else
 		{
+			mutexRD.lock();
 			rcvData.remove(0, 1);
+			mutexRD.unlock();
 		}
 	}
 	noDataTimes++;
@@ -77,7 +83,10 @@ void ManagerMTMaster::timerSnd()
 
 	if(!sndDatas.isEmpty())
 	{
-		SendAFN(sndDatas.takeFirst());
+		mutexSD.lock();
+		QByteArray Ba = sndDatas.takeFirst();
+		mutexSD.unlock();
+		SendAFN(Ba);
 	}
 	else if(flag == STATE_INIT)
 	{
