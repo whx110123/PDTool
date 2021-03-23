@@ -748,11 +748,20 @@
     <addaction name="action_IEC104Master"/>
     <addaction name="action_MeasuredTerminalMaster"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>皮肤</string>
+    </property>
+    <addaction name="action_lightblue"/>
+    <addaction name="action_flatwhite"/>
+    <addaction name="action_psblack"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_E"/>
    <addaction name="menu_B"/>
    <addaction name="menu"/>
    <addaction name="menu_H"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -905,6 +914,21 @@
    </property>
    <property name="toolTip">
     <string>南网计量主站</string>
+   </property>
+  </action>
+  <action name="action_lightblue">
+   <property name="text">
+    <string>蓝色</string>
+   </property>
+  </action>
+  <action name="action_flatwhite">
+   <property name="text">
+    <string>白色</string>
+   </property>
+  </action>
+  <action name="action_psblack">
+   <property name="text">
+    <string>黑色</string>
    </property>
   </action>
  </widget>

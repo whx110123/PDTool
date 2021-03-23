@@ -91,6 +91,16 @@ private slots:
 
 	void on_action_MeasuredTerminalMaster_triggered(bool checked);
 
+	void on_action_lightblue_triggered();
+
+	void on_action_flatwhite_triggered();
+
+	void on_action_psblack_triggered();
+
+	void on_action_Update_triggered();
+
+	void on_action_Exit_triggered();
+
 public:
 	MyBase *createByName(QString name);
 	void SaveAll();

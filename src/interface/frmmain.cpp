@@ -8,6 +8,7 @@
 #include "qdebug.h"
 #include "myhighlighter.h"
 #include "dialogmodbus.h"
+#include "dialogintroduction.h"
 
 #include <app.h>
 #include <iec101.h>
@@ -138,35 +139,7 @@ void frmMain::initSignalAndSlots()
 
 void frmMain::initStyle()
 {
-	//加载样式表
-	QString qss;
-	//QFile file(":/qss/psblack.css");
-	//QFile file(":/qss/flatwhite.css");
-	QFile file(":/qss/lightblue.css");
-	if(file.open(QFile::ReadOnly))
-	{
-#if 1
-		//用QTextStream读取样式文件不用区分文件编码 带bom也行
-		QStringList list;
-		QTextStream in(&file);
-		//in.setCodec("utf-8");
-		while(!in.atEnd())
-		{
-			QString line;
-			in >> line;
-			list << line;
-		}
-
-		qss = list.join("\n");
-#else
-		//用readAll读取默认支持的是ANSI格式,如果不小心用creator打开编辑过了很可能打不开
-		qss = QLatin1String(file.readAll());
-#endif
-		QString paletteColor = qss.mid(20, 7);
-		qApp->setPalette(QPalette(QColor(paletteColor)));
-		qApp->setStyleSheet(qss);
-		file.close();
-	}
+	on_action_lightblue_triggered();
 }
 
 void frmMain::initTranslator()
@@ -875,4 +848,114 @@ void frmMain::on_action_MeasuredTerminalMaster_triggered(bool checked)
 		ui->action_MeasuredTerminalMaster->setChecked(true);
 		ConfigShow(5);
 	}
+}
+
+void frmMain::on_action_lightblue_triggered()
+{
+	//加载样式表
+	QString qss;
+	//QFile file(":/qss/psblack.css");
+	//QFile file(":/qss/flatwhite.css");
+	QFile file(":/qss/lightblue.css");
+	if(file.open(QFile::ReadOnly))
+	{
+#if 1
+		//用QTextStream读取样式文件不用区分文件编码 带bom也行
+		QStringList list;
+		QTextStream in(&file);
+		//in.setCodec("utf-8");
+		while(!in.atEnd())
+		{
+			QString line;
+			in >> line;
+			list << line;
+		}
+
+		qss = list.join("\n");
+#else
+		//用readAll读取默认支持的是ANSI格式,如果不小心用creator打开编辑过了很可能打不开
+		qss = QLatin1String(file.readAll());
+#endif
+		QString paletteColor = qss.mid(20, 7);
+		qApp->setPalette(QPalette(QColor(paletteColor)));
+		qApp->setStyleSheet(qss);
+		file.close();
+	}
+}
+
+void frmMain::on_action_flatwhite_triggered()
+{
+	//加载样式表
+	QString qss;
+	//QFile file(":/qss/psblack.css");
+	QFile file(":/qss/flatwhite.css");
+	//QFile file(":/qss/lightblue.css");
+	if(file.open(QFile::ReadOnly))
+	{
+#if 1
+		//用QTextStream读取样式文件不用区分文件编码 带bom也行
+		QStringList list;
+		QTextStream in(&file);
+		//in.setCodec("utf-8");
+		while(!in.atEnd())
+		{
+			QString line;
+			in >> line;
+			list << line;
+		}
+
+		qss = list.join("\n");
+#else
+		//用readAll读取默认支持的是ANSI格式,如果不小心用creator打开编辑过了很可能打不开
+		qss = QLatin1String(file.readAll());
+#endif
+		QString paletteColor = qss.mid(20, 7);
+		qApp->setPalette(QPalette(QColor(paletteColor)));
+		qApp->setStyleSheet(qss);
+		file.close();
+	}
+}
+
+void frmMain::on_action_psblack_triggered()
+{
+	//加载样式表
+	QString qss;
+	QFile file(":/qss/psblack.css");
+	//QFile file(":/qss/flatwhite.css");
+	//QFile file(":/qss/lightblue.css");
+	if(file.open(QFile::ReadOnly))
+	{
+#if 1
+		//用QTextStream读取样式文件不用区分文件编码 带bom也行
+		QStringList list;
+		QTextStream in(&file);
+		//in.setCodec("utf-8");
+		while(!in.atEnd())
+		{
+			QString line;
+			in >> line;
+			list << line;
+		}
+
+		qss = list.join("\n");
+#else
+		//用readAll读取默认支持的是ANSI格式,如果不小心用creator打开编辑过了很可能打不开
+		qss = QLatin1String(file.readAll());
+#endif
+		QString paletteColor = qss.mid(20, 7);
+		qApp->setPalette(QPalette(QColor(paletteColor)));
+		qApp->setStyleSheet(qss);
+		file.close();
+	}
+}
+
+void frmMain::on_action_Update_triggered()
+{
+	DialogIntroduction dlg;
+	dlg.exec();
+}
+
+void frmMain::on_action_Exit_triggered()
+{
+	qApp->closeAllWindows();
 }

@@ -1,4 +1,5 @@
 FORMS += \
+	$$PWD/dialogintroduction.ui \
 	$$PWD/dialogmodbus.ui \
 	$$PWD/dialogpma.ui \
 	$$PWD/frmcomtool.ui \
@@ -12,6 +13,7 @@ FORMS += \
 	$$PWD/frmudpserver.ui
 
 HEADERS += \
+	$$PWD/dialogintroduction.h \
 	$$PWD/dialogmodbus.h \
 	$$PWD/dialogpma.h \
 	$$PWD/frmcomtool.h \
@@ -26,6 +28,7 @@ HEADERS += \
 	$$PWD/myhighlighter.h
 
 SOURCES += \
+	$$PWD/dialogintroduction.cpp \
 	$$PWD/dialogmodbus.cpp \
 	$$PWD/dialogpma.cpp \
 	$$PWD/frmcomtool.cpp \
