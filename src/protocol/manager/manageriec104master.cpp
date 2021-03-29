@@ -19,11 +19,23 @@ ManagerIEC104Master::ManagerIEC104Master(const MyConfig& Config): protocolShow(C
 	mConfig = Config;
 	asduAddr = 0;
 	noDataTimes = 0;
+	SecondTimer = new QTimer(this);
+	connect(SecondTimer, &QTimer::timeout, this, &ManagerIEC104Master::update);
+	SecondTimer->start(1000);
 }
 
 ManagerIEC104Master::~ManagerIEC104Master()
 {
 
+}
+
+void ManagerIEC104Master::restoreDefaults()
+{
+	sndNo = 0;
+	rcvNo = 0;
+	k = 0;
+	w = 0;
+	noDataTimes = 0;
 }
 
 void ManagerIEC104Master::timerRcv()
@@ -51,7 +63,8 @@ void ManagerIEC104Master::timerRcv()
 				}
 				else if(myPro.apci.control.code == 0x83)
 				{
-					flag = STATE_TESTACT;
+					//flag = STATE_TESTACT;
+					flag = STATE_NODATA;
 				}
 			}
 			else if(myPro.apci.control.type == STYPE)
@@ -77,6 +90,7 @@ void ManagerIEC104Master::timerRcv()
 				{
 					k = 0;
 				}
+				flag = STATE_NODATA;
 				if(w >= 8)
 				{
 					flag = STATE_NORMAL;
@@ -113,7 +127,7 @@ void ManagerIEC104Master::timerRcv()
 		}
 
 	}
-	noDataTimes++;
+
 }
 
 void ManagerIEC104Master::timerSnd()
@@ -230,5 +244,10 @@ QByteArray ManagerIEC104Master::asdu100Create()
 	ba += '\0';
 	ba += 0x14;
 	return ba;
+}
+
+void ManagerIEC104Master::update()
+{
+	noDataTimes++;
 }
 

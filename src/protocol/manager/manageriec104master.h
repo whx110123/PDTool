@@ -22,6 +22,7 @@ public:
 	explicit ManagerIEC104Master(const MyConfig& Config);
 	~ManagerIEC104Master();
 
+	virtual void restoreDefaults();
 	virtual void timerRcv();
 	virtual void timerSnd();
 	virtual void initMyConfig(ManagerConfig *config);
@@ -31,9 +32,14 @@ public:
 	QByteArray SendI(const QByteArray& data);
 
 	QByteArray asdu100Create();
+public slots:
+	void update();
+
 public:
 	IEC104 protocolShow;
+
 private:
+	QTimer *SecondTimer;
 	IEC104 myPro;
 	uint asduAddr;
 	int noDataTimes;

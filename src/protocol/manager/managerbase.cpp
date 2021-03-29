@@ -24,8 +24,9 @@ ManagerBase::~ManagerBase()
 void ManagerBase::init()
 {
 	isRun = false;
-	handleRcvDataTimer = new QTimer(this);
-	connect(handleRcvDataTimer, &QTimer::timeout, this, &ManagerBase::timerRcv);
+//	handleRcvDataTimer = new QTimer(this);
+//	connect(handleRcvDataTimer, &QTimer::timeout, this, &ManagerBase::timerRcv);
+	connect(this, &ManagerBase::handleData, this, &ManagerBase::timerRcv);
 	handleSndDataTimer = new QTimer(this);
 	connect(handleSndDataTimer, &QTimer::timeout, this, &ManagerBase::timerSnd);
 
@@ -33,7 +34,8 @@ void ManagerBase::init()
 
 bool ManagerBase::start()
 {
-	handleRcvDataTimer->start(1000);
+	restoreDefaults();
+//	handleRcvDataTimer->start(1000);
 	handleSndDataTimer->start(200);
 	isRun = true;
 	return true;
@@ -41,10 +43,15 @@ bool ManagerBase::start()
 
 bool ManagerBase::stop()
 {
-	handleRcvDataTimer->stop();
+//	handleRcvDataTimer->stop();
 	handleSndDataTimer->stop();
 	isRun = false;
 	return true;
+}
+
+void ManagerBase::restoreDefaults()
+{
+
 }
 
 void ManagerBase::initConfig(ManagerConfig *config)
@@ -75,8 +82,10 @@ void ManagerBase::addRcvData(const QByteArray& data)
 	{
 		return;
 	}
-	QMutexLocker locker(&mutexRD);
+	mutexRD.lock();
 	rcvData.append(data);
+	mutexRD.unlock();
+	emit handleData();
 }
 
 void ManagerBase::addSndData(const QByteArray& data)

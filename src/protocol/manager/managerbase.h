@@ -23,6 +23,7 @@ public:
 	void init();
 	virtual bool start();
 	virtual bool stop();
+	virtual void restoreDefaults();
 	void initConfig(ManagerConfig *config);
 	virtual void initMyConfig(ManagerConfig *config);
 	void setRcvData(const QByteArray& data);
@@ -38,6 +39,8 @@ signals:
 	void toText(const QString& text, int type);			//报文的解析,type 0接收 1发送
 	void toLog(const QString& text);					//发送报告
 
+	void handleData();
+
 public:
 
 	uint flag;						//状态标识
@@ -49,7 +52,7 @@ public:
 	QMutex mutexSD;
 	QVector<QByteArray> sndDatas;
 
-	QTimer *handleRcvDataTimer;
+//	QTimer *handleRcvDataTimer;
 	QTimer *handleSndDataTimer;
 
 };
