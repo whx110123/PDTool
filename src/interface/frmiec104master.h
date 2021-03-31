@@ -42,7 +42,33 @@ private slots:
 	void emitsignals(const QString& data);
 	QByteArray getYKYTData(uchar type);
 
-	void on_pushButton_start_clicked();
+	void on_pushButton_Start_clicked();
+
+	void on_pushButton_SendUStart_clicked();
+
+	void on_pushButton_SendUTest_clicked();
+
+	void on_pushButton_SendS_clicked();
+
+	void on_pushButton_CallAll_clicked();
+
+	void on_pushButton_SetTime_clicked();
+
+	void on_pushButton_CallTitle_clicked();
+
+	void on_pushButton_CallDimension_clicked();
+
+	void on_pushButton_CallAccuracy_clicked();
+
+	void on_pushButton_CallRange_clicked();
+
+	void on_pushButton_CallSetting_clicked();
+
+	void on_pushButton_CallDescription_clicked();
+
+	void on_pushButton_SetValue_clicked();
+
+	void on_pushButton_solidify_clicked();
 
 private:
 	Ui::frmIEC104Master *ui;

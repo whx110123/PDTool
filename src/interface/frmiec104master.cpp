@@ -61,7 +61,7 @@ void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
 {
 	if(ui->comboBox->currentText().contains(title))
 	{
-		if(ui->pushButton_start->text() == QString("停止"))
+		if(ui->pushButton_Start->text() == QString("停止"))
 		{
 			if(manager)
 			{
@@ -88,7 +88,7 @@ void frmIEC104Master::sendData(const QByteArray& data)
 
 void frmIEC104Master::startdebug()
 {
-	ui->pushButton_start->setText("停止");
+	ui->pushButton_Start->setText("停止");
 
 	init();
 
@@ -101,7 +101,7 @@ void frmIEC104Master::startdebug()
 
 void frmIEC104Master::stopdebug()
 {
-	ui->pushButton_start->setText("开始");
+	ui->pushButton_Start->setText("开始");
 
 	if(manager)
 	{
@@ -244,7 +244,7 @@ void frmIEC104Master::emitsignals(const QString& data)
 
 QByteArray frmIEC104Master::getYKYTData(uchar type)
 {
-	uchar asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+	uchar asdutype = ui->comboBox_RemoteType->currentText().split(" ").at(0).toUShort();
 	QByteArray tmp;
 	ushort tmp_us = 0;
 	short tmp_s = 0;
@@ -254,7 +254,7 @@ QByteArray frmIEC104Master::getYKYTData(uchar type)
 	{
 	case 45:
 	case 58:
-		if(ui->comboBox_104YKvalue->currentText().contains("合"))
+		if(ui->comboBox_YKValue->currentText().contains("合"))
 		{
 			tmp += 0x01 | type;
 		}
@@ -270,7 +270,7 @@ QByteArray frmIEC104Master::getYKYTData(uchar type)
 	case 46:
 	case 47:
 	case 59:
-		if(ui->comboBox_104YKvalue->currentText().contains("合"))
+		if(ui->comboBox_YKValue->currentText().contains("合"))
 		{
 			tmp += 0x02 | type;
 		}
@@ -285,14 +285,14 @@ QByteArray frmIEC104Master::getYKYTData(uchar type)
 		break;
 	case 48:
 	case 49:
-		tmp_s = ui->lineEdit_104YTvalue->text().toShort();
+		tmp_s = ui->lineEdit_YTValue->text().toShort();
 		tmp_us = (ushort)tmp_s;
 		tmp += tmp_us & 0xff;
 		tmp += (tmp_us >> 8) & 0xff;
 		tmp += type;
 		break;
 	case 50:
-		tmp_f = ui->lineEdit_104YTvalue->text().toFloat();
+		tmp_f = ui->lineEdit_YTValue->text().toFloat();
 		tmp += floatToBa(tmp_f);
 		tmp += type;
 		break;
@@ -303,9 +303,9 @@ QByteArray frmIEC104Master::getYKYTData(uchar type)
 	return tmp;
 }
 
-void frmIEC104Master::on_pushButton_start_clicked()
+void frmIEC104Master::on_pushButton_Start_clicked()
 {
-	if(ui->pushButton_start->text() == QString("开始"))
+	if(ui->pushButton_Start->text() == QString("开始"))
 	{
 		startdebug();
 	}
@@ -313,4 +313,69 @@ void frmIEC104Master::on_pushButton_start_clicked()
 	{
 		stopdebug();
 	}
+}
+
+void frmIEC104Master::on_pushButton_SendUStart_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_SendUTest_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_SendS_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallAll_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_SetTime_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallTitle_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallDimension_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallAccuracy_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallRange_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallSetting_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_CallDescription_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_SetValue_clicked()
+{
+
+}
+
+void frmIEC104Master::on_pushButton_solidify_clicked()
+{
+
 }

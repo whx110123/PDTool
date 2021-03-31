@@ -28,6 +28,8 @@ private:
 	myhighlighter *highlighter1;
 	myhighlighter *highlighter2;
 	DialogModbus *modbusdlg;
+	int currentIndex;
+	QTextCursor tc;
 private slots:
 	void initForm();
 	void initSignalAndSlots();
@@ -59,19 +61,7 @@ private slots:
 	void on_action_HandleData_triggered(bool checked);
 	void on_action_SendData_triggered(bool checked);
 
-	void on_pbcrc_clicked();
 
-	void on_pbtransform_clicked();
-
-	void on_Bt1_clicked();
-
-	void on_Bt2_clicked();
-
-	void on_Bt3_clicked();
-
-	void on_Bt4_clicked();
-
-	void on_Bt_clear_clicked();
 
 
 
@@ -101,6 +91,10 @@ private slots:
 
 	void on_action_Exit_triggered();
 
+	void on_pushButton_before_clicked();
+
+	void on_pushButton_after_clicked();
+
 public:
 	MyBase *createByName(QString name);
 	void SaveAll();
@@ -108,6 +102,7 @@ public:
 	void ConfigHide();
 	void ActionHide();
 	void ConfigShow(int index);
+	void initcursor();
 
 };
 

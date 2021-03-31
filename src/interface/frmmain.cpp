@@ -90,9 +90,6 @@ void frmMain::initForm()
 	highlighter2->hlformat.setFontWeight(QFont::Bold);
 	on_pushButton_hide_clicked();
 
-	ui->cbcrc->addItems(App::CRClst);
-	ui->cbtransform->addItems(App::Transfermode);
-
 }
 
 void frmMain::initSignalAndSlots()
@@ -315,6 +312,8 @@ void frmMain::on_highlightEdit_textChanged(const QString& arg1)
 	highlighter1->hlstr = arg1;
 	highlighter2->hlstr = arg1;
 	ui->resulttext->setText(ui->resulttext->toPlainText());
+	initcursor();
+	on_pushButton_after_clicked();
 	ui->originaltext->setText(ui->originaltext->toPlainText());
 }
 
@@ -328,6 +327,7 @@ void frmMain::on_fontcolor_clicked()
 		highlighter2->hlformat.setForeground(color);
 		//      highlighter2->hlformat.setFontWeight(QFont::Bold);
 		ui->resulttext->setText(ui->resulttext->toPlainText());
+		initcursor();
 		ui->originaltext->setText(ui->originaltext->toPlainText());
 	}
 }
@@ -340,6 +340,7 @@ void frmMain::on_backgroundcolor_clicked()
 		highlighter1->hlformat.setBackground(color);
 		highlighter2->hlformat.setBackground(color);
 		ui->resulttext->setText(ui->resulttext->toPlainText());
+		initcursor();
 		ui->originaltext->setText(ui->originaltext->toPlainText());
 	}
 }
@@ -353,6 +354,7 @@ void frmMain::on_fontchange_clicked()
 		highlighter1->hlformat.setFont(font);
 		highlighter2->hlformat.setFont(font);
 		ui->resulttext->setText(ui->resulttext->toPlainText());
+		initcursor();
 		ui->originaltext->setText(ui->originaltext->toPlainText());
 	}
 }
@@ -394,6 +396,8 @@ void frmMain::on_pushButton_Analysis_clicked()
 			tmp.append("****************************************************************************************************\r\n");
 		}
 		ui->resulttext->setText(tmp);
+		initcursor();
+
 		delete myprotocol;
 		myprotocol = NULL;
 	}
@@ -506,247 +510,6 @@ void frmMain::on_pushButton_clicked()
 	modbusdlg->exec();
 }
 
-void frmMain::on_pbcrc_clicked()
-{
-
-	QString data = ui->textsource->toPlainText().trimmed();
-	QByteArray ba = QUIHelper::hexStrToByteArray(data);
-	uchar crcarray[2] = {0};
-	int crclen = 0;
-	if(ui->cbcrc->currentText().contains("CRC 16 低位在前"))
-	{
-		crclen = 2;
-		ushort crc = crc16((uchar *)ba.data(), ba.length());
-		crcarray[0] = crc & 0xff;
-		crcarray[1] = (crc >> 8) & 0xff;
-	}
-	else if(ui->cbcrc->currentText().contains("CRC 16 高位在前"))
-	{
-		crclen = 2;
-		ushort crc = crc16((uchar *)ba.data(), ba.length());
-		crcarray[1] = crc & 0xff;
-		crcarray[0] = (crc >> 8) & 0xff;
-	}
-	else if(ui->cbcrc->currentText().contains("总加和"))
-	{
-		crclen = 1;
-		for(int i = 0; i < ba.length(); i++)
-		{
-			crcarray[0] += *(uchar *)(ba.data() + i);
-		}
-	}
-	else if(ui->cbcrc->currentText().contains("加总异或"))
-	{
-		crclen = 1;
-		for(int i = 0; i < ba.length(); i++)
-		{
-			crcarray[0] ^= *(uchar *)(ba.data() + i);
-		}
-	}
-
-
-	for(int i = 0; i < crclen; i++)
-	{
-		data.append(" " + CharToHexStr(crcarray[i]));
-	}
-	ui->textdestination->setText(data.toUpper());
-}
-
-void frmMain::on_pbtransform_clicked()
-{
-	QString data = ui->linesource->text().trimmed();
-	QString dataout;
-	float datafloat = 0;
-	double datadouble = 0;
-	uint datauint = 0;
-	int dataint = 0;
-	if(ui->cbtransform->currentText().contains("浮点数转四字节"))
-	{
-		datafloat = data.toFloat();
-		QByteArray ba((char *)&datafloat, 4);
-		if(!ui->checkreverse->isChecked())
-		{
-			BaReverse(ba);
-		}
-		dataout.append(CharToHexStr(ba.data(), 4));
-	}
-	else if(ui->cbtransform->currentText().contains("四字节转浮点数"))
-	{
-		QByteArray ba = QUIHelper::hexStrToByteArray(data);
-		if(ba.length() == 4)
-		{
-			int model = 1;
-			if(ui->checkreverse->isChecked())
-			{
-				model = 0;
-			}
-			datafloat = charTofloat((uchar *)ba.data(), model);
-			dataout = QString::number(datafloat, 'g', 10);
-		}
-	}
-	else if(ui->cbtransform->currentText().contains("带符号整数转四字节"))
-	{
-		dataint = data.toInt();
-		QByteArray ba((char *)&dataint, 4);
-		if(!ui->checkreverse->isChecked())
-		{
-			BaReverse(ba);
-		}
-		dataout.append(CharToHexStr(ba.data(), 4));
-
-	}
-	else if(ui->cbtransform->currentText().contains("四字节转带符号整数"))
-	{
-		QByteArray ba = QUIHelper::hexStrToByteArray(data);
-		if(ba.length() == 4)
-		{
-			int model = 1;
-			if(ui->checkreverse->isChecked())
-			{
-				model = 0;
-			}
-			dataint = charToint((uchar *)ba.data(), 4, model);
-			dataout = QString::number(dataint);
-		}
-	}
-	else if(ui->cbtransform->currentText().contains("四字节转无符号整数"))
-	{
-		QByteArray ba = QUIHelper::hexStrToByteArray(data);
-		if(ba.length() == 4)
-		{
-			int model = 1;
-			if(ui->checkreverse->isChecked())
-			{
-				model = 0;
-			}
-			datauint = charTouint((uchar *)ba.data(), 4, model);
-			dataout = QString::number(datauint);
-		}
-	}
-	if(ui->cbtransform->currentText().contains("双精度浮点数转八字节"))
-	{
-		datadouble = data.toDouble();
-		QByteArray ba((char *)&datadouble, 8);
-		if(!ui->checkreverse->isChecked())
-		{
-			BaReverse(ba);
-		}
-		dataout.append(CharToHexStr(ba.data(), 8));
-
-	}
-	else if(ui->cbtransform->currentText().contains("八字节转双精度浮点数"))
-	{
-		QByteArray ba = QUIHelper::hexStrToByteArray(data);
-		if(ba.length() == 8)
-		{
-			if(!ui->checkreverse->isChecked())
-			{
-				BaReverse(ba);
-			}
-			dataout = QString::number(*(double *)ba.data(), 'g', 20);
-		}
-	}
-	ui->linedestination->setText(dataout.trimmed());
-
-}
-
-void frmMain::on_Bt1_clicked()
-{
-	QString text = ui->Le1->toPlainText();
-	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
-	QString tmpgbk;
-	QString tmputf8;
-	QString tmpunicode;
-	QByteArray hex_data;
-	for(QChar byte : text)
-	{
-		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
-		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
-		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
-	}
-	ui->Le2->setText(tmpgbk.trimmed().toUpper());
-	ui->Le3->setText(tmputf8.trimmed().toUpper());
-	ui->Le4->setText(tmpunicode.trimmed().toUpper());
-}
-
-void frmMain::on_Bt2_clicked()
-{
-	QString tmp;
-	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
-	QString tmpgbk;
-	QString tmputf8;
-	QString tmpunicode;
-	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le2->text());
-	tmp = gbk->toUnicode(ba);
-	for(QChar byte : tmp)
-	{
-		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
-		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
-	}
-
-	ui->Le1->setPlainText(tmp);
-	ui->Le3->setText(tmputf8.trimmed().toUpper());
-	ui->Le4->setText(tmpunicode.trimmed().toUpper());
-}
-
-void frmMain::on_Bt3_clicked()
-{
-	QString tmp;
-	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
-	QString tmpgbk;
-	QString tmputf8;
-	QString tmpunicode;
-	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le3->text());
-	tmp = utf8->toUnicode(ba);
-	for(QChar byte : tmp)
-	{
-		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
-		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
-	}
-
-	ui->Le1->setPlainText(tmp);
-	ui->Le2->setText(tmpgbk.trimmed().toUpper());
-	ui->Le4->setText(tmpunicode.trimmed().toUpper());
-}
-
-void frmMain::on_Bt4_clicked()
-{
-	QString tmp;
-	QStringList strlst = ui->Le4->text().split(" ");
-	strlst.removeAll("");
-	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
-	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
-	QString tmpgbk;
-	QString tmputf8;
-	for(QString str : strlst)
-	{
-		QChar byte(str.toUInt(0, 16));
-		tmp.append(byte);
-		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
-		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
-	}
-
-	ui->Le1->setPlainText(tmp);
-	ui->Le2->setText(tmpgbk.trimmed().toUpper());
-	ui->Le3->setText(tmputf8.trimmed().toUpper());
-}
-
-void frmMain::on_Bt_clear_clicked()
-{
-	ui->Le1->clear();
-	ui->Le2->clear();
-	ui->Le3->clear();
-	ui->Le4->clear();
-	ui->textsource->clear();
-	ui->textdestination->clear();
-	ui->linesource->clear();
-	ui->linedestination->clear();
-}
-
-
 
 void frmMain::on_action_TCPClient_triggered()
 {
@@ -808,6 +571,15 @@ void frmMain::ConfigShow(int index)
 	{
 		ui->stackedWidget_config->show();
 	}
+}
+
+void frmMain::initcursor()
+{
+	currentIndex = 0;
+	ui->resulttext->moveCursor(QTextCursor::Start);
+	tc = ui->resulttext->textCursor();
+	ui->pushButton_before->setToolTip(QString());
+	ui->pushButton_after->setToolTip(QString());
 }
 
 void frmMain::on_action_HandleData_triggered(bool checked)
@@ -958,4 +730,30 @@ void frmMain::on_action_Update_triggered()
 void frmMain::on_action_Exit_triggered()
 {
 	qApp->closeAllWindows();
+}
+
+void frmMain::on_pushButton_before_clicked()
+{
+	ui->resulttext->setTextCursor(tc);
+	if(ui->resulttext->find(ui->highlightEdit->text(), QTextDocument::FindBackward))
+	{
+		tc = ui->resulttext->textCursor();
+		currentIndex--;
+	}
+	auto sum = ui->resulttext->toPlainText().count(ui->highlightEdit->text(), Qt::CaseInsensitive);
+	ui->pushButton_before->setToolTip(QString("%1/%2").arg(currentIndex).arg(sum));
+	ui->pushButton_after->setToolTip(QString("%1/%2").arg(currentIndex).arg(sum));
+}
+
+void frmMain::on_pushButton_after_clicked()
+{
+	ui->resulttext->setTextCursor(tc);
+	if(ui->resulttext->find(ui->highlightEdit->text()))
+	{
+		tc = ui->resulttext->textCursor();
+		currentIndex++;
+	}
+	auto sum = ui->resulttext->toPlainText().count(ui->highlightEdit->text(), Qt::CaseInsensitive);
+	ui->pushButton_before->setToolTip(QString("%1/%2").arg(currentIndex).arg(sum));
+	ui->pushButton_after->setToolTip(QString("%1/%2").arg(currentIndex).arg(sum));
 }

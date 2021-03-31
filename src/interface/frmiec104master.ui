@@ -40,7 +40,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_start">
+      <widget class="QPushButton" name="pushButton_Start">
        <property name="text">
         <string>开始</string>
        </property>
@@ -54,7 +54,7 @@
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -102,35 +102,35 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="1">
-           <widget class="QPushButton" name="pushButton_104setTime">
+           <widget class="QPushButton" name="pushButton_SetTime">
             <property name="text">
              <string>对时</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QPushButton" name="pushButton_104sendUtest">
+           <widget class="QPushButton" name="pushButton_SendUTest">
             <property name="text">
              <string>发测试-U帧</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QPushButton" name="pushButton_104callall">
+           <widget class="QPushButton" name="pushButton_CallAll">
             <property name="text">
              <string>总召</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QPushButton" name="pushButton_104sendUstart">
+           <widget class="QPushButton" name="pushButton_SendUStart">
             <property name="text">
              <string>发启动-U帧</string>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_104sendS">
+           <widget class="QPushButton" name="pushButton_SendS">
             <property name="text">
              <string>确认-S帧</string>
             </property>
@@ -165,49 +165,14 @@
           <string>定值相关</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="lineEdit_104setValueFloat">
-            <property name="text">
-             <string>1</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QPushButton" name="pushButton_104callRange">
-            <property name="text">
-             <string>召唤量程</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QPushButton" name="pushButton_104callDimension">
-            <property name="text">
-             <string>召唤量纲</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>装置地址</string>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>定值(浮点数)</string>
+             <string>定值</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit_104devaddr">
-            <property name="text">
-             <string>1</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
+          <item row="5" column="0">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -220,10 +185,45 @@
             </property>
            </spacer>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_8">
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pushButton_CallAccuracy">
             <property name="text">
-             <string>定值(整数)</string>
+             <string>召唤精度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>定值类型</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QPushButton" name="pushButton_solidify">
+            <property name="text">
+             <string>固化定值</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="pushButton_CallSetting">
+            <property name="text">
+             <string>召唤数据</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="pushButton_CallDimension">
+            <property name="text">
+             <string>召唤量纲</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="lineEdit_SetValue">
+            <property name="text">
+             <string>1</string>
             </property>
            </widget>
           </item>
@@ -234,66 +234,70 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
-           <widget class="QPushButton" name="pushButton_104setUintDowm">
-            <property name="text">
-             <string>修改整数型定值</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="pushButton_104callSetting">
-            <property name="text">
-             <string>召唤整组数据</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEdit_104setInf">
-            <property name="text">
-             <string>1</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEdit_104setGroup">
-            <property name="text">
-             <string>1</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_104callTitle">
+           <widget class="QPushButton" name="pushButton_CallTitle">
             <property name="text">
              <string>召唤组标题</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="3">
-           <widget class="QPushButton" name="pushButton_104callDescription">
-            <property name="text">
-             <string>召唤描述</string>
-            </property>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="comboBox_ValueType">
+            <item>
+             <property name="text">
+              <string>FLOAT</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>INT8</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>INT16</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>INT32</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>UINT8</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>UINT16</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>UINT32</string>
+             </property>
+            </item>
            </widget>
           </item>
-          <item row="5" column="1">
-           <widget class="QLineEdit" name="lineEdit_104setValueUint">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineEdit_DevAddr">
             <property name="text">
              <string>1</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
-           <widget class="QPushButton" name="pushButton_104setFloatDowm">
+          <item row="1" column="3">
+           <widget class="QPushButton" name="pushButton_CallRange">
             <property name="text">
-             <string>修改浮点数定值</string>
+             <string>召唤量程</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="pushButton_104callAccuracy">
+          <item row="4" column="2">
+           <widget class="QPushButton" name="pushButton_SetValue">
             <property name="text">
-             <string>召唤精度</string>
+             <string>修改定值</string>
             </property>
            </widget>
           </item>
@@ -304,10 +308,31 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="3" rowspan="2">
-           <widget class="QPushButton" name="pushButton_104settingCuring">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>固化定值</string>
+             <string>装置地址</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineEdit_SetEntry">
+            <property name="text">
+             <string>1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QPushButton" name="pushButton_CallDescription">
+            <property name="text">
+             <string>召唤描述</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineEdit_SetGroup">
+            <property name="text">
+             <string>1</string>
             </property>
            </widget>
           </item>
@@ -327,52 +352,30 @@
           <string>遥控/遥调</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_9">
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEdit_104YTvalue">
-            <property name="text">
-             <string>1</string>
+          <item row="6" column="0">
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-           </widget>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item row="5" column="0">
-           <widget class="QPushButton" name="pushButton_104cancel">
+           <widget class="QPushButton" name="pushButton_Cancel">
             <property name="text">
              <string>取消</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QCheckBox" name="checkBox_104isHex">
-            <property name="text">
-             <string>16进制</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QComboBox" name="comboBox_104YKvalue">
-            <item>
-             <property name="text">
-              <string>合 - 升</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>分 - 降</string>
-             </property>
-            </item>
-           </widget>
-          </item>
           <item row="3" column="0">
-           <widget class="QPushButton" name="pushButton_104select">
+           <widget class="QPushButton" name="pushButton_Select">
             <property name="text">
              <string>选择</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLabel" name="label_select">
-            <property name="text">
-             <string>选择结果</string>
             </property>
            </widget>
           </item>
@@ -383,8 +386,50 @@
             </property>
            </widget>
           </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="label_Execute">
+            <property name="text">
+             <string>执行结果</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="pushButton_Execute">
+            <property name="text">
+             <string>执行</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineEdit_InfAddr">
+            <property name="text">
+             <string>24577</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_Select">
+            <property name="text">
+             <string>选择结果</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>信息体地址</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="checkBox_isHex">
+            <property name="text">
+             <string>16进制</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1" colspan="2">
-           <widget class="QComboBox" name="comboBox_104remotetype">
+           <widget class="QComboBox" name="comboBox_RemoteType">
             <item>
              <property name="text">
               <string>45 单点遥控</string>
@@ -427,13 +472,6 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>信息体地址</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
@@ -441,39 +479,26 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEdit_104infaddr">
-            <property name="text">
-             <string>24577</string>
-            </property>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="comboBox_YKValue">
+            <item>
+             <property name="text">
+              <string>合 - 升</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>分 - 降</string>
+             </property>
+            </item>
            </widget>
           </item>
-          <item row="4" column="0">
-           <widget class="QPushButton" name="pushButton_104execute">
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="lineEdit_YTValue">
             <property name="text">
-             <string>执行</string>
+             <string>1</string>
             </property>
            </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLabel" name="label_execute">
-            <property name="text">
-             <string>执行结果</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
@@ -492,7 +517,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="1" column="2">
-           <widget class="QPushButton" name="pushButton_sendasdu_2">
+           <widget class="QPushButton" name="pushButton_SendAsdu2">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -518,7 +543,7 @@
            </widget>
           </item>
           <item row="4" column="2">
-           <widget class="QPushButton" name="pushButton_sendasdu_5">
+           <widget class="QPushButton" name="pushButton_SendAsdu5">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -537,7 +562,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QTextEdit" name="textEdit_104asdu">
+           <widget class="QTextEdit" name="textEdit_Asdu1">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -573,7 +598,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QTextEdit" name="textEdit_104asdu_4">
+           <widget class="QTextEdit" name="textEdit_Asdu4">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -597,7 +622,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QTextEdit" name="textEdit_104asdu_5">
+           <widget class="QTextEdit" name="textEdit_Asdu5">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -607,7 +632,7 @@
            </widget>
           </item>
           <item row="5" column="2">
-           <widget class="QPushButton" name="pushButton_sendasdu_6">
+           <widget class="QPushButton" name="pushButton_SendAsdu6">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -626,7 +651,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QTextEdit" name="textEdit_104asdu_3">
+           <widget class="QTextEdit" name="textEdit_Asdu3">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -636,7 +661,7 @@
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QPushButton" name="pushButton_sendasdu_3">
+           <widget class="QPushButton" name="pushButton_SendAsdu3">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -655,7 +680,7 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QPushButton" name="pushButton_sendasdu">
+           <widget class="QPushButton" name="pushButton_SendAsdu1">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -674,7 +699,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QTextEdit" name="textEdit_104asdu_6">
+           <widget class="QTextEdit" name="textEdit_Asdu6">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -684,7 +709,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QTextEdit" name="textEdit_104asdu_2">
+           <widget class="QTextEdit" name="textEdit_Asdu2">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -713,7 +738,7 @@
            </widget>
           </item>
           <item row="3" column="2">
-           <widget class="QPushButton" name="pushButton_sendasdu_4">
+           <widget class="QPushButton" name="pushButton_SendAsdu4">
             <property name="minimumSize">
              <size>
               <width>0</width>

@@ -4,6 +4,7 @@ FORMS += \
 	$$PWD/dialogpma.ui \
 	$$PWD/frmcomtool.ui \
 	$$PWD/frmdebug.ui \
+	$$PWD/frmhandledata.ui \
 	$$PWD/frmiec104master.ui \
 	$$PWD/frmmain.ui \
 	$$PWD/frmmeasuredterminalmaster.ui \
@@ -18,6 +19,7 @@ HEADERS += \
 	$$PWD/dialogpma.h \
 	$$PWD/frmcomtool.h \
 	$$PWD/frmdebug.h \
+	$$PWD/frmhandledata.h \
 	$$PWD/frmiec104master.h \
 	$$PWD/frmmain.h \
 	$$PWD/frmmeasuredterminalmaster.h \
@@ -33,6 +35,7 @@ SOURCES += \
 	$$PWD/dialogpma.cpp \
 	$$PWD/frmcomtool.cpp \
 	$$PWD/frmdebug.cpp \
+	$$PWD/frmhandledata.cpp \
 	$$PWD/frmiec104master.cpp \
 	$$PWD/frmmain.cpp \
 	$$PWD/frmmeasuredterminalmaster.cpp \
