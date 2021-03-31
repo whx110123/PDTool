@@ -48,10 +48,10 @@ void frmUdpServer::dealData(const QString& data)
 void frmUdpServer::initForm()
 {
 	udpSocket = new QUdpSocket(this);
-	connect(udpSocket, SIGNAL(readyRead()), this, SLOT(readData()));
+	connect(udpSocket, &QUdpSocket::readyRead, this, &frmUdpServer::readData);
 
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
+	connect(timer, &QTimer::timeout, this, &frmUdpServer::on_btnSend_clicked);
 
 	ui->cboxInterval->addItems(App::Intervals);
 	ui->cboxData->addItems(App::Datas);
@@ -99,31 +99,31 @@ void frmUdpServer::initIP()
 void frmUdpServer::initConfig()
 {
 	ui->ckHexSend->setChecked(App::HexSendUdpServer);
-	connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexSend, &QCheckBox::stateChanged, this, &frmUdpServer::saveConfig);
 
 	ui->ckHexReceive->setChecked(App::HexReceiveUdpServer);
-	connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexReceive, &QCheckBox::stateChanged, this, &frmUdpServer::saveConfig);
 
 	ui->ckAscii->setChecked(App::AsciiUdpServer);
-	connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAscii, &QCheckBox::stateChanged, this, &frmUdpServer::saveConfig);
 
 	ui->ckDebug->setChecked(App::DebugUdpServer);
-	connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckDebug, &QCheckBox::stateChanged, this, &frmUdpServer::saveConfig);
 
 	ui->ckAutoSend->setChecked(App::AutoSendUdpServer);
-	connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoSend, &QCheckBox::stateChanged, this, &frmUdpServer::saveConfig);
 
 	ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalUdpServer)));
-	connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxInterval, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmUdpServer::saveConfig);
 
 	ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::UdpListenIP));
-	connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxListenIP, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmUdpServer::saveConfig);
 
 	ui->txtListenPort->setText(QString::number(App::UdpListenPort));
-	connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtListenPort, &QLineEdit::textChanged, this, &frmUdpServer::saveConfig);
 
 	ui->ckSelectAll->setChecked(App::SelectAllUdpServer);
-	connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckSelectAll, &QCheckBox::stateChanged, this, &frmUdpServer::saveConfig);
 
 	this->changeTimer();
 }

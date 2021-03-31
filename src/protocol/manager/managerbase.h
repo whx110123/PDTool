@@ -26,7 +26,7 @@ public:
 	virtual void restoreDefaults();
 	void initConfig(ManagerConfig *config);
 	virtual void initMyConfig(ManagerConfig *config);
-	void setRcvData(const QByteArray& data);
+
 	void addRcvData(const QByteArray& data);
 	void addSndData(const QByteArray& data);
 	void clearData();
@@ -51,8 +51,7 @@ public:
 	QByteArray rcvData;
 	QMutex mutexSD;
 	QVector<QByteArray> sndDatas;
-
-//	QTimer *handleRcvDataTimer;
+	QTimer *handleRcvDataTimer;
 	QTimer *handleSndDataTimer;
 
 };

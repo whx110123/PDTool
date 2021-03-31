@@ -29,10 +29,10 @@ void frmUdpClient::dealData(const QString& data)
 void frmUdpClient::initForm()
 {
 	udpSocket = new QUdpSocket(this);
-	connect(udpSocket, SIGNAL(readyRead()), this, SLOT(readData()));
+	connect(udpSocket, &QUdpSocket::readyRead, this, &frmUdpClient::readData);
 
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
+	connect(timer, &QTimer::timeout, this, &frmUdpClient::on_btnSend_clicked);
 
 	ui->cboxInterval->addItems(App::Intervals);
 	ui->cboxData->addItems(App::Datas);
@@ -41,28 +41,28 @@ void frmUdpClient::initForm()
 void frmUdpClient::initConfig()
 {
 	ui->ckHexSend->setChecked(App::HexSendUdpClient);
-	connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexSend, &QCheckBox::stateChanged, this, &frmUdpClient::saveConfig);
 
 	ui->ckHexReceive->setChecked(App::HexReceiveUdpClient);
-	connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexReceive, &QCheckBox::stateChanged, this, &frmUdpClient::saveConfig);
 
 	ui->ckAscii->setChecked(App::AsciiUdpClient);
-	connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAscii, &QCheckBox::stateChanged, this, &frmUdpClient::saveConfig);
 
 	ui->ckDebug->setChecked(App::DebugUdpClient);
-	connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckDebug, &QCheckBox::stateChanged, this, &frmUdpClient::saveConfig);
 
 	ui->ckAutoSend->setChecked(App::AutoSendUdpClient);
-	connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoSend, &QCheckBox::stateChanged, this, &frmUdpClient::saveConfig);
 
 	ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalUdpClient)));
-	connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxInterval, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmUdpClient::saveConfig);
 
 	ui->txtServerIP->setText(App::UdpServerIP);
-	connect(ui->txtServerIP, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtServerIP, &QLineEdit::textChanged, this, &frmUdpClient::saveConfig);
 
 	ui->txtServerPort->setText(QString::number(App::UdpServerPort));
-	connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtServerPort, &QLineEdit::textChanged, this, &frmUdpClient::saveConfig);
 
 	this->changeTimer();
 }

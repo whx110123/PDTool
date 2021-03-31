@@ -48,13 +48,13 @@ void frmTcpServer::initForm()
 {
 	isOk = false;
 	tcpServer = new TcpServer(this);
-	connect(tcpServer, SIGNAL(clientConnected(QString, int)), this, SLOT(clientConnected(QString, int)));
-	connect(tcpServer, SIGNAL(clientDisconnected(QString, int)), this, SLOT(clientDisconnected(QString, int)));
-	connect(tcpServer, SIGNAL(sendData(QString, int, QString)), this, SLOT(sendData(QString, int, QString)));
-	connect(tcpServer, SIGNAL(receiveData(QString, int, QString)), this, SLOT(receiveData(QString, int, QString)));
+	connect(tcpServer, &TcpServer::clientConnected, this, &frmTcpServer::clientConnected);
+	connect(tcpServer, &TcpServer::clientDisconnected, this, &frmTcpServer::clientDisconnected);
+	connect(tcpServer, &TcpServer::sendData, this, &frmTcpServer::sendData);
+	connect(tcpServer, &TcpServer::receiveData, this, &frmTcpServer::receiveData);
 
 	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
+	connect(timer, &QTimer::timeout, this,  &frmTcpServer::on_btnSend_clicked);
 
 	ui->cboxInterval->addItems(App::Intervals);
 	ui->cboxData->addItems(App::Datas);
@@ -102,31 +102,31 @@ void frmTcpServer::initIP()
 void frmTcpServer::initConfig()
 {
 	ui->ckHexSend->setChecked(App::HexSendTcpServer);
-	connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexSend, &QCheckBox::stateChanged, this, &frmTcpServer::saveConfig);
 
 	ui->ckHexReceive->setChecked(App::HexReceiveTcpServer);
-	connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexReceive, &QCheckBox::stateChanged, this, &frmTcpServer::saveConfig);
 
 	ui->ckAscii->setChecked(App::AsciiTcpServer);
-	connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAscii, &QCheckBox::stateChanged, this, &frmTcpServer::saveConfig);
 
 	ui->ckDebug->setChecked(App::DebugTcpServer);
-	connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckDebug, &QCheckBox::stateChanged, this, &frmTcpServer::saveConfig);
 
 	ui->ckAutoSend->setChecked(App::AutoSendTcpServer);
-	connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoSend, &QCheckBox::stateChanged, this, &frmTcpServer::saveConfig);
 
 	ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalTcpServer)));
-	connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxInterval, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmTcpServer::saveConfig);
 
 	ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::TcpListenIP));
-	connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxListenIP, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmTcpServer::saveConfig);
 
 	ui->txtListenPort->setText(QString::number(App::TcpListenPort));
-	connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtListenPort, &QLineEdit::textChanged, this, &frmTcpServer::saveConfig);
 
 	ui->ckSelectAll->setChecked(App::SelectAllTcpServer);
-	connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckSelectAll, &QCheckBox::stateChanged, this, &frmTcpServer::saveConfig);
 
 	this->changeTimer();
 }

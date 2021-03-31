@@ -39,12 +39,12 @@ bool ModbusTCP::init(const QByteArray& buff)
 	len += 2;
 	if(length > 255)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP长度大于255");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)大于255").arg(length));
 		return false;
 	}
 	if(length + 6 > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP长度比实际报文长度长");
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)比实际报文长度(%2)长").arg(length + 6).arg(buff.length()));
 		return false;
 	}
 

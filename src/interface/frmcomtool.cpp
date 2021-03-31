@@ -51,17 +51,17 @@ void frmComTool::initForm()
 	//读取数据
 	timerRead = new QTimer(this);
 	timerRead->setInterval(100);
-	connect(timerRead, SIGNAL(timeout()), this, SLOT(readData()));
+	connect(timerRead, &QTimer::timeout, this, &frmComTool::readData);
 
 	//发送数据
 	timerSend = new QTimer(this);
-	connect(timerSend, SIGNAL(timeout()), this, SLOT(sendData()));
-	connect(ui->btnSend, SIGNAL(clicked()), this, SLOT(sendData()));
+	connect(timerSend, &QTimer::timeout, this, static_cast<void (frmComTool::*)()> (&frmComTool::sendData));
+	connect(ui->btnSend, &QPushButton::clicked, this, static_cast<void (frmComTool::*)()> (&frmComTool::sendData));
 
 	//保存数据
 	timerSave = new QTimer(this);
-	connect(timerSave, SIGNAL(timeout()), this, SLOT(saveData()));
-	connect(ui->btnSave, SIGNAL(clicked()), this, SLOT(saveData()));
+	connect(timerSave, &QTimer::timeout, this, &frmComTool::saveData);
+	connect(ui->btnSave, &QPushButton::clicked, this, &frmComTool::saveData);
 
 	ui->tabWidget->setCurrentIndex(0);
 	changeEnable(false);
@@ -69,11 +69,11 @@ void frmComTool::initForm()
 	tcpOk = false;
 	socket = new QTcpSocket(this);
 	socket->abort();
-	connect(socket, SIGNAL(readyRead()), this, SLOT(readDataNet()));
-	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(readErrorNet()));
+	connect(socket, &QTcpSocket::readyRead, this, &frmComTool::readDataNet);
+	connect(socket, static_cast<void (QTcpSocket::*)(QAbstractSocket::SocketError)>(&QTcpSocket::error), this, &frmComTool::readErrorNet);
 
 	timerConnect = new QTimer(this);
-	connect(timerConnect, SIGNAL(timeout()), this, SLOT(connectNet()));
+	connect(timerConnect, &QTimer::timeout, this, &frmComTool::connectNet);
 	timerConnect->setInterval(3000);
 	timerConnect->start();
 
@@ -107,7 +107,7 @@ void frmComTool::initConfig()
 //	comList << "ttySAC1" << "ttySAC2" << "ttySAC3" << "ttySAC4";
 //	ui->cboxPortName->addItems(comList);
 //	ui->cboxPortName->setCurrentIndex(ui->cboxPortName->findText(App::PortName));
-	connect(ui->cboxPortName, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxPortName, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	QStringList baudList;
 	baudList << "50" << "75" << "100" << "134" << "150" << "200" << "300" << "600" << "1200"
@@ -116,14 +116,14 @@ void frmComTool::initConfig()
 
 	ui->cboxBaudRate->addItems(baudList);
 	ui->cboxBaudRate->setCurrentIndex(ui->cboxBaudRate->findText(QString::number(App::BaudRate)));
-	connect(ui->cboxBaudRate, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxBaudRate, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	QStringList dataBitsList;
 	dataBitsList << "5" << "6" << "7" << "8";
 
 	ui->cboxDataBit->addItems(dataBitsList);
 	ui->cboxDataBit->setCurrentIndex(ui->cboxDataBit->findText(QString::number(App::DataBit)));
-	connect(ui->cboxDataBit, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxDataBit, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	QStringList parityList;
 	parityList << "无" << "奇" << "偶";
@@ -134,7 +134,7 @@ void frmComTool::initConfig()
 
 	ui->cboxParity->addItems(parityList);
 	ui->cboxParity->setCurrentIndex(ui->cboxParity->findText(App::Parity));
-	connect(ui->cboxParity, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxParity, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	QStringList stopBitsList;
 	stopBitsList << "1";
@@ -145,25 +145,25 @@ void frmComTool::initConfig()
 
 	ui->cboxStopBit->addItems(stopBitsList);
 	ui->cboxStopBit->setCurrentIndex(ui->cboxStopBit->findText(QString::number(App::StopBit)));
-	connect(ui->cboxStopBit, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxStopBit, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	ui->ckHexSend->setChecked(App::HexSend);
-	connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexSend, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 
 	ui->ckHexReceive->setChecked(App::HexReceive);
-	connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckHexReceive, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 
 	ui->ckDebug->setChecked(App::Debug);
-	connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckDebug, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 
 	ui->ckAutoClear->setChecked(App::AutoClear);
-	connect(ui->ckAutoClear, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoClear, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 
 	ui->ckAutoSend->setChecked(App::AutoSend);
-	connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoSend, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 
 	ui->ckAutoSave->setChecked(App::AutoSave);
-	connect(ui->ckAutoSave, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoSave, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 
 	QStringList sendInterval;
 	QStringList saveInterval;
@@ -179,9 +179,9 @@ void frmComTool::initConfig()
 	ui->cboxSaveInterval->addItems(saveInterval);
 
 	ui->cboxSendInterval->setCurrentIndex(ui->cboxSendInterval->findText(QString::number(App::SendInterval)));
-	connect(ui->cboxSendInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxSendInterval, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 	ui->cboxSaveInterval->setCurrentIndex(ui->cboxSaveInterval->findText(QString::number(App::SaveInterval)));
-	connect(ui->cboxSaveInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxSaveInterval, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	timerSend->setInterval(App::SendInterval);
 	timerSave->setInterval(App::SaveInterval);
@@ -198,16 +198,16 @@ void frmComTool::initConfig()
 
 	//串口转网络部分
 	ui->cboxMode->setCurrentIndex(ui->cboxMode->findText(App::Mode));
-	connect(ui->cboxMode, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	ui->txtServerIP->setText(App::ServerIP);
-	connect(ui->txtServerIP, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtServerIP, &QLineEdit::textChanged, this, &frmComTool::saveConfig);
 
 	ui->txtServerPort->setText(QString::number(App::ServerPort));
-	connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtServerPort, &QLineEdit::textChanged, this, &frmComTool::saveConfig);
 
 	ui->txtListenPort->setText(QString::number(App::ListenPort));
-	connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+	connect(ui->txtListenPort, &QLineEdit::textChanged, this, &frmComTool::saveConfig);
 
 	QStringList values;
 	values << "0" << "10" << "50";
@@ -220,10 +220,10 @@ void frmComTool::initConfig()
 	ui->cboxSleepTime->addItems(values);
 
 	ui->cboxSleepTime->setCurrentIndex(ui->cboxSleepTime->findText(QString::number(App::SleepTime)));
-	connect(ui->cboxSleepTime, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->cboxSleepTime, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &frmComTool::saveConfig);
 
 	ui->ckAutoConnect->setChecked(App::AutoConnect);
-	connect(ui->ckAutoConnect, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+	connect(ui->ckAutoConnect, &QCheckBox::stateChanged, this, &frmComTool::saveConfig);
 }
 
 void frmComTool::saveConfig()

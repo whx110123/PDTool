@@ -241,9 +241,9 @@ void QUIWidget::initControl()
 	verticalLayout2->addWidget(widget);
 	verticalLayout1->addWidget(widgetMain);
 
-	connect(this->btnMenu_Min, SIGNAL(clicked()), this, SLOT(on_btnMenu_Min_clicked()));
-	connect(this->btnMenu_Max, SIGNAL(clicked()), this, SLOT(on_btnMenu_Max_clicked()));
-	connect(this->btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+	connect(this->btnMenu_Min, &QPushButton::clicked, this, &QUIWidget::on_btnMenu_Min_clicked);
+	connect(this->btnMenu_Max, &QPushButton::clicked, this, &QUIWidget::on_btnMenu_Max_clicked);
+	connect(this->btnMenu_Close, &QPushButton::clicked, this, &QUIWidget::on_btnMenu_Close_clicked);
 }
 
 void QUIWidget::initForm()
@@ -281,7 +281,7 @@ void QUIWidget::initForm()
 	foreach(QString styleName, styleNames)
 	{
 		QAction *action = new QAction(styleName, this);
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(changeStyle()));
+		connect(action, &QAction::triggered, this, static_cast<void (QUIWidget::*)()>(&QUIWidget::changeStyle));
 		this->btnMenu->addAction(action);
 	}
 }
@@ -802,9 +802,9 @@ void QUIMessageBox::initControl()
 	QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
 	QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
 
-	connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
-	connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
-	connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+	connect(btnOk, &QPushButton::clicked, this, &QUIMessageBox::on_btnOk_clicked);
+	connect(btnCancel, &QPushButton::clicked, this, &QUIMessageBox::on_btnMenu_Close_clicked);
+	connect(btnMenu_Close, &QPushButton::clicked, this, &QUIMessageBox::on_btnMenu_Close_clicked);
 }
 
 void QUIMessageBox::initForm()
@@ -836,7 +836,7 @@ void QUIMessageBox::initForm()
 
 	QTimer *timer = new QTimer(this);
 	timer->setInterval(1000);
-	connect(timer, SIGNAL(timeout()), this, SLOT(checkSec()));
+	connect(timer, &QTimer::timeout, this, &QUIMessageBox::checkSec);
 	timer->start();
 
 	this->installEventFilter(this);
@@ -1087,7 +1087,7 @@ void QUITipBox::initControl()
 	verticalLayout2->addWidget(labInfo);
 	verticalLayout->addWidget(widgetMain);
 
-	connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+	connect(btnMenu_Close, &QPushButton::clicked, this, &QUITipBox::on_btnMenu_Close_clicked);
 }
 
 void QUITipBox::initForm()
@@ -1106,7 +1106,7 @@ void QUITipBox::initForm()
 
 	QTimer *timer = new QTimer(this);
 	timer->setInterval(1000);
-	connect(timer, SIGNAL(timeout()), this, SLOT(checkSec()));
+	connect(timer, &QTimer::timeout, this, &QUITipBox::checkSec);
 	timer->start();
 
 	this->installEventFilter(this);
@@ -1364,9 +1364,9 @@ void QUIInputBox::initControl()
 	QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
 	QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
 
-	connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
-	connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
-	connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+	connect(btnOk, &QPushButton::clicked, this, &QUIInputBox::on_btnOk_clicked);
+	connect(btnCancel, &QPushButton::clicked, this, &QUIInputBox::on_btnMenu_Close_clicked);
+	connect(btnMenu_Close, &QPushButton::clicked, this, &QUIInputBox::on_btnMenu_Close_clicked);
 }
 
 void QUIInputBox::initForm()
@@ -1398,7 +1398,7 @@ void QUIInputBox::initForm()
 
 	QTimer *timer = new QTimer(this);
 	timer->setInterval(1000);
-	connect(timer, SIGNAL(timeout()), this, SLOT(checkSec()));
+	connect(timer, &QTimer::timeout, this, &QUIInputBox::checkSec);
 	timer->start();
 
 	this->installEventFilter(this);
@@ -1737,9 +1737,9 @@ void QUIDateSelect::initControl()
 	dateEnd->calendarWidget()->setLocale(QLocale::Chinese);
 	setFormat("yyyy-MM-dd");
 
-	connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
-	connect(btnClose, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
-	connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+	connect(btnOk, &QPushButton::clicked, this, &QUIDateSelect::on_btnOk_clicked);
+	connect(btnClose, &QPushButton::clicked, this, &QUIDateSelect::on_btnMenu_Close_clicked);
+	connect(btnMenu_Close, &QPushButton::clicked, this, &QUIDateSelect::on_btnMenu_Close_clicked);
 }
 
 void QUIDateSelect::initForm()
@@ -2262,8 +2262,7 @@ TrayIcon::TrayIcon(QObject *parent) : QObject(parent)
 {
 	mainWidget = 0;
 	trayIcon = new QSystemTrayIcon(this);
-	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-			this, SLOT(iconIsActived(QSystemTrayIcon::ActivationReason)));
+	connect(trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::iconIsActived);
 	menu = new QMenu(QApplication::desktop());
 	exitDirect = true;
 }
@@ -2295,15 +2294,15 @@ void TrayIcon::setExitDirect(bool exitDirect)
 void TrayIcon::setMainWidget(QWidget *mainWidget)
 {
 	this->mainWidget = mainWidget;
-	menu->addAction("主界面", mainWidget, SLOT(showNormal()));
+	menu->addAction("主界面", mainWidget, &QWidget::showNormal);
 
 	if(exitDirect)
 	{
-		menu->addAction("退出", this, SLOT(closeAll()));
+		menu->addAction("退出", this, &TrayIcon::closeAll);
 	}
 	else
 	{
-		menu->addAction("退出", this, SIGNAL(trayIconExit()));
+		menu->addAction("退出", this, &TrayIcon::trayIconExit);
 	}
 
 	trayIcon->setContextMenu(menu);
@@ -4050,12 +4049,12 @@ bool QUIHelper::ipLive(const QString& ip, int port, int timeout)
 
 	//设置超时
 	QTimer timer;
-	connect(&timer, SIGNAL(timeout()), &eventLoop, SLOT(quit()));
+	connect(&timer, &QTimer::timeout, &eventLoop, &QEventLoop::quit);
 	timer.setSingleShot(true);
 	timer.start(timeout);
 
 	QTcpSocket tcpSocket;
-	connect(&tcpSocket, SIGNAL(connected()), &eventLoop, SLOT(quit()));
+	connect(&tcpSocket, &QTcpSocket::connected, &eventLoop, &QEventLoop::quit);
 	tcpSocket.connectToHost(ip, port);
 	eventLoop.exec();
 	bool ok = (tcpSocket.state() == QAbstractSocket::ConnectedState);
@@ -4068,7 +4067,7 @@ QString QUIHelper::getHtml(const QString& url)
 	QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
 	QByteArray responseData;
 	QEventLoop eventLoop;
-	QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &eventLoop, SLOT(quit()));
+	QObject::connect(manager, &QNetworkAccessManager::finished, &eventLoop, &QEventLoop::quit);
 	eventLoop.exec();
 	responseData = reply->readAll();
 	return QString(responseData);

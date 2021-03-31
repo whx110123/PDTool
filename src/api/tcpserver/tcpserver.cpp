@@ -6,9 +6,9 @@ TcpClient::TcpClient(QObject *parent) :  QTcpSocket(parent)
 	ip = "127.0.0.1";
 	port = 6000;
 
-	connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(deleteLater()));
-	connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
-	connect(this, SIGNAL(readyRead()), this, SLOT(readData()));
+	connect(this, static_cast<void (TcpClient::*)(QAbstractSocket::SocketError)>(&TcpClient::error), this, &TcpClient::deleteLater);
+	connect(this, &TcpClient::disconnected, this, &TcpClient::deleteLater);
+	connect(this, &TcpClient::readyRead, this, &TcpClient::readData);
 }
 
 void TcpClient::setIP(const QString& ip)
@@ -115,9 +115,9 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent)
 {
 	TcpClient *client = new TcpClient(this);
 	client->setSocketDescriptor(handle);
-	connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	connect(client, SIGNAL(sendData(QString, int, QString)), this, SIGNAL(sendData(QString, int, QString)));
-	connect(client, SIGNAL(receiveData(QString, int, QString)), this, SIGNAL(receiveData(QString, int, QString)));
+	connect(client, &TcpClient::disconnected, this, &TcpServer::disconnected);
+	connect(client, static_cast<void (TcpClient::*)(const QString&, int, const QString&)>(&TcpClient::sendData), this, &TcpServer::sendData);
+	connect(client, &TcpClient::receiveData, this, &TcpServer::receiveData);
 
 	QString ip = client->peerAddress().toString();
 	ip = ip.replace("::ffff:", "");
