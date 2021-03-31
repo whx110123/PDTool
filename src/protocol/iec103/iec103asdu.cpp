@@ -601,40 +601,40 @@ QString IEC103Asdu::showToText()
 	return text;
 }
 
-bool IEC103Asdu::createData(IECDataConfig& config)
+bool IEC103Asdu::createData(MyData& proData)
 {
-	qDeleteAll(datalist);
-	datalist.clear();
+//	qDeleteAll(datalist);
+//	datalist.clear();
 
-	if(config.isMaster)
-	{
-		config.data += config.asdutype;
-		config.data += config.vsq;
-		config.data += config.cot;
-		config.data += (char)(config.devaddr & 0xff);
-		config.data += config.fun;
-		for(int i = 0; i < (config.vsq & 0x7f); i++)
-		{
-			IEC103AsduData *newdata = CreateAsduData(config.asdutype);
-			if(!newdata)
-			{
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
-				return false;
-			}
-			newdata->index = i;
-			datalist.append(newdata);
-			if(!newdata->createData(config))
-			{
-				return false;
-			}
-		}
+//	if(config.isMaster)
+//	{
+//		config.data += config.asdutype;
+//		config.data += config.vsq;
+//		config.data += config.cot;
+//		config.data += (char)(config.devaddr & 0xff);
+//		config.data += config.fun;
+//		for(int i = 0; i < (config.vsq & 0x7f); i++)
+//		{
+//			IEC103AsduData *newdata = CreateAsduData(config.asdutype);
+//			if(!newdata)
+//			{
+//				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
+//				return false;
+//			}
+//			newdata->index = i;
+//			datalist.append(newdata);
+//			if(!newdata->createData(config))
+//			{
+//				return false;
+//			}
+//		}
 
-	}
-	else
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-		return false;
-	}
+//	}
+//	else
+//	{
+//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+//		return false;
+//	}
 	//	config.data += config.asdutype;
 	//	config.data += config.vsq;
 	//	config.data += config.cot;

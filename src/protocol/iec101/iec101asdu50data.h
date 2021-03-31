@@ -10,7 +10,7 @@ public:
 	IEC101Asdu50Data(const MyConfig& Config);
 	~IEC101Asdu50Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	float floatdata;

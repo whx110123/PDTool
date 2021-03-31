@@ -227,38 +227,38 @@ QString IEC101Asdu::showToText()
 	return text;
 }
 
-bool IEC101Asdu::createData(IECDataConfig& config)
+bool IEC101Asdu::createData(MyData& proData)
 {
-	qDeleteAll(datalist);
-	datalist.clear();
+//	qDeleteAll(datalist);
+//	datalist.clear();
 
-	config.data += config.asdutype;
-	config.data += config.vsq;
-	config.data += uintToBa(config.cot, mConfig.cotlen);
-	config.data += uintToBa(config.comaddr, mConfig.comaddrlen);
-	config.isfirst = true;
+//	config.data += config.asdutype;
+//	config.data += config.vsq;
+//	config.data += uintToBa(config.cot, mConfig.cotlen);
+//	config.data += uintToBa(config.comaddr, mConfig.comaddrlen);
+//	config.isfirst = true;
 
-	int num = config.vsq & 0x7f;
-	if(config.asdutype == 167)
-	{
-		num = 1;
-	}
-	for(int i = 0; i < num ; i++)
-	{
-		IEC101AsduData *newdata = CreateAsduData(config.asdutype);
-		if(!newdata)
-		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
-			return false;
-		}
-		newdata->index = i;
-		datalist.append(newdata);
-		if(!newdata->createData(config))
-		{
-			return false;
-		}
+//	int num = config.vsq & 0x7f;
+//	if(config.asdutype == 167)
+//	{
+//		num = 1;
+//	}
+//	for(int i = 0; i < num ; i++)
+//	{
+//		IEC101AsduData *newdata = CreateAsduData(config.asdutype);
+//		if(!newdata)
+//		{
+//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
+//			return false;
+//		}
+//		newdata->index = i;
+//		datalist.append(newdata);
+//		if(!newdata->createData(config))
+//		{
+//			return false;
+//		}
 
-	}
+//	}
 
 	return true;
 }

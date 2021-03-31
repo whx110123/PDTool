@@ -11,7 +11,7 @@ public:
 	~IEC103NetApciWiscom();
 	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	uchar source_factory_addr;		//源厂站地址

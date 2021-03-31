@@ -179,114 +179,150 @@ bool IEC104Control::init(const QByteArray& buff)
 }
 
 
-bool IEC104Control::createData(IECDataConfig& config)
+bool IEC104Control::createData(MyData& proData)
 {
-	if(config.isMaster)
+	if(code & 0x01)
 	{
-		switch(config.controltype)
+		if(code & 0x02)
 		{
-		case UTYPE:
-			switch(config.masterState)
-			{
-			case STATE_INIT:
-				config.data += 0x07;
-				config.data += '\0';
-				config.data += '\0';
-				config.data += '\0';
-				break;
-			case STATE_NORMAL:
-				break;
-			case STATE_TESTACT:
-				config.data += 0x43;
-				config.data += '\0';
-				config.data += '\0';
-				config.data += '\0';
-				break;
-			case STATE_TESTCONFIRM:
-				config.data += 0x83;
-				config.data += '\0';
-				config.data += '\0';
-				config.data += '\0';
-				break;
-			default:
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
-				return false;
-				break;
-			}
-			config.asdutype = 0;
-			break;
-		case STYPE:
-
-			config.data += 0x01;
-			config.data += '\0';
-			config.data += uintToBa(localRecvNo << 1, 2);
-			config.asdutype = 0;
-			break;
-		case ITYPE:
-			config.data += uintToBa(localSendNo << 1, 2);
-			config.data += uintToBa(localRecvNo << 1, 2);
-			localSendNo++;
-
-			break;
-		default:
-			break;
+			type = UTYPE;
+		}
+		else
+		{
+			type = STYPE;
 		}
 	}
 	else
 	{
-		switch(config.controltype)
-		{
-		case UTYPE:
-			switch(config.slaveState)
-			{
-			case STATE_INIT:
-				config.data += 0x0b;
-				config.data += '\0';
-				config.data += '\0';
-				config.data += '\0';
-				break;
-			case STATE_NORMAL:
-				break;
-			case STATE_TESTACT:
-				config.data += 0x43;
-				config.data += '\0';
-				config.data += '\0';
-				config.data += '\0';
-				break;
-			case STATE_TESTCONFIRM:
-				config.data += 0x83;
-				config.data += '\0';
-				config.data += '\0';
-				config.data += '\0';
-				break;
-			default:
-				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
-				return false;
-				break;
-			}
-			config.asdutype = 0;
-			break;
-		case STYPE:
-			config.data += 0x01;
-			config.data += '\0';
-			config.data += uintToBa(localRecvNo << 1, 2);
-			config.asdutype = 0;
-			break;
-		case ITYPE:
-			config.data += uintToBa(localSendNo << 1, 2);
-			config.data += uintToBa(localRecvNo << 1, 2);
-			localSendNo++;
-			break;
-		default:
-			break;
-		}
+		type = ITYPE;
 	}
+	switch(type)
+	{
+	case ITYPE:
+		proData.data += uintToBa(localSendNo * 2, 2);
+		proData.data += uintToBa(localRecvNo * 2, 2);
+		break;
+	case UTYPE:
+		proData.data += code;
+		proData.data += uintToBa(0, 3);
+		break;
+	case STYPE:
+		proData.data += uintToBa(code, 2);;
+		proData.data += uintToBa(localRecvNo * 2, 2);
+		break;
+	default:
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+		return false;
+		break;
+	}
+	return true;
+
+//	if(config.isMaster)
+//	{
+//		switch(config.controltype)
+//		{
+//		case UTYPE:
+//			switch(config.masterState)
+//			{
+//			case STATE_INIT:
+//				config.data += 0x07;
+//				config.data += '\0';
+//				config.data += '\0';
+//				config.data += '\0';
+//				break;
+//			case STATE_NORMAL:
+//				break;
+//			case STATE_TESTACT:
+//				config.data += 0x43;
+//				config.data += '\0';
+//				config.data += '\0';
+//				config.data += '\0';
+//				break;
+//			case STATE_TESTCONFIRM:
+//				config.data += 0x83;
+//				config.data += '\0';
+//				config.data += '\0';
+//				config.data += '\0';
+//				break;
+//			default:
+//				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
+//				return false;
+//				break;
+//			}
+//			config.asdutype = 0;
+//			break;
+//		case STYPE:
+
+//			config.data += 0x01;
+//			config.data += '\0';
+//			config.data += uintToBa(localRecvNo << 1, 2);
+//			config.asdutype = 0;
+//			break;
+//		case ITYPE:
+//			config.data += uintToBa(localSendNo << 1, 2);
+//			config.data += uintToBa(localRecvNo << 1, 2);
+//			localSendNo++;
+
+//			break;
+//		default:
+//			break;
+//		}
+//	}
+//	else
+//	{
+//		switch(config.controltype)
+//		{
+//		case UTYPE:
+//			switch(config.slaveState)
+//			{
+//			case STATE_INIT:
+//				config.data += 0x0b;
+//				config.data += '\0';
+//				config.data += '\0';
+//				config.data += '\0';
+//				break;
+//			case STATE_NORMAL:
+//				break;
+//			case STATE_TESTACT:
+//				config.data += 0x43;
+//				config.data += '\0';
+//				config.data += '\0';
+//				config.data += '\0';
+//				break;
+//			case STATE_TESTCONFIRM:
+//				config.data += 0x83;
+//				config.data += '\0';
+//				config.data += '\0';
+//				config.data += '\0';
+//				break;
+//			default:
+//				error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
+//				return false;
+//				break;
+//			}
+//			config.asdutype = 0;
+//			break;
+//		case STYPE:
+//			config.data += 0x01;
+//			config.data += '\0';
+//			config.data += uintToBa(localRecvNo << 1, 2);
+//			config.asdutype = 0;
+//			break;
+//		case ITYPE:
+//			config.data += uintToBa(localSendNo << 1, 2);
+//			config.data += uintToBa(localRecvNo << 1, 2);
+//			localSendNo++;
+//			break;
+//		default:
+//			break;
+//		}
+//	}
 
 	return true;
 }
 IEC104Apci::IEC104Apci(const MyConfig& Config): MyBase(Config), control(Config)
 {
-	first = 0;
+	first = 0x68;
 	length = 0;
 }
 
@@ -372,12 +408,14 @@ QString IEC104Apci::showToText()
 	return text;
 }
 
-bool IEC104Apci::createData(IECDataConfig& config)
+bool IEC104Apci::createData(MyData& proData)
 {
-	config.data += 0x68;
-	config.data += '\0';
-	if(!control.createData(config))
+	proData.data += first;
+	proData.data += uintToBa(length, mConfig.addrLen);
+
+	if(!control.createData(proData))
 	{
+		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 		return false;
 	}
 	return true;

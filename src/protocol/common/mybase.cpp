@@ -21,7 +21,7 @@ QString MyBase::showToText()
 	return mText;
 }
 
-bool MyBase::createData(IECDataConfig& config)
+bool MyBase::createData(MyData& proData)
 {
 	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未进行组包");
 	return false;

@@ -29,7 +29,7 @@ public:
 	~IEC103Asdu();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	QString typeToText();

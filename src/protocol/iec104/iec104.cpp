@@ -90,98 +90,112 @@ QString IEC104::showToText()
 	return text;
 }
 
-bool IEC104::createData(IECDataConfig& config)
+bool IEC104::createData(MyData& proData)
 {
-	config.data.clear();
-	if(config.isMaster)
+	if(apci.createData(proData))
 	{
-		switch(config.masterState)
+		if(apci.control.code % 2 == 0)
 		{
-		case STATE_INIT:
-		case STATE_TESTACT:
-		case STATE_TESTCONFIRM:
-			config.controltype = UTYPE;
-			config.asdutype = 0;
-			break;
-		case STATE_NORMAL:
-			config.controltype = STYPE;
-			config.asdutype = 0;
-			break;
-		case STATE_CALLALL:
-			config.controltype = ITYPE;
-			config.asdutype = 0x64;
-			config.vsq = 1;
-			config.cot = 0x06;
-			break;
-		case STATE_SETTIME:
-			config.controltype = ITYPE;
-			config.asdutype = 0x67;
-			config.vsq = 1;
-			config.cot = 0x06;
-			break;
-		case STATE_USER:
-			config.controltype = ITYPE;
-			break;
-		case STATE_HOTKEY:
-			break;
-		default:
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
-			return false;
-			break;
+			if(asdu.createData(proData))
+			{
+				return true;
+			}
 		}
+		return true;
 	}
-	else
-	{
-		switch(config.slaveState)
-		{
-		case STATE_NODATA:
-			return true;
-			break;
-		case STATE_INIT:
-		case STATE_TESTACT:
-		case STATE_TESTCONFIRM:
-		case STATE_NORMAL:
-		case STATE_CALLALL:
-			config.controltype = UTYPE;
-			config.asdutype = 0;
-			break;
-		case STATE_USER:
-			config.controltype = ITYPE;
-			config.asdutype = 0;
-			break;
-		case STATE_HOTKEY:
-			break;
-		default:
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
-			return false;
-			break;
-		}
-	}
+	error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+	return false;
 
-	if(!apci.createData(config))
-	{
-		return false;
-	}
-	if(config.asdutype > 0)
-	{
-		if(!asdu.createData(config))
-		{
-			return false;
-		}
-	}
-	if(config.data.size() < 5)
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
-		return false;
-	}
-	if(config.masterState == STATE_USER || config.slaveState == STATE_USER)
-	{
-		config.data.append(config.userdata);
-		config.userdata.clear();
-	}
-	uchar len = config.data.size() - 2;
-	config.data.replace(1, 1, (char *)&len, 1);
-	return true;
+//	config.data.clear();
+//	if(config.isMaster)
+//	{
+//		switch(config.masterState)
+//		{
+//		case STATE_INIT:
+//		case STATE_TESTACT:
+//		case STATE_TESTCONFIRM:
+//			config.controltype = UTYPE;
+//			config.asdutype = 0;
+//			break;
+//		case STATE_NORMAL:
+//			config.controltype = STYPE;
+//			config.asdutype = 0;
+//			break;
+//		case STATE_CALLALL:
+//			config.controltype = ITYPE;
+//			config.asdutype = 0x64;
+//			config.vsq = 1;
+//			config.cot = 0x06;
+//			break;
+//		case STATE_SETTIME:
+//			config.controltype = ITYPE;
+//			config.asdutype = 0x67;
+//			config.vsq = 1;
+//			config.cot = 0x06;
+//			break;
+//		case STATE_USER:
+//			config.controltype = ITYPE;
+//			break;
+//		case STATE_HOTKEY:
+//			break;
+//		default:
+//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
+//			return false;
+//			break;
+//		}
+//	}
+//	else
+//	{
+//		switch(config.slaveState)
+//		{
+//		case STATE_NODATA:
+//			return true;
+//			break;
+//		case STATE_INIT:
+//		case STATE_TESTACT:
+//		case STATE_TESTCONFIRM:
+//		case STATE_NORMAL:
+//		case STATE_CALLALL:
+//			config.controltype = UTYPE;
+//			config.asdutype = 0;
+//			break;
+//		case STATE_USER:
+//			config.controltype = ITYPE;
+//			config.asdutype = 0;
+//			break;
+//		case STATE_HOTKEY:
+//			break;
+//		default:
+//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
+//			return false;
+//			break;
+//		}
+//	}
+
+//	if(!apci.createData(config))
+//	{
+//		return false;
+//	}
+//	if(config.asdutype > 0)
+//	{
+//		if(!asdu.createData(config))
+//		{
+//			return false;
+//		}
+//	}
+//	if(config.data.size() < 5)
+//	{
+//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
+//		return false;
+//	}
+//	if(config.masterState == STATE_USER || config.slaveState == STATE_USER)
+//	{
+//		config.data.append(config.userdata);
+//		config.userdata.clear();
+//	}
+//	uchar len = config.data.size() - 2;
+//	config.data.replace(1, 1, (char *)&len, 1);
+//	return true;
 }
 
 

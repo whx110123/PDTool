@@ -64,7 +64,7 @@ public:
 	~IEC103Asdu10Data();
 	virtual bool handle(const QByteArray& buff);
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	uchar rii;

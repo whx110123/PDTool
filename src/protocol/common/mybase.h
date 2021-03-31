@@ -12,7 +12,7 @@ public:
 	virtual ~MyBase();
 	virtual bool init(const QByteArray& buff);			//初始化
 	virtual QString showToText();						//显示解析结果
-	virtual bool createData(IECDataConfig& config);		//生成报文
+	virtual bool createData(MyData& proData);		//生成报文
 	void setDefault(const QByteArray& buff);
 public:
 	QByteArray mSendData;	//发送报文

@@ -65,14 +65,14 @@ QString IEC103NetApciWiscom::showToText()
 	return text;
 }
 
-bool IEC103NetApciWiscom::createData(IECDataConfig& config)
+bool IEC103NetApciWiscom::createData(MyData& proData)
 {
-	config.data += 0x68;
-	config.data += '\0';
-	config.data += '\0';
-	if(!control.createData(config))
-	{
-		return false;
-	}
+//	config.data += 0x68;
+//	config.data += '\0';
+//	config.data += '\0';
+//	if(!control.createData(config))
+//	{
+//		return false;
+//	}
 	return true;
 }

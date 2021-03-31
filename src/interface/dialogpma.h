@@ -18,7 +18,7 @@ public:
 	~DialogPMA();
 public slots:
 	void dealData(const QString& data, const QString& title);
-	bool createAndSendData(IECDataConfig& config);
+	bool createAndSendData(MyData& proData);
 signals:
 
 	void dlgTotcpclient(const QString& data);
@@ -95,7 +95,7 @@ private:
 	Ui::DialogPMA *ui;
 	MyBase *mProtocol;
 	MyBase *mProtocolShow;
-	IECDataConfig config;
+	MyData config;
 	QTimer *handleDataTimer;
 	QByteArray recvData;
 	bool haveData;

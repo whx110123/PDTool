@@ -9,7 +9,7 @@ public:
 	IEC104Control(const MyConfig& Config);
 	~IEC104Control();
 	virtual bool init(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	uchar type;		//帧类型
@@ -28,7 +28,7 @@ public:
 	virtual bool init(const QByteArray& buff);
 	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据
 	virtual QString showToText();
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	uchar first;

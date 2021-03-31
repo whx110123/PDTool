@@ -9,7 +9,7 @@ public:
 	IEC101Asdu51Data(const MyConfig& Config);
 	~IEC101Asdu51Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 
 public:
 	uint uintdata;

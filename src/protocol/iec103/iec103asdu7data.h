@@ -9,7 +9,7 @@ public:
 	IEC103Asdu7Data(const MyConfig& Config);
 	~IEC103Asdu7Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual bool createData(IECDataConfig& config);
+	virtual bool createData(MyData& proData);
 };
 
 #endif // IEC103ASDU7DATA_H

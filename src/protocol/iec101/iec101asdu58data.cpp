@@ -30,9 +30,9 @@ bool IEC101Asdu58Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC101Asdu58Data::createData(IECDataConfig& config)
+bool IEC101Asdu58Data::createData(MyData& proData)
 {
-	config.data += uintToBa(config.infaddr, mConfig.infaddrlen);
-	config.data += config.infdata;
+//	config.data += uintToBa(config.infaddr, mConfig.infaddrlen);
+//	config.data += config.infdata;
 	return true;
 }

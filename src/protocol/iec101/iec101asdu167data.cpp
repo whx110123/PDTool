@@ -60,27 +60,27 @@ QString IEC101Asdu167Data::showToText()
 	return text;
 }
 
-bool IEC101Asdu167Data::createData(IECDataConfig& config)
+bool IEC101Asdu167Data::createData(MyData& proData)
 {
-	if(mConfig.infaddrlen != 3)
-	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！167号报文信息体地址长度错误");
-		return false;
-	}
-	config.data += '\0';
-	config.data.append(uintToBa(config.iec103config->devaddr, 2));
-	if(config.isMaster)
-	{
-		config.iec103config->data.clear();
-		asdu.mConfig.cotlen = 1;
-		asdu.mConfig.comaddrlen = 1;
-		if(!asdu.createData(*config.iec103config))
-		{
-			return false;
-		}
-		config.data += (uchar)config.iec103config->data.size();
-		config.data.append(config.iec103config->data);
-	}
+//	if(mConfig.infaddrlen != 3)
+//	{
+//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！167号报文信息体地址长度错误");
+//		return false;
+//	}
+//	config.data += '\0';
+//	config.data.append(uintToBa(config.iec103config->devaddr, 2));
+//	if(config.isMaster)
+//	{
+//		config.iec103config->data.clear();
+//		asdu.mConfig.cotlen = 1;
+//		asdu.mConfig.comaddrlen = 1;
+//		if(!asdu.createData(*config.iec103config))
+//		{
+//			return false;
+//		}
+//		config.data += (uchar)config.iec103config->data.size();
+//		config.data.append(config.iec103config->data);
+//	}
 
 	return true;
 

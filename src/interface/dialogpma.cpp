@@ -41,7 +41,7 @@ void DialogPMA::dealData(const QString& data, const QString& title)
 	}
 }
 
-bool DialogPMA::createAndSendData(IECDataConfig& config)
+bool DialogPMA::createAndSendData(MyData& proData)
 {
 	if(ui->pushButton_start->text() == QString("停止") && mProtocol)
 	{
@@ -99,17 +99,17 @@ void DialogPMA::handleData()
 	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->masterState == STATE_INIT))
 	{
 		haveData = false;
-		config.asdutype = 0;
-		if(ui->comboBox_state->currentText() == QString("模拟主站"))
-		{
-			config.isMaster = true;
-			config.masterState = mProtocol->masterState;
-		}
-		else
-		{
-			config.isMaster = false;
-			config.slaveState = mProtocol->slaveState;
-		}
+//		config.asdutype = 0;
+//		if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//		{
+//			config.isMaster = true;
+//			config.masterState = mProtocol->masterState;
+//		}
+//		else
+//		{
+//			config.isMaster = false;
+//			config.slaveState = mProtocol->slaveState;
+//		}
 		if(mProtocol->createData(config))
 		{
 			if(config.data.isEmpty())
@@ -156,7 +156,7 @@ void DialogPMA::startdebug()
 
 		mProtocolShow = new IEC104(Config);
 
-		config.comaddr = ui->lineEdit_104asduaddr->text().toUInt();
+//		config.comaddr = ui->lineEdit_104asduaddr->text().toUInt();
 		handleDataTimer->start(1000);
 	}
 }
@@ -357,267 +357,267 @@ void DialogPMA::on_pushButton_start_clicked()
 
 void DialogPMA::on_pushButton_sendasdu_clicked()
 {
-	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
-	if(ui->comboBox_state->currentText() == QString("模拟主站"))
-	{
-		config.masterState = STATE_USER;
-		config.isMaster = true;
-	}
-	else
-	{
-		config.isMaster = false;
-		config.slaveState = STATE_USER;
-	}
-	config.asdutype = 0;
+//	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
+//	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//	{
+//		config.masterState = STATE_USER;
+//		config.isMaster = true;
+//	}
+//	else
+//	{
+//		config.isMaster = false;
+//		config.slaveState = STATE_USER;
+//	}
+//	config.asdutype = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callTitle_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x15;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x2a;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf0;
-	config.iec103config->rii = 0;
-	config.iec103config->nog = 0;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x15;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x2a;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf0;
+//	config.iec103config->rii = 0;
+//	config.iec103config->nog = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callRange_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x15;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x2a;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf1;
-	config.iec103config->rii = 0;
-	config.iec103config->nog = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = 0;
-	config.iec103config->kod[0] = 3;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x15;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x2a;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf1;
+//	config.iec103config->rii = 0;
+//	config.iec103config->nog = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = 0;
+//	config.iec103config->kod[0] = 3;
 	createAndSendData(config);
 
 }
 
 void DialogPMA::on_pushButton_104callDescription_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x15;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x2a;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf1;
-	config.iec103config->rii = 0;
-	config.iec103config->nog = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = 0;
-	config.iec103config->kod[0] = 0x0a;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x15;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x2a;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf1;
+//	config.iec103config->rii = 0;
+//	config.iec103config->nog = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = 0;
+//	config.iec103config->kod[0] = 0x0a;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callAccuracy_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x15;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x2a;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf1;
-	config.iec103config->rii = 0;
-	config.iec103config->nog = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = 0;
-	config.iec103config->kod[0] = 5;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x15;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x2a;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf1;
+//	config.iec103config->rii = 0;
+//	config.iec103config->nog = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = 0;
+//	config.iec103config->kod[0] = 5;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callDimension_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x15;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x2a;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf1;
-	config.iec103config->rii = 0;
-	config.iec103config->nog = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = 0;
-	config.iec103config->kod[0] = 9;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x15;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x2a;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf1;
+//	config.iec103config->rii = 0;
+//	config.iec103config->nog = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = 0;
+//	config.iec103config->kod[0] = 9;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callSetting_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x15;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x2a;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf1;
-	config.iec103config->rii = 0;
-	config.iec103config->nog = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = 0;
-	config.iec103config->kod[0] = 1;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x15;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x2a;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf1;
+//	config.iec103config->rii = 0;
+//	config.iec103config->nog = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = 0;
+//	config.iec103config->kod[0] = 1;
 	createAndSendData(config);
 }
 
 
 void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x0a;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x28;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf9;
-	config.iec103config->rii = 0;
-	config.iec103config->ngd = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = ui->lineEdit_104setInf->text().toUShort();
-	config.iec103config->kod[0] = 1;
-	config.iec103config->gdd[0][0] = 7;
-	config.iec103config->gdd[0][1] = 4;
-	config.iec103config->gdd[0][2] = 1;
-	float tmp = ui->lineEdit_104setValueFloat->text().toFloat();
-	memcpy(config.iec103config->gid, &tmp, 4);
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x0a;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x28;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf9;
+//	config.iec103config->rii = 0;
+//	config.iec103config->ngd = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = ui->lineEdit_104setInf->text().toUShort();
+//	config.iec103config->kod[0] = 1;
+//	config.iec103config->gdd[0][0] = 7;
+//	config.iec103config->gdd[0][1] = 4;
+//	config.iec103config->gdd[0][2] = 1;
+//	float tmp = ui->lineEdit_104setValueFloat->text().toFloat();
+//	memcpy(config.iec103config->gid, &tmp, 4);
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104settingCuring_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x0a;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x28;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xfa;
-	config.iec103config->rii = 0;
-	config.iec103config->ngd = 0;
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x0a;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x28;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xfa;
+//	config.iec103config->rii = 0;
+//	config.iec103config->ngd = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104setUintDowm_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = 167;
-	config.controltype = ITYPE;
-	config.vsq = 0;
-	config.cot = 5;
-	if(!config.iec103config)
-	{
-		config.iec103config = new IECDataConfig;
-	}
-	config.iec103config->isMaster = config.isMaster;
-	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
-	config.iec103config->asdutype = 0x0a;
-	config.iec103config->vsq = 0x81;
-	config.iec103config->cot = 0x28;
-	config.iec103config->fun = 0xfe;
-	config.iec103config->inf = 0xf9;
-	config.iec103config->rii = 0;
-	config.iec103config->ngd = 1;
-	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
-	config.iec103config->gin[0][1] = ui->lineEdit_104setInf->text().toUShort();
-	config.iec103config->kod[0] = 1;
-	config.iec103config->gdd[0][0] = 3;
-	config.iec103config->gdd[0][1] = 4;
-	config.iec103config->gdd[0][2] = 1;
-	uint tmp = ui->lineEdit_104setValueUint->text().toUInt();
-	memcpy(config.iec103config->gid, &tmp, 4);
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = 167;
+//	config.controltype = ITYPE;
+//	config.vsq = 0;
+//	config.cot = 5;
+//	if(!config.iec103config)
+//	{
+//		config.iec103config = new IECDataConfig;
+//	}
+//	config.iec103config->isMaster = config.isMaster;
+//	config.iec103config->devaddr = ui->lineEdit_104devaddr->text().toUShort();
+//	config.iec103config->asdutype = 0x0a;
+//	config.iec103config->vsq = 0x81;
+//	config.iec103config->cot = 0x28;
+//	config.iec103config->fun = 0xfe;
+//	config.iec103config->inf = 0xf9;
+//	config.iec103config->rii = 0;
+//	config.iec103config->ngd = 1;
+//	config.iec103config->gin[0][0] = ui->lineEdit_104setGroup->text().toUShort();
+//	config.iec103config->gin[0][1] = ui->lineEdit_104setInf->text().toUShort();
+//	config.iec103config->kod[0] = 1;
+//	config.iec103config->gdd[0][0] = 3;
+//	config.iec103config->gdd[0][1] = 4;
+//	config.iec103config->gdd[0][2] = 1;
+//	uint tmp = ui->lineEdit_104setValueUint->text().toUInt();
+//	memcpy(config.iec103config->gid, &tmp, 4);
 	createAndSendData(config);
 }
 
@@ -630,21 +630,21 @@ void DialogPMA::on_pushButton_clear_clicked()
 
 void DialogPMA::on_pushButton_104select_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
-	config.controltype = ITYPE;
-	config.vsq = 1;
-	config.cot = 6;
-	if(ui->checkBox_104isHex->isChecked())
-	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
-	}
-	else
-	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
-	}
-	config.infdata = getYKYTData(0x80);
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+//	config.controltype = ITYPE;
+//	config.vsq = 1;
+//	config.cot = 6;
+//	if(ui->checkBox_104isHex->isChecked())
+//	{
+//		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
+//	}
+//	else
+//	{
+//		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
+//	}
+//	config.infdata = getYKYTData(0x80);
 	createAndSendData(config);
 
 	ui->label_select->setText("");
@@ -654,21 +654,21 @@ void DialogPMA::on_pushButton_104select_clicked()
 
 void DialogPMA::on_pushButton_104execute_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
-	config.controltype = ITYPE;
-	config.vsq = 1;
-	config.cot = 6;
-	if(ui->checkBox_104isHex->isChecked())
-	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
-	}
-	else
-	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
-	}
-	config.infdata = getYKYTData('\0');
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+//	config.controltype = ITYPE;
+//	config.vsq = 1;
+//	config.cot = 6;
+//	if(ui->checkBox_104isHex->isChecked())
+//	{
+//		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
+//	}
+//	else
+//	{
+//		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
+//	}
+//	config.infdata = getYKYTData('\0');
 	createAndSendData(config);
 
 	ui->label_select->setText("");
@@ -677,21 +677,21 @@ void DialogPMA::on_pushButton_104execute_clicked()
 
 void DialogPMA::on_pushButton_104cancel_clicked()
 {
-	config.masterState = STATE_HOTKEY;
-	config.isMaster = true;
-	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
-	config.controltype = ITYPE;
-	config.vsq = 1;
-	config.cot = 8;
-	if(ui->checkBox_104isHex->isChecked())
-	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
-	}
-	else
-	{
-		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
-	}
-	config.infdata = getYKYTData('\0');
+//	config.masterState = STATE_HOTKEY;
+//	config.isMaster = true;
+//	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
+//	config.controltype = ITYPE;
+//	config.vsq = 1;
+//	config.cot = 8;
+//	if(ui->checkBox_104isHex->isChecked())
+//	{
+//		config.infaddr = ui->lineEdit_104infaddr->text().toUInt(0, 16);
+//	}
+//	else
+//	{
+//		config.infaddr = ui->lineEdit_104infaddr->text().toUInt();
+//	}
+//	config.infdata = getYKYTData('\0');
 	createAndSendData(config);
 
 	ui->pushButton_104execute->setEnabled(true);
@@ -719,121 +719,121 @@ void DialogPMA::on_pushButton_reflash_clicked()
 
 void DialogPMA::on_pushButton_104sendUstart_clicked()
 {
-	config.masterState = STATE_INIT;
-	config.isMaster = true;
+//	config.masterState = STATE_INIT;
+//	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104sendS_clicked()
 {
-	config.masterState = STATE_NORMAL;
-	config.isMaster = true;
+//	config.masterState = STATE_NORMAL;
+//	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104sendUtest_clicked()
 {
-	config.masterState = STATE_TESTACT;
-	config.isMaster = true;
+//	config.masterState = STATE_TESTACT;
+//	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callall_clicked()
 {
-	config.masterState = STATE_CALLALL;
-	config.isMaster = true;
+//	config.masterState = STATE_CALLALL;
+//	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104setTime_clicked()
 {
-	config.masterState = STATE_SETTIME;
-	config.isMaster = true;
+//	config.masterState = STATE_SETTIME;
+//	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_sendasdu_2_clicked()
 {
-	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_2->toPlainText());
-	if(ui->comboBox_state->currentText() == QString("模拟主站"))
-	{
-		config.masterState = STATE_USER;
-		config.isMaster = true;
-	}
-	else
-	{
-		config.isMaster = false;
-		config.slaveState = STATE_USER;
-	}
-	config.asdutype = 0;
+//	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_2->toPlainText());
+//	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//	{
+//		config.masterState = STATE_USER;
+//		config.isMaster = true;
+//	}
+//	else
+//	{
+//		config.isMaster = false;
+//		config.slaveState = STATE_USER;
+//	}
+//	config.asdutype = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_sendasdu_3_clicked()
 {
-	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_3->toPlainText());
-	if(ui->comboBox_state->currentText() == QString("模拟主站"))
-	{
-		config.masterState = STATE_USER;
-		config.isMaster = true;
-	}
-	else
-	{
-		config.isMaster = false;
-		config.slaveState = STATE_USER;
-	}
-	config.asdutype = 0;
+//	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_3->toPlainText());
+//	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//	{
+//		config.masterState = STATE_USER;
+//		config.isMaster = true;
+//	}
+//	else
+//	{
+//		config.isMaster = false;
+//		config.slaveState = STATE_USER;
+//	}
+//	config.asdutype = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_sendasdu_4_clicked()
 {
-	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_4->toPlainText());
-	if(ui->comboBox_state->currentText() == QString("模拟主站"))
-	{
-		config.masterState = STATE_USER;
-		config.isMaster = true;
-	}
-	else
-	{
-		config.isMaster = false;
-		config.slaveState = STATE_USER;
-	}
-	config.asdutype = 0;
+//	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_4->toPlainText());
+//	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//	{
+//		config.masterState = STATE_USER;
+//		config.isMaster = true;
+//	}
+//	else
+//	{
+//		config.isMaster = false;
+//		config.slaveState = STATE_USER;
+//	}
+//	config.asdutype = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_sendasdu_5_clicked()
 {
-	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_5->toPlainText());
-	if(ui->comboBox_state->currentText() == QString("模拟主站"))
-	{
-		config.masterState = STATE_USER;
-		config.isMaster = true;
-	}
-	else
-	{
-		config.isMaster = false;
-		config.slaveState = STATE_USER;
-	}
-	config.asdutype = 0;
+//	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_5->toPlainText());
+//	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//	{
+//		config.masterState = STATE_USER;
+//		config.isMaster = true;
+//	}
+//	else
+//	{
+//		config.isMaster = false;
+//		config.slaveState = STATE_USER;
+//	}
+//	config.asdutype = 0;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_sendasdu_6_clicked()
 {
-	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_6->toPlainText());
-	if(ui->comboBox_state->currentText() == QString("模拟主站"))
-	{
-		config.masterState = STATE_USER;
-		config.isMaster = true;
-	}
-	else
-	{
-		config.isMaster = false;
-		config.slaveState = STATE_USER;
-	}
-	config.asdutype = 0;
+//	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_6->toPlainText());
+//	if(ui->comboBox_state->currentText() == QString("模拟主站"))
+//	{
+//		config.masterState = STATE_USER;
+//		config.isMaster = true;
+//	}
+//	else
+//	{
+//		config.isMaster = false;
+//		config.slaveState = STATE_USER;
+//	}
+//	config.asdutype = 0;
 	createAndSendData(config);
 }
 
