@@ -40,8 +40,8 @@ public:
 	uchar vsq;
 	uchar cot;
 	ushort commonaddr;
-	uchar sqflag;				//SQ 1：每个信息元素都带地址   0：只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1
-	int datanum;                //信息元素的数量
+//	uchar sqflag;				//SQ 1：每个信息元素都带地址   0：只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1
+//	int datanum;                //信息元素的数量
 	int endflag;				//结尾标识,用来识别报文最后一个字节的类型
 	uchar end;
 	QList<IEC103AsduData *> datalist;
