@@ -429,8 +429,8 @@ IEC103Asdu::IEC103Asdu(const MyConfig& Config): MyBase(Config)
 	vsq = 0;
 	cot = 0;
 	commonaddr = 0;
-	sqflag = 0;
-	datanum = 0;
+//	sqflag = 0;
+//	datanum = 0;
 	masterState = STATE_NORMAL;
 	endflag = 0;
 	end = 0;
@@ -459,8 +459,8 @@ bool IEC103Asdu::init(const QByteArray& buff)
 	len++;
 
 	vsq = *(buff.data() + len);
-	sqflag = (vsq >> 7) & 0x01;
-	datanum = vsq & 0x7f;
+	uchar sqflag = (vsq >> 7) & 0x01;
+	uchar datanum = vsq & 0x7f;
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
 	len++;
 
@@ -912,7 +912,7 @@ QString IEC103Asdu::vsqToText()
 	text.append("可变结构限定词VSQ");
 	text.append("\r\n\t数目(bit1-7):" + QString::number(vsq & 0x7f) + "   信息元素数量");
 	text.append("\r\n\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + "   ");
-	if(sqflag)
+	if(vsq & 0x80)
 	{
 		text.append("每个信息元素都有独自的地址");
 	}

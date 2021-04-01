@@ -110,8 +110,8 @@ IEC101Asdu::IEC101Asdu(const MyConfig& Config): MyBase(Config)
 	vsq = 0;
 	memset(cot, 0, sizeof(cot));
 	commonaddr = 0;
-	sqflag = 0;
-	datanum = 0;
+//	sqflag = 0;
+//	datanum = 0;
 
 }
 
@@ -139,7 +139,8 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	len++;
 
 	vsq = *(buff.data() + len);
-	sqflag = (vsq >> 7) & 0x01;
+	uchar sqflag = (vsq >> 7) & 0x01;
+	uchar datanum = 0;
 	if(type == 167)			//由于167号报文vsq为0
 	{
 		datanum = 1;
@@ -229,6 +230,16 @@ QString IEC101Asdu::showToText()
 
 bool IEC101Asdu::createData(MyData& proData)
 {
+	proData.data += type;
+	proData.data += vsq;
+	proData.data += QByteArray((char *)cot, mConfig.cotlen);
+	proData.data += uintToBa(commonaddr, mConfig.comaddrlen);
+	int index = 0;
+	for(IEC101AsduData *mdata : datalist)
+	{
+		mdata->createData(proData);
+	}
+	return true;
 //	qDeleteAll(datalist);
 //	datalist.clear();
 
@@ -500,7 +511,7 @@ QString IEC101Asdu::vsqToText()
 	text.append("可变结构限定词VSQ");
 	text.append("\r\n\t数目(bit1-7):" + QString::number(vsq & 0x7f) + "   信息元素数量");
 	text.append("\r\n\tSQ(bit8):" + QString::number(vsq & 0x80, 16).toUpper() + "   ");
-	if(sqflag)
+	if(vsq & 0x80)
 	{
 		text.append("只有第一个信息元素有地址，以后信息元素的地址从这个地址起顺序加1");
 	}
