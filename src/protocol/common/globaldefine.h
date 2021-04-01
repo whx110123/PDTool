@@ -69,6 +69,12 @@ enum
 	MYTIME2,			//自定义时间方式，6字节对应年月日时分的BCD码
 };
 
+enum
+{
+	SQ_NOADDR,			//无地址
+	SQ_INFADDR,			//带inf
+	SQ_FUNINFADDR,		//带fun和inf
+};
 
 QString CharToHexStr(uchar data);           //将一个uchar字符转换成2个字符的16进制QString
 QString CharToHexStr(const char *data, int len = 1);
