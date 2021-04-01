@@ -2,7 +2,7 @@
 
 IEC103NetApciWiscom::IEC103NetApciWiscom(const MyConfig& Config): IEC104Apci(Config)
 {
-	masterState = STATE_INIT;
+	mMasterState = STATE_INIT;
 	first = 0;
 	length = 0;
 	source_factory_addr = 0;

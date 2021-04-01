@@ -188,7 +188,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 			return false;
 		}
 		mdata->asduType = type;
-		mdata->index = index;
+		mdata->mIndex = index;
 		bool isOk;
 		if(index == 0 || sqflag == 0)
 		{
@@ -674,8 +674,8 @@ QString IEC101Asdu::cotToText()
 IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 {
 	IEC101AsduData *asdudata = NULL;
-	masterState = STATE_NORMAL;
-	slaveState = STATE_NORMAL;
+	mMasterState = STATE_NORMAL;
+	mSlaveState = STATE_NORMAL;
 	switch(type)
 	{
 	case 1:
@@ -824,7 +824,7 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 70:
 		asdudata = new IEC101Asdu70Data(mConfig);
-		masterState = STATE_CALLALL;
+		mMasterState = STATE_CALLALL;
 		break;
 	case 100:
 		asdudata = new IEC101Asdu100Data(mConfig);

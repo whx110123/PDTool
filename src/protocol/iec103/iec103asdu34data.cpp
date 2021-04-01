@@ -33,7 +33,7 @@ bool IEC103Asdu34Data::handle(const QByteArray& buff)
 		break;
 
 	}
-	if(this->index < meaNum)
+	if(this->mIndex < meaNum)
 	{
 		shortdata = charToshortwithQ(buff.data() + len);
 		qds = *(buff.data() + len);

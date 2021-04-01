@@ -96,19 +96,19 @@ void DialogPMA::handleData()
 			recvData.remove(0, mProtocol->len);
 		}
 	}
-	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->masterState == STATE_INIT))
+	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->mMasterState == STATE_INIT))
 	{
 		haveData = false;
 //		config.asdutype = 0;
 //		if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //		{
 //			config.isMaster = true;
-//			config.masterState = mProtocol->masterState;
+//			config.mMasterState = mProtocol->mMasterState;
 //		}
 //		else
 //		{
 //			config.isMaster = false;
-//			config.slaveState = mProtocol->slaveState;
+//			config.mSlaveState = mProtocol->mSlaveState;
 //		}
 		if(mProtocol->createData(config))
 		{
@@ -151,8 +151,8 @@ void DialogPMA::startdebug()
 		Config.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 
 		mProtocol = new IEC104(Config);
-		mProtocol->masterState = STATE_INIT;
-		mProtocol->slaveState = STATE_NODATA;
+		mProtocol->mMasterState = STATE_INIT;
+		mProtocol->mSlaveState = STATE_NODATA;
 
 		mProtocolShow = new IEC104(Config);
 
@@ -360,13 +360,13 @@ void DialogPMA::on_pushButton_sendasdu_clicked()
 //	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu->toPlainText());
 //	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //	{
-//		config.masterState = STATE_USER;
+//		config.mMasterState = STATE_USER;
 //		config.isMaster = true;
 //	}
 //	else
 //	{
 //		config.isMaster = false;
-//		config.slaveState = STATE_USER;
+//		config.mSlaveState = STATE_USER;
 //	}
 //	config.asdutype = 0;
 	createAndSendData(config);
@@ -374,7 +374,7 @@ void DialogPMA::on_pushButton_sendasdu_clicked()
 
 void DialogPMA::on_pushButton_104callTitle_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -398,7 +398,7 @@ void DialogPMA::on_pushButton_104callTitle_clicked()
 
 void DialogPMA::on_pushButton_104callRange_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -426,7 +426,7 @@ void DialogPMA::on_pushButton_104callRange_clicked()
 
 void DialogPMA::on_pushButton_104callDescription_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -453,7 +453,7 @@ void DialogPMA::on_pushButton_104callDescription_clicked()
 
 void DialogPMA::on_pushButton_104callAccuracy_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -480,7 +480,7 @@ void DialogPMA::on_pushButton_104callAccuracy_clicked()
 
 void DialogPMA::on_pushButton_104callDimension_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -507,7 +507,7 @@ void DialogPMA::on_pushButton_104callDimension_clicked()
 
 void DialogPMA::on_pushButton_104callSetting_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -535,7 +535,7 @@ void DialogPMA::on_pushButton_104callSetting_clicked()
 
 void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -567,7 +567,7 @@ void DialogPMA::on_pushButton_104setFloatDowm_clicked()
 
 void DialogPMA::on_pushButton_104settingCuring_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -591,7 +591,7 @@ void DialogPMA::on_pushButton_104settingCuring_clicked()
 
 void DialogPMA::on_pushButton_104setUintDowm_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = 167;
 //	config.controltype = ITYPE;
@@ -630,7 +630,7 @@ void DialogPMA::on_pushButton_clear_clicked()
 
 void DialogPMA::on_pushButton_104select_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
 //	config.controltype = ITYPE;
@@ -654,7 +654,7 @@ void DialogPMA::on_pushButton_104select_clicked()
 
 void DialogPMA::on_pushButton_104execute_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
 //	config.controltype = ITYPE;
@@ -677,7 +677,7 @@ void DialogPMA::on_pushButton_104execute_clicked()
 
 void DialogPMA::on_pushButton_104cancel_clicked()
 {
-//	config.masterState = STATE_HOTKEY;
+//	config.mMasterState = STATE_HOTKEY;
 //	config.isMaster = true;
 //	config.asdutype = ui->comboBox_104remotetype->currentText().split(" ").at(0).toUShort();
 //	config.controltype = ITYPE;
@@ -719,35 +719,35 @@ void DialogPMA::on_pushButton_reflash_clicked()
 
 void DialogPMA::on_pushButton_104sendUstart_clicked()
 {
-//	config.masterState = STATE_INIT;
+//	config.mMasterState = STATE_INIT;
 //	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104sendS_clicked()
 {
-//	config.masterState = STATE_NORMAL;
+//	config.mMasterState = STATE_NORMAL;
 //	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104sendUtest_clicked()
 {
-//	config.masterState = STATE_TESTACT;
+//	config.mMasterState = STATE_TESTACT;
 //	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104callall_clicked()
 {
-//	config.masterState = STATE_CALLALL;
+//	config.mMasterState = STATE_CALLALL;
 //	config.isMaster = true;
 	createAndSendData(config);
 }
 
 void DialogPMA::on_pushButton_104setTime_clicked()
 {
-//	config.masterState = STATE_SETTIME;
+//	config.mMasterState = STATE_SETTIME;
 //	config.isMaster = true;
 	createAndSendData(config);
 }
@@ -757,13 +757,13 @@ void DialogPMA::on_pushButton_sendasdu_2_clicked()
 //	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_2->toPlainText());
 //	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //	{
-//		config.masterState = STATE_USER;
+//		config.mMasterState = STATE_USER;
 //		config.isMaster = true;
 //	}
 //	else
 //	{
 //		config.isMaster = false;
-//		config.slaveState = STATE_USER;
+//		config.mSlaveState = STATE_USER;
 //	}
 //	config.asdutype = 0;
 	createAndSendData(config);
@@ -774,13 +774,13 @@ void DialogPMA::on_pushButton_sendasdu_3_clicked()
 //	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_3->toPlainText());
 //	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //	{
-//		config.masterState = STATE_USER;
+//		config.mMasterState = STATE_USER;
 //		config.isMaster = true;
 //	}
 //	else
 //	{
 //		config.isMaster = false;
-//		config.slaveState = STATE_USER;
+//		config.mSlaveState = STATE_USER;
 //	}
 //	config.asdutype = 0;
 	createAndSendData(config);
@@ -791,13 +791,13 @@ void DialogPMA::on_pushButton_sendasdu_4_clicked()
 //	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_4->toPlainText());
 //	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //	{
-//		config.masterState = STATE_USER;
+//		config.mMasterState = STATE_USER;
 //		config.isMaster = true;
 //	}
 //	else
 //	{
 //		config.isMaster = false;
-//		config.slaveState = STATE_USER;
+//		config.mSlaveState = STATE_USER;
 //	}
 //	config.asdutype = 0;
 	createAndSendData(config);
@@ -808,13 +808,13 @@ void DialogPMA::on_pushButton_sendasdu_5_clicked()
 //	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_5->toPlainText());
 //	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //	{
-//		config.masterState = STATE_USER;
+//		config.mMasterState = STATE_USER;
 //		config.isMaster = true;
 //	}
 //	else
 //	{
 //		config.isMaster = false;
-//		config.slaveState = STATE_USER;
+//		config.mSlaveState = STATE_USER;
 //	}
 //	config.asdutype = 0;
 	createAndSendData(config);
@@ -825,13 +825,13 @@ void DialogPMA::on_pushButton_sendasdu_6_clicked()
 //	config.userdata = QUIHelper::hexStrToByteArray(ui->textEdit_104asdu_6->toPlainText());
 //	if(ui->comboBox_state->currentText() == QString("模拟主站"))
 //	{
-//		config.masterState = STATE_USER;
+//		config.mMasterState = STATE_USER;
 //		config.isMaster = true;
 //	}
 //	else
 //	{
 //		config.isMaster = false;
-//		config.slaveState = STATE_USER;
+//		config.mSlaveState = STATE_USER;
 //	}
 //	config.asdutype = 0;
 	createAndSendData(config);

@@ -102,8 +102,8 @@ bool MTApci::init(const QByteArray& buff)
 	{
 		return false;
 	}
-	masterState = code.masterState;
-	slaveState = code.slaveState;
+	mMasterState = code.mMasterState;
+	mSlaveState = code.mSlaveState;
 	mText.append(code.showToText());
 	len++;
 

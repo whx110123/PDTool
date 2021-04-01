@@ -2,7 +2,7 @@
 
 IEC101::IEC101(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
-	masterState = STATE_INIT;
+	mMasterState = STATE_INIT;
 	crc = 0;
 	end = 0;
 }
@@ -42,8 +42,8 @@ bool IEC101::init(const QByteArray& buff)
 		return false;
 	}
 	len = APCI_LEN + apci.length;
-	masterState = apci.masterState;
-	slaveState = apci.slaveState;
+	mMasterState = apci.mMasterState;
+	mSlaveState = apci.mSlaveState;
 	if(len > buff.count())
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
@@ -57,8 +57,8 @@ bool IEC101::init(const QByteArray& buff)
 		{
 			return false;
 		}
-		masterState = asdu.masterState;
-		slaveState = asdu.slaveState;
+		mMasterState = asdu.mMasterState;
+		mSlaveState = asdu.mSlaveState;
 	}
 	else if(apci.flag == 0x10)
 	{

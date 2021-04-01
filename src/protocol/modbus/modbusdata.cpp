@@ -13,9 +13,9 @@ ModbusData::~ModbusData()
 bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 {
 	setDefault(buff);
-	if(index <  group->analysis.length())
+	if(mIndex <  group->analysis.length())
 	{
-		mcode = group->analysis.at(index);
+		mcode = group->analysis.at(mIndex);
 	}
 	else
 	{
@@ -33,7 +33,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 1;
 			}
 			datashort = charToint(buff.data() + len, 2, mod);
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + QString("第%1个数据  ").arg(index + 1) + "有符号整数:" + QString::number(datashort) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "有符号整数:" + QString::number(datashort) + "\r\n");
 			len += 2;
 			break;
 		case '1':
@@ -42,7 +42,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 1;
 			}
 			dataushort = charTouint(buff.data() + len, 2, mod);
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + QString("第%1个数据  ").arg(index + 1) + "无符号整数:" + QString::number(dataushort) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "无符号整数:" + QString::number(dataushort) + "\r\n");
 			len += 2;
 			break;
 		case '2':
@@ -59,7 +59,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			{
 				datashort = dataushort;
 			}
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + QString("第%1个数据  ").arg(index + 1) + "原码表示的有符号整数:" + QString::number(datashort) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "原码表示的有符号整数:" + QString::number(datashort) + "\r\n");
 			len += 2;
 			break;
 		case '3':
@@ -80,7 +80,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 0;
 			}
 			dataint = charToint(buff.data() + len, 4, mod);
-			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(index + 1) + "有符号整数:" + QString::number(dataint) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "有符号整数:" + QString::number(dataint) + "\r\n");
 			len += 4;
 			break;
 		case '4':
@@ -101,7 +101,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 0;
 			}
 			datauint = charTouint(buff.data() + len, 4, mod);
-			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(index + 1) + "无符号整数:" + QString::number(datauint) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "无符号整数:" + QString::number(datauint) + "\r\n");
 			len += 4;
 			break;
 		case '5':
@@ -122,17 +122,17 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 0;
 			}
 			datafloat = charTofloat(buff.data() + len, mod);
-			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(index + 1) + "浮点数:" + QString::number(datafloat, 'g', 10) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "浮点数:" + QString::number(datafloat, 'g', 10) + "\r\n");
 			len += 4;
 			break;
 		case '6':
 			datachar = *(buff.data() + len);
-			mText.append(CharToHexStr(buff.data() + len) + "\t" + QString("第%1个数据  ").arg(index + 1) + "有符号整数:" + QString::number(datachar) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "有符号整数:" + QString::number(datachar) + "\r\n");
 			len++;
 			break;
 		case '7':
 			datauchar = *(buff.data() + len);
-			mText.append(CharToHexStr(buff.data() + len) + "\t" + QString("第%1个数据  ").arg(index + 1) + "无符号整数:" + QString::number(datauchar) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "无符号整数:" + QString::number(datauchar) + "\r\n");
 			len++;
 			break;
 		case 'A':
@@ -153,7 +153,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 0;
 			}
 			datadouble = charTodouble(buff.data() + len, mod);
-			mText.append(CharToHexStr(buff.data() + len, 8) + "\t" + QString("第%1个数据  ").arg(index + 1) + "双精度浮点数:" + QString::number(datadouble, 'g', 20) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 8) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "双精度浮点数:" + QString::number(datadouble, 'g', 20) + "\r\n");
 			len += 8;
 			break;
 		case 'F':
@@ -175,7 +175,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			mText.append(CharToHexStr(buff.data() + len));
 			for(int i = 0; i < 8; i++)
 			{
-				mText.append(QString("\t第%1组 第%2个遥信: ").arg(index + 1).arg(i + 1));
+				mText.append(QString("\t第%1组 第%2个遥信: ").arg(mIndex + 1).arg(i + 1));
 				mText.append((datauchar >> i) & 0x01 ? "1 合位" : "0 分位");
 				mText.append("\r\n");
 			}
@@ -186,7 +186,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			mText.append(CharToHexStr(buff.data() + len, 2));
 			for(int i = 0; i < 16; i++)
 			{
-				mText.append(QString("\t第%1组 第%2个遥信: ").arg(index + 1).arg(i + 1));
+				mText.append(QString("\t第%1组 第%2个遥信: ").arg(mIndex + 1).arg(i + 1));
 				mText.append((dataushort >> i) & 0x01 ? "1 合位" : "0 分位");
 				mText.append("\r\n");
 			}
@@ -197,7 +197,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			mText.append(CharToHexStr(buff.data() + len, 4));
 			for(int i = 0; i < 32; i++)
 			{
-				mText.append(QString("\t第%1组 第%2个遥信: ").arg(index + 1).arg(i + 1));
+				mText.append(QString("\t第%1组 第%2个遥信: ").arg(mIndex + 1).arg(i + 1));
 				mText.append((datauint >> i) & 0x01 ? "1 合位" : "0 分位");
 				mText.append("\r\n");
 			}
@@ -208,7 +208,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			mText.append(CharToHexStr(buff.data() + len));
 			for(int i = 0; i < 8; i++)
 			{
-				mText.append(QString("\t第%1组 第%2个遥信: ").arg(index + 1).arg(i + 1));
+				mText.append(QString("\t第%1组 第%2个遥信: ").arg(mIndex + 1).arg(i + 1));
 				mText.append((datauchar << i) & 0x80 ? "1 合位" : "0 分位");
 				mText.append("\r\n");
 			}
@@ -246,7 +246,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 0;
 			}
 			datauint = charTouint(buff.data() + len, 4, mod);
-			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(index + 1) + "无符号整数:" + QString::number(datauint) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "无符号整数:" + QString::number(datauint) + "\r\n");
 			len += 4;
 			break;
 		case '1':
@@ -267,7 +267,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 				mod = 0;
 			}
 			datafloat = charTofloat(buff.data() + len, mod);
-			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(index + 1) + "浮点数:" + QString::number(datafloat, 'g', 10) + "\r\n");
+			mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + QString("第%1个数据  ").arg(mIndex + 1) + "浮点数:" + QString::number(datafloat, 'g', 10) + "\r\n");
 			len += 4;
 			break;
 		case 'F':

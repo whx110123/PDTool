@@ -67,7 +67,7 @@ IEC103AsduData::IEC103AsduData(const MyConfig& Config): MyBase(Config)
 	asduType = 0;
 	fun = 0;
 	inf = 0;
-	masterState = STATE_NORMAL;
+	mMasterState = STATE_NORMAL;
 }
 
 IEC103AsduData::~IEC103AsduData()
@@ -431,7 +431,7 @@ IEC103Asdu::IEC103Asdu(const MyConfig& Config): MyBase(Config)
 	commonaddr = 0;
 //	sqflag = 0;
 //	datanum = 0;
-	masterState = STATE_NORMAL;
+	mMasterState = STATE_NORMAL;
 	endflag = 0;
 	end = 0;
 }
@@ -504,7 +504,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			return false;
 		}
 		mdata->asduType = type;
-		mdata->index = index;
+		mdata->mIndex = index;
 		bool isOk = false;
 		if(index == 0)
 		{

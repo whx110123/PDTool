@@ -3,7 +3,7 @@
 MyData::MyData()
 {
 	flag = 0;
-//	masterState = 0;				//状态
+//	mMasterState = 0;				//状态
 //	isMaster = false;			//是否为主站
 //	asdutype = 0;
 //	cot = 0;

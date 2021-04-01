@@ -85,7 +85,7 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 			mset = NULL;
 			return false;
 		}
-		mset->index = index;
+		mset->mIndex = index;
 		len += mset->len;
 		setlist.append(mset);
 	}

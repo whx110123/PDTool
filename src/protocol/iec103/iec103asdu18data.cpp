@@ -70,7 +70,7 @@ bool HisInfo::init(const QByteArray& buff)
 			mset = NULL;
 			return false;
 		}
-		mset->index = index;
+		mset->mIndex = index;
 		len += mset->len;
 		setlist.append(mset);
 	}
@@ -143,7 +143,7 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 			minfo = NULL;
 			return false;
 		}
-		minfo->index = index;
+		minfo->mIndex = index;
 		len += minfo->len;
 		hisInfos.append(minfo);
 	}

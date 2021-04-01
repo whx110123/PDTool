@@ -24,8 +24,8 @@ bool IEC104Control::init(const QByteArray& buff)
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度小于4");
 		return false;
 	}
-	masterState = STATE_NORMAL;
-	slaveState = STATE_NORMAL;
+	mMasterState = STATE_NORMAL;
+	mSlaveState = STATE_NORMAL;
 
 	code = *(buff.data() + len);
 	if(code & 0x01)
@@ -53,15 +53,15 @@ bool IEC104Control::init(const QByteArray& buff)
 		if(code & 0x80)
 		{
 			mText.append("(bit8):80 确认TESTFR，响应测试\r\n");
-			masterState = STATE_TESTACT;
-			slaveState = STATE_TESTACT;
+			mMasterState = STATE_TESTACT;
+			mSlaveState = STATE_TESTACT;
 			sum++;
 		}
 		if(code & 0x40)
 		{
 			mText.append("(bit7):40 激活TESTFR，启用测试\r\n");
-			masterState = STATE_TESTCONFIRM;
-			slaveState = STATE_TESTCONFIRM;
+			mMasterState = STATE_TESTCONFIRM;
+			mSlaveState = STATE_TESTCONFIRM;
 			sum++;
 		}
 		if(code & 0x20)
@@ -77,13 +77,13 @@ bool IEC104Control::init(const QByteArray& buff)
 		if(code & 0x08)
 		{
 			mText.append("(bit4):8 子站确认STARTDT，子站响应激活链路\r\n");
-			masterState = STATE_CALLALL;
+			mMasterState = STATE_CALLALL;
 			sum++;
 		}
 		if(code & 0x04)
 		{
 			mText.append("(bit3):4 主站激活STARTDT，主站激活链路\r\n");
-			slaveState = STATE_INIT;
+			mSlaveState = STATE_INIT;
 			sum++;
 		}
 
@@ -137,8 +137,8 @@ bool IEC104Control::init(const QByteArray& buff)
 		localSendNo = remoteRecvNo;		//根据对面序号修改
 		mText.append(CharToHexStr(buff.data() + len, 2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
 		len += 2;
-		masterState = STATE_TESTACT;
-		slaveState = STATE_NORMAL;
+		mMasterState = STATE_TESTACT;
+		mSlaveState = STATE_NORMAL;
 		break;
 	case ITYPE:
 
@@ -158,8 +158,8 @@ bool IEC104Control::init(const QByteArray& buff)
 		localSendNo = remoteRecvNo;		//根据对面序号修改
 		mText.append(CharToHexStr(buff.data() + len, 2) + "\t接受序号: " + QString::number(remoteRecvNo) + "\r\n");
 		len += 2;
-		masterState = STATE_NORMAL;
-		slaveState = STATE_NORMAL;
+		mMasterState = STATE_NORMAL;
+		mSlaveState = STATE_NORMAL;
 		break;
 	default:
 		break;
@@ -222,7 +222,7 @@ bool IEC104Control::createData(MyData& proData)
 //		switch(config.controltype)
 //		{
 //		case UTYPE:
-//			switch(config.masterState)
+//			switch(config.mMasterState)
 //			{
 //			case STATE_INIT:
 //				config.data += 0x07;
@@ -273,7 +273,7 @@ bool IEC104Control::createData(MyData& proData)
 //		switch(config.controltype)
 //		{
 //		case UTYPE:
-//			switch(config.slaveState)
+//			switch(config.mSlaveState)
 //			{
 //			case STATE_INIT:
 //				config.data += 0x0b;
@@ -375,8 +375,8 @@ bool IEC104Apci::init(const QByteArray& buff)
 		return false;
 	}
 	len += 4;
-	masterState = control.masterState;
-	slaveState = control.slaveState;
+	mMasterState = control.mMasterState;
+	mSlaveState = control.mSlaveState;
 	mText.append(control.showToText());
 	if(buff.length() == len)
 	{

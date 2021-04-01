@@ -50,7 +50,7 @@ bool MTAsdu::init(const QByteArray& buff)
 		}
 		mdata->flag = flag;
 		mdata->afn = afn;
-		mdata->index = index;
+		mdata->mIndex = index;
 		if(!mdata->init(buff.mid(len)))
 		{
 			mText.append(mdata->showToText());

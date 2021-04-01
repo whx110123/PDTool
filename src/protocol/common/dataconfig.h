@@ -30,8 +30,8 @@ public:
 	QByteArray data;		//总报文
 	uchar flag;				//标记是否需要带地址
 //	QByteArray userdata;	//自定义asdu报文
-//	int masterState;		//主站状态
-//	int slaveState;			//子站状态
+//	int mMasterState;		//主站状态
+//	int mSlaveState;			//子站状态
 //	bool isMaster;			//是否为主站
 	/***数据*************************/
 //	bool isfirst;			//是否是第一个信息体

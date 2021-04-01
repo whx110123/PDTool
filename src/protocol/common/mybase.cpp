@@ -34,5 +34,6 @@ void MyBase::setDefault(const QByteArray& buff)
 	error.clear();
 	len = 0;
 }
+
 QString MyBase::error = QString();
 QString MyBase::mTextS = QString();

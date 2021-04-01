@@ -2,7 +2,7 @@
 
 IEC104::IEC104(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
-	masterState = STATE_INIT;
+	mMasterState = STATE_INIT;
 }
 
 IEC104::~IEC104()
@@ -29,8 +29,8 @@ bool IEC104::init(const QByteArray& buff)
 		return false;
 	}
 	len = apci.length + LENGTH_LEN + 1;
-	masterState = apci.masterState;
-	slaveState = apci.slaveState;
+	mMasterState = apci.mMasterState;
+	mSlaveState = apci.mSlaveState;
 	if(len > buff.length())
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
@@ -65,8 +65,8 @@ bool IEC104::init(const QByteArray& buff)
 	{
 		return false;
 	}
-	masterState = asdu.masterState;
-	slaveState = asdu.slaveState;
+	mMasterState = asdu.mMasterState;
+	mSlaveState = asdu.mSlaveState;
 	if(len > buff.length())
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
@@ -109,7 +109,7 @@ bool IEC104::createData(MyData& proData)
 //	config.data.clear();
 //	if(config.isMaster)
 //	{
-//		switch(config.masterState)
+//		switch(config.mMasterState)
 //		{
 //		case STATE_INIT:
 //		case STATE_TESTACT:
@@ -146,7 +146,7 @@ bool IEC104::createData(MyData& proData)
 //	}
 //	else
 //	{
-//		switch(config.slaveState)
+//		switch(config.mSlaveState)
 //		{
 //		case STATE_NODATA:
 //			return true;
@@ -188,7 +188,7 @@ bool IEC104::createData(MyData& proData)
 //		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
 //		return false;
 //	}
-//	if(config.masterState == STATE_USER || config.slaveState == STATE_USER)
+//	if(config.mMasterState == STATE_USER || config.mSlaveState == STATE_USER)
 //	{
 //		config.data.append(config.userdata);
 //		config.userdata.clear();

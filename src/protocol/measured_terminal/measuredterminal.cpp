@@ -46,8 +46,8 @@ bool MeasuredTerminal::init(const QByteArray& buff)
 	{
 		return false;
 	}
-	masterState = asdu.masterState;
-	slaveState = asdu.slaveState;
+	mMasterState = asdu.mMasterState;
+	mSlaveState = asdu.mSlaveState;
 
 
 	uchar crctmp = crcsum(buff.data(), APCI_LEN - 8, len - 3);

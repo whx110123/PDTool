@@ -2,7 +2,7 @@
 
 IEC103NetWiscom::IEC103NetWiscom(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
-	masterState = STATE_INIT;
+	mMasterState = STATE_INIT;
 }
 
 IEC103NetWiscom::~IEC103NetWiscom()
@@ -29,8 +29,8 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 		return false;
 	}
 	len = apci.length + LENGTH_LEN + 1;
-	masterState = apci.masterState;
-	slaveState = apci.slaveState;
+	mMasterState = apci.mMasterState;
+	mSlaveState = apci.mSlaveState;
 	if(len > buff.length())
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
@@ -65,8 +65,8 @@ bool IEC103NetWiscom::init(const QByteArray& buff)
 	{
 		return false;
 	}
-	masterState = asdu.masterState;
-	slaveState = asdu.slaveState;
+	mMasterState = asdu.mMasterState;
+	mSlaveState = asdu.mSlaveState;
 	if(len > buff.length())
 	{
 		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));

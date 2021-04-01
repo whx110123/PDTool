@@ -219,7 +219,7 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 				mgdd = NULL;
 				return false;
 			}
-			mgdd->index = 0;
+			mgdd->mIndex = 0;
 			len += mgdd->len;
 			gddlist.append(mgdd);
 		}
@@ -427,7 +427,7 @@ bool IEC103Asdu10DataSetGdd::init(const QByteArray& buff)
 			mgid = NULL;
 			return false;
 		}
-		mgid->index = index;
+		mgid->mIndex = index;
 		len += mgid->len;
 		gidlist.append(mgid);
 	}
@@ -538,7 +538,7 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 			mset = NULL;
 			return false;
 		}
-		mset->index = index;
+		mset->mIndex = index;
 		len += mset->len;
 		setlist.append(mset);
 	}
