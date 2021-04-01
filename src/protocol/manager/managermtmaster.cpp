@@ -57,7 +57,7 @@ void ManagerMTMaster::timerRcv()
 				}
 				else
 				{
-					emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.error);
+					emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError);
 				}
 			}
 			mutexRD.lock();

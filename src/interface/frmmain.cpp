@@ -390,7 +390,7 @@ void frmMain::on_pushButton_Analysis_clicked()
 				{
 					tmp.append(myprotocol->showToText());
 				}
-				tmp.append(myprotocol->error);
+				tmp.append(myprotocol->mError);
 				break;
 			}
 			tmp.append("****************************************************************************************************\r\n");

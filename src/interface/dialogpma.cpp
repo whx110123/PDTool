@@ -57,7 +57,7 @@ bool DialogPMA::createAndSendData(MyData& proData)
 		}
 		else
 		{
-			ui->textEdit_data->append("错误描述：" + mProtocol->error);
+			ui->textEdit_data->append("错误描述：" + mProtocol->mError);
 		}
 	}
 	return false;
@@ -85,7 +85,7 @@ void DialogPMA::handleData()
 		{
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 			ui->textEdit_data->append("收到未识别的报文: " + mProtocol->mRecvData.toHex(' '));
-			ui->textEdit_data->append("错误描述：" + mProtocol->error);
+			ui->textEdit_data->append("错误描述：" + mProtocol->mError);
 			recvData.clear();
 			haveData = false;
 		}
@@ -122,7 +122,7 @@ void DialogPMA::handleData()
 		}
 		else
 		{
-			ui->textEdit_data->append("错误描述：" + mProtocol->error);
+			ui->textEdit_data->append("错误描述：" + mProtocol->mError);
 		}
 	}
 }
@@ -183,7 +183,7 @@ void DialogPMA::showToText(QByteArray ba)
 		{
 			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 			ui->textEdit_data->append("收到未识别的报文: " + mProtocolShow->mRecvData.toHex(' '));
-			ui->textEdit_data->append("错误描述：" + mProtocolShow->error);
+			ui->textEdit_data->append("错误描述：" + mProtocolShow->mError);
 			ba.clear();
 		}
 		else

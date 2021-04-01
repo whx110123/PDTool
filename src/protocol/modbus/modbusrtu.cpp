@@ -30,7 +30,7 @@ bool ModbusRTU::init(const QByteArray& buff)
 	len += i;
 	if(!isOk)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未发现正确的modbus RTU报文");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未发现正确的modbus RTU报文");
 		return false;
 	}
 
@@ -52,7 +52,7 @@ bool ModbusRTU::init(const QByteArray& buff)
 		}
 		else
 		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU下发报文校验错误");
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU下发报文校验错误");
 			return false;
 		}
 	}
@@ -64,7 +64,7 @@ bool ModbusRTU::init(const QByteArray& buff)
 
 	if(len != mb.len)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU报文解析错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU报文解析错误");
 		return false;
 	}
 
@@ -72,7 +72,7 @@ bool ModbusRTU::init(const QByteArray& buff)
 	mRecvData = buff.left(len);
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	return true;

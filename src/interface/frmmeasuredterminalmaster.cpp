@@ -81,7 +81,7 @@ void frmMeasuredTerminalMaster::sendData(const QByteArray& data)
 		}
 		else
 		{
-			showLog(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.error);
+			showLog(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.mError);
 		}
 	}
 	emitsignals(data.toHex(' '));

@@ -18,7 +18,7 @@ bool ModbusTCP::init(const QByteArray& buff)
 
 	if(buff.length() < 10)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP报文过短");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP报文过短");
 		return false;
 	}
 	flagIndex = charTouint(buff.data() + len, 2, 1);
@@ -31,7 +31,7 @@ bool ModbusTCP::init(const QByteArray& buff)
 
 	if(flag != 0)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP协议标识符必须为0");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP协议标识符必须为0");
 		return false;
 	}
 	length = charTouint(buff.data() + len, 2, 1);
@@ -39,12 +39,12 @@ bool ModbusTCP::init(const QByteArray& buff)
 	len += 2;
 	if(length > 255)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)大于255").arg(length));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)大于255").arg(length));
 		return false;
 	}
 	if(length + 6 > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)比实际报文长度(%2)长").arg(length + 6).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)比实际报文长度(%2)长").arg(length + 6).arg(buff.length()));
 		return false;
 	}
 
@@ -65,7 +65,7 @@ bool ModbusTCP::init(const QByteArray& buff)
 
 	if(length != mb.len)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP报文解析错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP报文解析错误");
 		return false;
 	}
 
@@ -73,7 +73,7 @@ bool ModbusTCP::init(const QByteArray& buff)
 	mRecvData = buff.left(len);
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	return true;

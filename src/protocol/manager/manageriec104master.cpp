@@ -113,7 +113,7 @@ void ManagerIEC104Master::timerRcv()
 			}
 			else
 			{
-				emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.error);
+				emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError);
 			}
 			mutexRD.lock();
 			rcvData.remove(0, 1);

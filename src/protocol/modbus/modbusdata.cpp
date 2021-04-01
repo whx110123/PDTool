@@ -161,7 +161,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			len += 2;
 			break;
 		default:
-			error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的解析码").arg(mcode);
+			mError = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的解析码").arg(mcode);
 			return false;
 			break;
 		}
@@ -219,7 +219,7 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			len++;
 			break;
 		default:
-			error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的解析码").arg(mcode);
+			mError = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的解析码").arg(mcode);
 			return false;
 			break;
 		}
@@ -275,21 +275,21 @@ bool ModbusData::initData(const QByteArray& buff, ModbusDataGroup *group)
 			len += 4;
 			break;
 		default:
-			error = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的解析码").arg(mcode);
+			mError = QString("\"%1\" %2 [%3行]\r\n%4:%5\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的解析码").arg(mcode);
 			return false;
 			break;
 		}
 	}
 	else
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知类型");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知类型");
 		return false;
 	}
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	return true;

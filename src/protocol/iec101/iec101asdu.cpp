@@ -60,7 +60,7 @@ bool IEC101AsduData::init(const QByteArray& buff)
 
 	if(mConfig.infaddrlen != 3 && mConfig.infaddrlen != 2 && mConfig.infaddrlen != 1)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
 		return false;
 	}
 	infaddr = charTouint(buff.data() + len, mConfig.infaddrlen);
@@ -69,7 +69,7 @@ bool IEC101AsduData::init(const QByteArray& buff)
 
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -87,7 +87,7 @@ bool IEC101AsduData::init(const QByteArray& buff, uint addr)
 	mText.append("\t信息元素地址:" + QString::number(infaddr));
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -130,7 +130,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 
 	if(buff.count() < 2 + mConfig.cotlen + mConfig.comaddrlen)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 
@@ -154,7 +154,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 
 	if(mConfig.cotlen != 2 && mConfig.cotlen != 1)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
 	cot[0] = *(buff.data() + len);
@@ -169,7 +169,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 
 	if(mConfig.comaddrlen != 2 && mConfig.comaddrlen != 1)
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
 	commonaddr = charTouint(buff.data() + len, mConfig.comaddrlen);
@@ -184,7 +184,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 		IEC101AsduData *mdata = CreateAsduData(type);
 		if(!mdata)
 		{
-			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
 		mdata->asduType = type;
@@ -210,7 +210,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	}
 	if(len > buff.length())
 	{
-		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
 		return false;
 	}
 	return true;
