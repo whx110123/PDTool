@@ -88,19 +88,36 @@ QString IEC104::showToText()
 
 bool IEC104::createData(MyData& proData)
 {
-	if(apci.createData(proData))
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(apci.control.type == ITYPE)
 	{
-		if(apci.control.type == ITYPE)
+		tmp.reverse = false;
+		if(!asdu.createData(tmp))
 		{
-			if(asdu.createData(proData))
-			{
-				return true;
-			}
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
 		}
-		return true;
 	}
-	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-	return false;
+	tmp.reverse = true;
+	if(!apci.createData(tmp))
+	{
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+		return false;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+
+	return true;
+
 
 }
 

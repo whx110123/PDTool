@@ -197,8 +197,8 @@ QByteArray ManagerIEC104Master::SendU(uchar ch)
 {
 	MyData sendData;
 	IEC104Apci c104(mConfig);
-	c104.first = 0x68;
-	c104.length = 0x04;
+//	c104.first = 0x68;
+//	c104.length = 0x04;
 	c104.control.type = UTYPE;
 	c104.control.code = ch;
 	if(c104.createData(sendData))
@@ -223,8 +223,8 @@ QByteArray ManagerIEC104Master::SendS()
 {
 	MyData sendData;
 	IEC104Apci apci(mConfig);
-	apci.first = 0x68;
-	apci.length = 0x04;
+//	apci.first = 0x68;
+//	apci.length = 0x04;
 	apci.control.type = STYPE;
 	apci.control.localRecvNo = rcvNo;
 	if(apci.createData(sendData))
@@ -250,15 +250,16 @@ QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
 		return NULL;
 	}
 	MyData sendData;
+	sendData.data += data;
 	IEC104Apci apci(mConfig);
-	apci.first = 0x68;
-	apci.length = 0x04 + data.size();
+//	apci.first = 0x68;
+//	apci.length = 0x04 + data.size();
 	apci.control.type = ITYPE;
 	apci.control.localSendNo = sndNo;
 	apci.control.localRecvNo = rcvNo;
+	sendData.reverse = true;
 	if(apci.createData(sendData))
 	{
-		sendData.data += data;
 		emit Send(sendData.data);
 	}
 	return sendData.data;

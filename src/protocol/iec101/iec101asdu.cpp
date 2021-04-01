@@ -229,20 +229,34 @@ QString IEC101Asdu::showToText()
 
 bool IEC101Asdu::createData(MyData& proData)
 {
-	proData.data += type;
-	proData.data += vsq;
-	proData.data += QByteArray((char *)cot, mConfig.cotlen);
-	proData.data += uintToBa(commonaddr, mConfig.comaddrlen);
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	tmp.data += type;
+	tmp.data += vsq & 0x80 + datalist.count();
+	tmp.data += QByteArray((char *)cot, mConfig.cotlen);
+	tmp.data += uintToBa(commonaddr, mConfig.comaddrlen);
 	int index = 0;
-	proData.flag = SQ_INF;
+
+	tmp.flag = SQ_INF;
+	tmp.reverse = false;
 	for(IEC101AsduData *mdata : datalist)
 	{
 		if(index > 0 && (vsq & 0x80))
 		{
-			proData.flag = SQ_NOADDR;
+			tmp.flag = SQ_NOADDR;
 		}
-		mdata->createData(proData);
+		mdata->createData(tmp);
 		index++;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
 	}
 	return true;
 

@@ -169,24 +169,34 @@ bool IEC104Control::init(const QByteArray& buff)
 
 bool IEC104Control::createData(MyData& proData)
 {
+	MyData tmp;
+	tmp.getAttribute(proData);
 	switch(type)
 	{
 	case ITYPE:
-		proData.data += uintToBa(localSendNo * 2, 2);
-		proData.data += uintToBa(localRecvNo * 2, 2);
+		tmp.data += uintToBa(localSendNo * 2, 2);
+		tmp.data += uintToBa(localRecvNo * 2, 2);
 		break;
 	case UTYPE:
-		proData.data += code;
-		proData.data += uintToBa(0, 3);
+		tmp.data += code;
+		tmp.data += uintToBa(0, 3);
 		break;
 	case STYPE:
-		proData.data += uintToBa(1, 2);;
-		proData.data += uintToBa(localRecvNo * 2, 2);
+		tmp.data += uintToBa(1, 2);;
+		tmp.data += uintToBa(localRecvNo * 2, 2);
 		break;
 	default:
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 		return false;
 		break;
+	}
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
 	}
 	return true;
 }
@@ -278,13 +288,26 @@ QString IEC104Apci::showToText()
 
 bool IEC104Apci::createData(MyData& proData)
 {
-	proData.data += first;
-	proData.data += uintToBa(length, stringToInt(mConfig.lengthType));
-
-	if(!control.createData(proData))
+	MyData tmp1;
+	tmp1.getAttribute(proData);
+	if(!control.createData(tmp1))
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 		return false;
+	}
+
+	MyData tmp2;
+	tmp2.getAttribute(proData);
+	tmp2.data += 0x68;
+	if(proData.reverse)
+	{
+		tmp2.data += uintToBa(tmp1.data.length() + proData.data.length(), stringToInt(mConfig.lengthType));
+		proData = tmp2 + tmp1 + proData;
+	}
+	else
+	{
+		tmp2.data += uintToBa(tmp1.data.length(), stringToInt(mConfig.lengthType));
+		proData = proData + tmp2 + tmp1;
 	}
 	return true;
 }

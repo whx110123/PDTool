@@ -28,10 +28,26 @@ bool IEC101Asdu100Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu100Data::createData(MyData& proData)
 {
-	if(proData.flag == SQ_INF)
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(tmp.flag == SQ_INF)
 	{
-		proData.data += uintToBa(infaddr, mConfig.infaddrlen);
+		tmp.data += uintToBa(infaddr, mConfig.infaddrlen);
 	}
-	proData.data += qoi;
+	tmp.data += qoi;
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+
+
+
+
 	return true;
 }

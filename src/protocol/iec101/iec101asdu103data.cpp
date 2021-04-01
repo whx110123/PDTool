@@ -28,26 +28,22 @@ bool IEC101Asdu103Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu103Data::createData(MyData& proData)
 {
-	if(proData.flag == SQ_INF)
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(tmp.flag == SQ_INF)
 	{
-		proData.data += uintToBa(infaddr, mConfig.infaddrlen);
+		tmp.data += uintToBa(infaddr, mConfig.infaddrlen);
 	}
-	proData.data += dateTimeToBa(datetime, 7);
-//	if(config.isfirst || (config.vsq & 0x80) == 0)
-//	{
-//		infaddr = 0;
-//		config.data += uintToBa(infaddr, mConfig.infaddrlen);
-//	}
-//	datetime = QDateTime::currentDateTime();
-//	if(config.isMaster)
-//	{
-//		config.data += dateTimeToBa(datetime, 7, BINARYTIME2A);
-//	}
-//	else
-//	{
-//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-//		return false;
-//	}
-//	config.isfirst = false;
+	tmp.data += dateTimeToBa(datetime, 7);
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
 	return true;
 }

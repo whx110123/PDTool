@@ -27,9 +27,13 @@ class MyData			//数据信息
 public:
 	MyData();
 	~MyData();
+	void getAttribute(const MyData& md);		//获取除了数据以外的属性
+	MyData operator+(const MyData& md) const;
+
 	QByteArray data;		//总报文
-	uint len;				//报文长度
 	uchar flag;				//标记是否需要带地址
+	bool reverse;			//0:在后面添加，1:在前面添加
+
 };
 
 
