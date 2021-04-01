@@ -94,7 +94,7 @@ bool IEC104::createData(MyData& proData)
 {
 	if(apci.createData(proData))
 	{
-		if(apci.control.code % 2 == 0)
+		if(apci.control.type == ITYPE)
 		{
 			if(asdu.createData(proData))
 			{

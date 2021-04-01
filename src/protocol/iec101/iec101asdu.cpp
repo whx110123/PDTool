@@ -234,7 +234,7 @@ bool IEC101Asdu::createData(MyData& proData)
 	proData.data += vsq;
 	proData.data += QByteArray((char *)cot, mConfig.cotlen);
 	proData.data += uintToBa(commonaddr, mConfig.comaddrlen);
-	int index = 0;
+
 	for(IEC101AsduData *mdata : datalist)
 	{
 		mdata->createData(proData);

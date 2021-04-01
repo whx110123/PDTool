@@ -102,7 +102,7 @@ bool Modbus::init(const QByteArray& buff)
 		}
 		else
 		{
-			int mindex = 0;
+			int m_index = 0;
 			while(len < mgroup.dataLen + 3)
 			{
 				ModbusData *mdata = new ModbusData(mConfig);
@@ -111,14 +111,14 @@ bool Modbus::init(const QByteArray& buff)
 					error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！申请内存失败");
 					return false;
 				}
-				mdata->index = mindex;
+				mdata->index = m_index;
 				if(!mdata->initData(buff.mid(len), &mgroup))
 				{
 					return false;
 				}
 				datalist.append(mdata);
 				len += mdata->len;
-				mindex++;
+				m_index++;
 			}
 		}
 	}

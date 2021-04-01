@@ -181,21 +181,21 @@ bool IEC104Control::init(const QByteArray& buff)
 
 bool IEC104Control::createData(MyData& proData)
 {
-	if(code & 0x01)
-	{
-		if(code & 0x02)
-		{
-			type = UTYPE;
-		}
-		else
-		{
-			type = STYPE;
-		}
-	}
-	else
-	{
-		type = ITYPE;
-	}
+//	if(code & 0x01)
+//	{
+//		if(code & 0x02)
+//		{
+//			type = UTYPE;
+//		}
+//		else
+//		{
+//			type = STYPE;
+//		}
+//	}
+//	else
+//	{
+//		type = ITYPE;
+//	}
 	switch(type)
 	{
 	case ITYPE:
@@ -207,7 +207,7 @@ bool IEC104Control::createData(MyData& proData)
 		proData.data += uintToBa(0, 3);
 		break;
 	case STYPE:
-		proData.data += uintToBa(code, 2);;
+		proData.data += uintToBa(1, 2);;
 		proData.data += uintToBa(localRecvNo * 2, 2);
 		break;
 	default:

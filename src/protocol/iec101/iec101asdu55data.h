@@ -12,7 +12,7 @@ public:
 
 public:
 	uchar code;		//序列控制命令限定词
-	uchar mindex;	//控制对象顺序号
+	uchar ctrlNo;	//控制对象顺序号
 	uchar objlen;	//控制对象长度
 	QString obj;	//控制对象
 	uchar step;		//步骤号

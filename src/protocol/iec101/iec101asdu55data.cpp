@@ -3,7 +3,7 @@
 IEC101Asdu55Data::IEC101Asdu55Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	code = 0;
-	mindex = 0;
+	ctrlNo = 0;
 	objlen = 0;
 	step = 0;
 	rii = 0;
@@ -23,8 +23,8 @@ bool IEC101Asdu55Data::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + len) + "\t" + codeToText() + "\r\n");
 	len++;
 
-	mindex = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t控制对象顺序号:" + QString::number(mindex) + "\r\n");
+	ctrlNo = *(buff.data() + len);
+	mText.append(CharToHexStr(buff.data() + len) + "\t控制对象顺序号:" + QString::number(ctrlNo) + "\r\n");
 	len++;
 
 	objlen = *(buff.data() + len);
