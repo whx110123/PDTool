@@ -2,6 +2,7 @@
 #include "ui_frmiec104master.h"
 
 #include <app.h>
+#include <iec101asdu100data.h>
 #include <iec101asdu45data.h>
 #include <iec101asdu46data.h>
 #include <iec104.h>
@@ -36,7 +37,7 @@ void frmIEC104Master::init()
 	}
 
 	initConfig();
-	manager = new ManagerIEC104Master(myConfig);
+	manager = new ManagerIEC104Master(config);
 	manager->initConfig(&managerConfig);
 	connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
 	connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
@@ -50,11 +51,11 @@ void frmIEC104Master::initConfig()
 	managerConfig.isMaster = true;
 	managerConfig.asduAddr = ui->lineEdit_comaddr->text().toUInt();
 
-	myConfig.protocolName = IEC_104;
-	myConfig.lengthType = IEC_SINGLE;
-	myConfig.cotlen = 2;
-	myConfig.comaddrlen = 2;
-	myConfig.infaddrlen = 3;
+	config.protocolName = IEC_104;
+	config.lengthType = IEC_SINGLE;
+	config.cotlen = 2;
+	config.comaddrlen = 2;
+	config.infaddrlen = 3;
 }
 
 void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
@@ -70,11 +71,6 @@ void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
 		}
 	}
 }
-
-//bool frmIEC104Master::createAndSendData(IECDataConfig& config)
-//{
-//	return false;
-//}
 
 void frmIEC104Master::sendData(const QByteArray& data)
 {
@@ -125,89 +121,7 @@ void frmIEC104Master::showToText(const QString& data, int type) //type 0接收 1
 		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
 	}
 	ui->textEdit_data->append(data);
-//	if(!mProtocolShow)
-//	{
-//		return;
-//	}
-//	while(!ba.isEmpty())
-//	{
-//		MyBase::mConfig.protocolName = IEC_104;
-//		if(!mProtocolShow->init(ba))
-//		{
-//			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-//			ui->textEdit_data->append("收到未识别的报文: " + mProtocolShow->mRecvData.toHex(' '));
-//			ui->textEdit_data->append("错误描述：" + mProtocolShow->error);
-//			ba.clear();
-//		}
-//		else
-//		{
 
-//			ui->textEdit_data->append("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-//			ui->textEdit_data->append(mProtocolShow->mTextS);
-//			mProtocolShow->mTextS.clear();
-
-
-//			IEC104 *tmp = (IEC104 *)mProtocolShow;
-//			if(tmp->asdu.type == 45)
-//			{
-//				IEC101Asdu45Data *iec101data = (IEC101Asdu45Data *)tmp->asdu.datalist.at(0);
-//				if(tmp->asdu.cot[0] == 7)
-//				{
-//					ui->pushButton_104execute->setEnabled(true);
-//					if(iec101data->sco & 0x80)
-//					{
-//						ui->label_select->setText("选择成功");
-//					}
-//					else
-//					{
-//						ui->label_execute->setText("执行成功");
-//					}
-//				}
-//				else if((tmp->asdu.cot[0] & 0x0f) == 7)
-//				{
-//					ui->pushButton_104execute->setEnabled(false);
-//					if(iec101data->sco & 0x80)
-//					{
-//						ui->label_select->setText("选择失败");
-//					}
-//					else
-//					{
-//						ui->label_execute->setText("执行失败");
-//					}
-//				}
-//			}
-//			else if(tmp->asdu.type == 46)
-//			{
-//				IEC101Asdu46Data *iec101data = (IEC101Asdu46Data *)tmp->asdu.datalist.at(0);
-//				if(tmp->asdu.cot[0] == 7)
-//				{
-//					ui->pushButton_104execute->setEnabled(true);
-//					if(iec101data->dco & 0x80)
-//					{
-//						ui->label_select->setText("选择成功");
-//					}
-//					else
-//					{
-//						ui->label_execute->setText("执行成功");
-//					}
-//				}
-//				else if((tmp->asdu.cot[0] & 0x0f) == 7)
-//				{
-//					ui->pushButton_104execute->setEnabled(false);
-//					if(iec101data->dco & 0x80)
-//					{
-//						ui->label_select->setText("选择失败");
-//					}
-//					else
-//					{
-//						ui->label_execute->setText("执行失败");
-//					}
-//				}
-//			}
-
-//			ba.remove(0, mProtocolShow->len);
-//		}
-	//	}
 }
 
 void frmIEC104Master::showLog(const QString& data)
@@ -317,27 +231,48 @@ void frmIEC104Master::on_pushButton_Start_clicked()
 
 void frmIEC104Master::on_pushButton_SendUStart_clicked()
 {
-
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendU(0x07);
 }
 
 void frmIEC104Master::on_pushButton_SendUTest_clicked()
 {
-
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendU(0x43);
 }
 
 void frmIEC104Master::on_pushButton_SendS_clicked()
 {
-
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendS();
 }
 
 void frmIEC104Master::on_pushButton_CallAll_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(manager->asdu100Create());
 
 }
 
 void frmIEC104Master::on_pushButton_SetTime_clicked()
 {
-
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(manager->asdu103Create());
 }
 
 void frmIEC104Master::on_pushButton_CallTitle_clicked()

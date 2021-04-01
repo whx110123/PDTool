@@ -2,7 +2,7 @@
 
 IEC104::IEC104(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
-	mMasterState = STATE_INIT;
+
 }
 
 IEC104::~IEC104()
@@ -29,8 +29,6 @@ bool IEC104::init(const QByteArray& buff)
 		return false;
 	}
 	mLen = apci.length + LENGTH_LEN + 1;
-	mMasterState = apci.mMasterState;
-	mSlaveState = apci.mSlaveState;
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
@@ -65,8 +63,6 @@ bool IEC104::init(const QByteArray& buff)
 	{
 		return false;
 	}
-	mMasterState = asdu.mMasterState;
-	mSlaveState = asdu.mSlaveState;
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
@@ -106,96 +102,6 @@ bool IEC104::createData(MyData& proData)
 	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
 	return false;
 
-//	config.data.clear();
-//	if(config.isMaster)
-//	{
-//		switch(config.mMasterState)
-//		{
-//		case STATE_INIT:
-//		case STATE_TESTACT:
-//		case STATE_TESTCONFIRM:
-//			config.controltype = UTYPE;
-//			config.asdutype = 0;
-//			break;
-//		case STATE_NORMAL:
-//			config.controltype = STYPE;
-//			config.asdutype = 0;
-//			break;
-//		case STATE_CALLALL:
-//			config.controltype = ITYPE;
-//			config.asdutype = 0x64;
-//			config.vsq = 1;
-//			config.cot = 0x06;
-//			break;
-//		case STATE_SETTIME:
-//			config.controltype = ITYPE;
-//			config.asdutype = 0x67;
-//			config.vsq = 1;
-//			config.cot = 0x06;
-//			break;
-//		case STATE_USER:
-//			config.controltype = ITYPE;
-//			break;
-//		case STATE_HOTKEY:
-//			break;
-//		default:
-//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的主站状态");
-//			return false;
-//			break;
-//		}
-//	}
-//	else
-//	{
-//		switch(config.mSlaveState)
-//		{
-//		case STATE_NODATA:
-//			return true;
-//			break;
-//		case STATE_INIT:
-//		case STATE_TESTACT:
-//		case STATE_TESTCONFIRM:
-//		case STATE_NORMAL:
-//		case STATE_CALLALL:
-//			config.controltype = UTYPE;
-//			config.asdutype = 0;
-//			break;
-//		case STATE_USER:
-//			config.controltype = ITYPE;
-//			config.asdutype = 0;
-//			break;
-//		case STATE_HOTKEY:
-//			break;
-//		default:
-//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的子站状态");
-//			return false;
-//			break;
-//		}
-//	}
-
-//	if(!apci.createData(config))
-//	{
-//		return false;
-//	}
-//	if(config.asdutype > 0)
-//	{
-//		if(!asdu.createData(config))
-//		{
-//			return false;
-//		}
-//	}
-//	if(config.data.size() < 5)
-//	{
-//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文长度不足5");
-//		return false;
-//	}
-//	if(config.mMasterState == STATE_USER || config.mSlaveState == STATE_USER)
-//	{
-//		config.data.append(config.userdata);
-//		config.userdata.clear();
-//	}
-//	uchar len = config.data.size() - 2;
-//	config.data.replace(1, 1, (char *)&len, 1);
-//	return true;
 }
 
 

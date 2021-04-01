@@ -14,10 +14,10 @@ public:
 public:
 	uchar type;		//帧类型
 	uchar code;		//功能码
-	ushort remoteSendNo;	//对端接收序号
-	ushort remoteRecvNo;	//对端发送序号
-	ushort localSendNo;		//本地接收序号
-	ushort localRecvNo;		//本地发送序号
+	ushort remoteSendNo;	//对端发送序号
+	ushort remoteRecvNo;	//对端接收序号
+	ushort localSendNo;		//本地发送序号
+	ushort localRecvNo;		//本地接收序号
 };
 
 class IEC104Apci : public MyBase

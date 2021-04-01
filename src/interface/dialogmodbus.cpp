@@ -50,16 +50,12 @@ void DialogModbus::addItems()
 	addItem(QStringList() << "遥测" << "5" << "4字节" << "浮点数");
 	addItem(QStringList() << "遥测" << "6" << "1字节" << "有符号整数");
 	addItem(QStringList() << "遥测" << "7" << "1字节" << "无符号整数");
-//	addItem(QStringList() << "遥测" << "8" << "1字节" << "有符号整数");
-//	addItem(QStringList() << "遥测" << "9" << "2字节" << "有符号整数");
 	addItem(QStringList() << "遥测" << "A" << "8字节" << "双精度浮点数");
 	addItem(QStringList() << "遥测" << "F" << "2字节" << "忽略2个字节");
 	addItem(QStringList() << "遥信" << "0" << "1字节" << "从低位开始读");
 	addItem(QStringList() << "遥信" << "1" << "2字节" << "从低字节低位开始读");
 	addItem(QStringList() << "遥信" << "2" << "4字节" << "从低字节低位开始读");
 	addItem(QStringList() << "遥信" << "3" << "1字节" << "从高位开始读");
-//	addItem(QStringList() << "遥信" << "4" << "1字节" << "有符号整数");
-//	addItem(QStringList() << "遥信" << "5" << "2字节" << "有符号整数");
 	addItem(QStringList() << "遥信" << "F" << "1字节" << "忽略1个字节");
 	addItem(QStringList() << "遥脉" << "0" << "4字节" << "无符号整数");
 	addItem(QStringList() << "遥脉" << "1" << "4字节" << "浮点数");

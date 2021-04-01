@@ -122,8 +122,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 	{
 		return false;
 	}
-	mMasterState = code.mMasterState;
-	mSlaveState = code.mSlaveState;
+
 	mText.append(code.showToText());
 	mLen++;
 

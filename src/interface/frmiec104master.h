@@ -32,7 +32,7 @@ signals:
 
 public slots:
 	void dealRcvData(const QString& data, const QString& title);
-//	bool createAndSendData(IECDataConfig& config);
+
 private slots:
 	void sendData(const QByteArray& data);
 	void startdebug();
@@ -74,7 +74,7 @@ private:
 	Ui::frmIEC104Master *ui;
 	ManagerIEC104Master *manager;
 	ConfigIEC104Master managerConfig;		//参数配置
-	MyConfig myConfig;						//报文格式
+	MyConfig config;						//报文格式
 
 };
 

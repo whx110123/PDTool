@@ -28,22 +28,10 @@ bool IEC101Asdu100Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu100Data::createData(MyData& proData)
 {
-
-//	if(config.isfirst || (config.vsq & 0x80) == 0)
-//	{
-//		infaddr = 0;
-//		config.data += uintToBa(infaddr, mConfig.infaddrlen);
-//	}
-
-//	if(config.isMaster)
-//	{
-//		config.data += 0x14;
-//	}
-//	else
-//	{
-//		error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-//		return false;
-//	}
-//	config.isfirst = false;
+	if(proData.flag == SQ_INF)
+	{
+		proData.data += uintToBa(infaddr, mConfig.infaddrlen);
+	}
+	proData.data += qoi;
 	return true;
 }

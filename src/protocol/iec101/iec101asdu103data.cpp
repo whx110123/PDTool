@@ -28,6 +28,11 @@ bool IEC101Asdu103Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu103Data::createData(MyData& proData)
 {
+	if(proData.flag == SQ_INF)
+	{
+		proData.data += uintToBa(infaddr, mConfig.infaddrlen);
+	}
+	proData.data += dateTimeToBa(datetime, 7);
 //	if(config.isfirst || (config.vsq & 0x80) == 0)
 //	{
 //		infaddr = 0;

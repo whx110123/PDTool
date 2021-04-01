@@ -110,8 +110,7 @@ IEC101Asdu::IEC101Asdu(const MyConfig& Config): MyBase(Config)
 	vsq = 0;
 	memset(cot, 0, sizeof(cot));
 	commonaddr = 0;
-//	sqflag = 0;
-//	datanum = 0;
+
 
 }
 
@@ -234,44 +233,19 @@ bool IEC101Asdu::createData(MyData& proData)
 	proData.data += vsq;
 	proData.data += QByteArray((char *)cot, mConfig.cotlen);
 	proData.data += uintToBa(commonaddr, mConfig.comaddrlen);
-
+	int index = 0;
+	proData.flag = SQ_INF;
 	for(IEC101AsduData *mdata : datalist)
 	{
+		if(index > 0 && (vsq & 0x80))
+		{
+			proData.flag = SQ_NOADDR;
+		}
 		mdata->createData(proData);
+		index++;
 	}
 	return true;
-//	qDeleteAll(datalist);
-//	datalist.clear();
 
-//	config.data += config.asdutype;
-//	config.data += config.vsq;
-//	config.data += uintToBa(config.cot, mConfig.cotlen);
-//	config.data += uintToBa(config.comaddr, mConfig.comaddrlen);
-//	config.isfirst = true;
-
-//	int num = config.vsq & 0x7f;
-//	if(config.asdutype == 167)
-//	{
-//		num = 1;
-//	}
-//	for(int i = 0; i < num ; i++)
-//	{
-//		IEC101AsduData *newdata = CreateAsduData(config.asdutype);
-//		if(!newdata)
-//		{
-//			error = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！对此asdu类型未完成报文生成");
-//			return false;
-//		}
-//		newdata->index = i;
-//		datalist.append(newdata);
-//		if(!newdata->createData(config))
-//		{
-//			return false;
-//		}
-
-//	}
-
-	return true;
 }
 
 QString IEC101Asdu::typeToText()
@@ -674,8 +648,6 @@ QString IEC101Asdu::cotToText()
 IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 {
 	IEC101AsduData *asdudata = NULL;
-	mMasterState = STATE_NORMAL;
-	mSlaveState = STATE_NORMAL;
 	switch(type)
 	{
 	case 1:
@@ -824,7 +796,6 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		break;
 	case 70:
 		asdudata = new IEC101Asdu70Data(mConfig);
-		mMasterState = STATE_CALLALL;
 		break;
 	case 100:
 		asdudata = new IEC101Asdu100Data(mConfig);

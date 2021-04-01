@@ -32,6 +32,7 @@ public:
 	QByteArray SendI(const QByteArray& data);
 
 	QByteArray asdu100Create();
+	QByteArray asdu103Create();
 public slots:
 	void update();
 

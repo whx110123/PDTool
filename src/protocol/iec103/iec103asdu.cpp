@@ -67,7 +67,6 @@ IEC103AsduData::IEC103AsduData(const MyConfig& Config): MyBase(Config)
 	asduType = 0;
 	fun = 0;
 	inf = 0;
-	mMasterState = STATE_NORMAL;
 }
 
 IEC103AsduData::~IEC103AsduData()
@@ -429,9 +428,6 @@ IEC103Asdu::IEC103Asdu(const MyConfig& Config): MyBase(Config)
 	vsq = 0;
 	cot = 0;
 	commonaddr = 0;
-//	sqflag = 0;
-//	datanum = 0;
-	mMasterState = STATE_NORMAL;
 	endflag = 0;
 	end = 0;
 }

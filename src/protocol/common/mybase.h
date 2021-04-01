@@ -21,10 +21,8 @@ public:
 	QString mText;			//详细解析
 	static QString mTextS;	//简要解析
 	static QString mError;	//错误说明
-	int mMasterState;		//主站状态
-	int mSlaveState;			//子站状态
 	int mIndex;				//此段内容在整个报文中的下标
-	MyConfig mConfig;
+	MyConfig mConfig;		//报文格式信息
 };
 
 #endif // MYBASE_H

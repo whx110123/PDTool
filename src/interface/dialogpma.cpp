@@ -96,7 +96,7 @@ void DialogPMA::handleData()
 			recvData.remove(0, mProtocol->mLen);
 		}
 	}
-	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->mMasterState == STATE_INIT))
+//	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->mMasterState == STATE_INIT))
 	{
 		haveData = false;
 //		config.asdutype = 0;
@@ -151,8 +151,8 @@ void DialogPMA::startdebug()
 		Config.infaddrlen = ui->comboBox_infaddrlen->currentText().toInt();
 
 		mProtocol = new IEC104(Config);
-		mProtocol->mMasterState = STATE_INIT;
-		mProtocol->mSlaveState = STATE_NODATA;
+//		mProtocol->mMasterState = STATE_INIT;
+//		mProtocol->mSlaveState = STATE_NODATA;
 
 		mProtocolShow = new IEC104(Config);
 

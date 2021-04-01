@@ -72,8 +72,8 @@ enum
 enum
 {
 	SQ_NOADDR,			//无地址
-	SQ_INFADDR,			//带inf
-	SQ_FUNINFADDR,		//带fun和inf
+	SQ_INF,			//带inf
+	SQ_FUNINF,		//带fun和inf
 };
 
 QString CharToHexStr(uchar data);           //将一个uchar字符转换成2个字符的16进制QString
@@ -104,7 +104,7 @@ ushort crc16(uchar *data, ushort start, ushort end);
 ushort crc16(uchar *data, ushort len);
 uint bcdTouint(const char *bcd, int len);
 uint bcdTouint(uchar *bcd, int len);
-int stringToInt(QString data);
+int stringToInt(QString data);					//长度域类型转换
 
 #define APPTITLE QString("Protocol Debug Tool V3.01     作者: 王洪星")
 

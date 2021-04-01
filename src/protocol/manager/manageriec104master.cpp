@@ -1,6 +1,9 @@
 ﻿#include "manageriec104master.h"
 #include "QtDebug"
 
+#include <iec101asdu100data.h>
+#include <iec101asdu103data.h>
+
 
 ConfigIEC104Master::ConfigIEC104Master()
 {
@@ -192,27 +195,52 @@ void ManagerIEC104Master::initMyConfig(ManagerConfig *config)
 
 QByteArray ManagerIEC104Master::SendU(uchar ch)
 {
-	QByteArray ba;
-	ba += 0x68;
-	ba += 0x04;
-	ba += ch;
-	ba += '\0';
-	ba += '\0';
-	ba += '\0';
-	emit Send(ba);
-	return ba;
+	MyData sendData;
+	IEC104Apci c104(mConfig);
+	c104.first = 0x68;
+	c104.length = 0x04;
+	c104.control.type = UTYPE;
+	c104.control.code = ch;
+	if(c104.createData(sendData))
+	{
+		emit Send(sendData.data);
+	}
+	return sendData.data;
+
+//	QByteArray ba;
+//	ba += 0x68;
+//	ba += 0x04;
+//	ba += ch;
+//	ba += '\0';
+//	ba += '\0';
+//	ba += '\0';
+//	emit Send(ba);
+//	return ba;
+
 }
 
 QByteArray ManagerIEC104Master::SendS()
 {
-	QByteArray ba;
-	ba += 0x68;
-	ba += 0x04;
-	ba += 0x01;
-	ba += '\0';
-	ba += uintToBa(rcvNo * 2, 2);
-	emit Send(ba);
-	return ba;
+	MyData sendData;
+	IEC104Apci apci(mConfig);
+	apci.first = 0x68;
+	apci.length = 0x04;
+	apci.control.type = STYPE;
+	apci.control.localRecvNo = rcvNo;
+	if(apci.createData(sendData))
+	{
+		emit Send(sendData.data);
+	}
+	return sendData.data;
+
+//	QByteArray ba;
+//	ba += 0x68;
+//	ba += 0x04;
+//	ba += 0x01;
+//	ba += '\0';
+//	ba += uintToBa(rcvNo * 2, 2);
+//	emit Send(ba);
+//	return ba;
 }
 
 QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
@@ -221,29 +249,78 @@ QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
 	{
 		return NULL;
 	}
-	QByteArray ba;
-	ba += 0x68;
-	ba += data.size() + 4;
-	ba += uintToBa(sndNo * 2, 2);
-	ba += uintToBa(rcvNo * 2, 2);
-	ba += data;
-	emit Send(ba);
-	return ba;
+	MyData sendData;
+	IEC104Apci apci(mConfig);
+	apci.first = 0x68;
+	apci.length = 0x04 + data.size();
+	apci.control.type = ITYPE;
+	apci.control.localSendNo = sndNo;
+	apci.control.localRecvNo = rcvNo;
+	if(apci.createData(sendData))
+	{
+		sendData.data += data;
+		emit Send(sendData.data);
+	}
+	return sendData.data;
+
+//	QByteArray ba;
+//	ba += 0x68;
+//	ba += data.size() + 4;
+//	ba += uintToBa(sndNo * 2, 2);
+//	ba += uintToBa(rcvNo * 2, 2);
+//	ba += data;
+//	emit Send(ba);
+//	return ba;
 }
 
 QByteArray ManagerIEC104Master::asdu100Create()
 {
-	QByteArray ba;
-	ba += 0x64;
-	ba += 0x01;
-	ba += 0x06;
-	ba += '\0';
-	ba += uintToBa(asduAddr, 2);
-	ba += '\0';
-	ba += '\0';
-	ba += '\0';
-	ba += 0x14;
-	return ba;
+	MyData sendData;
+	IEC101Asdu asdu(mConfig);
+	asdu.type = 0x64;
+	asdu.vsq = 0x01;
+	asdu.cot[0] = 0x06;
+	asdu.commonaddr = asduAddr;
+
+	IEC101Asdu100Data *asduData  = new IEC101Asdu100Data(mConfig);
+	asdu.datalist.append(asduData);
+
+	asduData->infaddr = 0;
+	asduData->qoi = 0x14;
+
+	asdu.createData(sendData);
+	return sendData.data;
+
+//	QByteArray ba;
+//	ba += 0x64;
+//	ba += 0x01;
+//	ba += 0x06;
+//	ba += '\0';
+//	ba += uintToBa(asduAddr, 2);
+//	ba += '\0';
+//	ba += '\0';
+//	ba += '\0';
+//	ba += 0x14;
+	//	return ba;
+}
+
+QByteArray ManagerIEC104Master::asdu103Create()
+{
+	MyData sendData;
+	IEC101Asdu asdu(mConfig);
+	asdu.type = 0x67;
+	asdu.vsq = 0x01;
+	asdu.cot[0] = 0x06;
+	asdu.commonaddr = asduAddr;
+
+	IEC101Asdu103Data *asduData  = new IEC101Asdu103Data(mConfig);
+	asdu.datalist.append(asduData);
+
+	asduData->infaddr = 0;
+	asduData->datetime = QDateTime::currentDateTime();
+
+	asdu.createData(sendData);
+	return sendData.data;
 }
 
 void ManagerIEC104Master::update()

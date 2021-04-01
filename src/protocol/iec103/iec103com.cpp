@@ -2,7 +2,6 @@
 
 IEC103COM::IEC103COM(const MyConfig& Config): MyBase(Config), apci(Config), asdu(Config)
 {
-	mMasterState = STATE_INIT;
 	crc = 0;
 	end = 0;
 }
@@ -42,8 +41,7 @@ bool IEC103COM::init(const QByteArray& buff)
 		return false;
 	}
 	mLen = APCI_LEN + apci.length;
-	mMasterState = apci.mMasterState;
-	mSlaveState = apci.mSlaveState;
+
 	if(mLen > buff.count())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
@@ -57,8 +55,7 @@ bool IEC103COM::init(const QByteArray& buff)
 		{
 			return false;
 		}
-		mMasterState = asdu.mMasterState;
-		mSlaveState = asdu.mSlaveState;
+
 	}
 	else if(apci.flag == 0x10)
 	{
