@@ -28,7 +28,6 @@ public:
 	MyData();
 	~MyData();
 	QByteArray data;		//总报文
-	uchar flag;				//标记是否需要带地址
 //	QByteArray userdata;	//自定义asdu报文
 //	int masterState;		//主站状态
 //	int slaveState;			//子站状态
