@@ -63,13 +63,13 @@ bool IEC101AsduData::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！信息体地址长度错误");
 		return false;
 	}
-	infaddr = charTouint(buff.data() + len, mConfig.infaddrlen);
-	mText.append(CharToHexStr(buff.data() + len, mConfig.infaddrlen) + "\t信息元素地址:" + QString::number(infaddr));
-	len += mConfig.infaddrlen;
+	infaddr = charTouint(buff.data() + mLen, mConfig.infaddrlen);
+	mText.append(CharToHexStr(buff.data() + mLen, mConfig.infaddrlen) + "\t信息元素地址:" + QString::number(infaddr));
+	mLen += mConfig.infaddrlen;
 
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -85,9 +85,9 @@ bool IEC101AsduData::init(const QByteArray& buff, uint addr)
 
 	infaddr = addr;
 	mText.append("\t信息元素地址:" + QString::number(infaddr));
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -134,11 +134,11 @@ bool IEC101Asdu::init(const QByteArray& buff)
 		return false;
 	}
 
-	type = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + typeToText() + "\r\n");
-	len++;
+	type = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + typeToText() + "\r\n");
+	mLen++;
 
-	vsq = *(buff.data() + len);
+	vsq = *(buff.data() + mLen);
 	uchar sqflag = (vsq >> 7) & 0x01;
 	uchar datanum = 0;
 	if(type == 167)			//由于167号报文vsq为0
@@ -149,22 +149,22 @@ bool IEC101Asdu::init(const QByteArray& buff)
 	{
 		datanum = vsq & 0x7f;
 	}
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
-	len++;
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + vsqToText() + "\r\n");
+	mLen++;
 
 	if(mConfig.cotlen != 2 && mConfig.cotlen != 1)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
-	cot[0] = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + cotToText() + "\r\n");
-	len++;
+	cot[0] = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + cotToText() + "\r\n");
+	mLen++;
 	if(mConfig.cotlen == 2)
 	{
-		cot[1] = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t源发站地址号:" + QString::number(cot[1]) + "\r\n");
-		len++;
+		cot[1] = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t源发站地址号:" + QString::number(cot[1]) + "\r\n");
+		mLen++;
 	}
 
 	if(mConfig.comaddrlen != 2 && mConfig.comaddrlen != 1)
@@ -172,13 +172,13 @@ bool IEC101Asdu::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
-	commonaddr = charTouint(buff.data() + len, mConfig.comaddrlen);
-	mText.append(CharToHexStr(buff.data() + len, mConfig.comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
-	len += mConfig.comaddrlen;
+	commonaddr = charTouint(buff.data() + mLen, mConfig.comaddrlen);
+	mText.append(CharToHexStr(buff.data() + mLen, mConfig.comaddrlen) + "\t公共地址:" + QString::number(commonaddr) + "\r\n");
+	mLen += mConfig.comaddrlen;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 
 
-	uint dataaddr = charTouint((uchar *)(buff.data() + len), mConfig.infaddrlen);
+	uint dataaddr = charTouint((uchar *)(buff.data() + mLen), mConfig.infaddrlen);
 	for(int index = 0; index < datanum; index++)
 	{
 		IEC101AsduData *mdata = CreateAsduData(type);
@@ -192,11 +192,11 @@ bool IEC101Asdu::init(const QByteArray& buff)
 		bool isOk;
 		if(index == 0 || sqflag == 0)
 		{
-			isOk = mdata->init(buff.mid(len));
+			isOk = mdata->init(buff.mid(mLen));
 		}
 		else
 		{
-			isOk = mdata->init(buff.mid(len), dataaddr + index);
+			isOk = mdata->init(buff.mid(mLen), dataaddr + index);
 		}
 		if(!isOk)
 		{
@@ -206,11 +206,11 @@ bool IEC101Asdu::init(const QByteArray& buff)
 			return false;
 		}
 		datalist.append(mdata);
-		len += mdata->len;
+		mLen += mdata->mLen;
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

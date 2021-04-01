@@ -40,7 +40,7 @@ void ManagerMTMaster::timerRcv()
 			}
 			fcbchange();
 			mutexRD.lock();
-			rcvData.remove(0, myPro.len);
+			rcvData.remove(0, myPro.mLen);
 			mutexRD.unlock();
 		}
 		else if(rcvData.size() < 6)

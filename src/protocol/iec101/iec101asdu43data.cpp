@@ -14,31 +14,31 @@ bool IEC101Asdu43Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	cont = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + contToText() + "\r\n");
-	len++;
+	cont = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + contToText() + "\r\n");
+	mLen++;
 
-	fileindex = charTouint(buff.data() + len, 4);
-	mText.append(CharToHexStr(buff.data() + len, 4) + "\t起始传输位置:" + QString::number(fileindex) + "\r\n");
-	len += 4;
+	fileindex = charTouint(buff.data() + mLen, 4);
+	mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t起始传输位置:" + QString::number(fileindex) + "\r\n");
+	mLen += 4;
 
-	QByteArray ba(buff.data() + len, buff.length() - len - 1);
+	QByteArray ba(buff.data() + mLen, buff.length() - mLen - 1);
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	filedata = gbk->toUnicode(ba);
-	mText.append(CharToHexStr(buff.data() + len, buff.length() - len - 1) + "\t文件内容:\r\n" + filedata + "\r\n");
+	mText.append(CharToHexStr(buff.data() + mLen, buff.length() - mLen - 1) + "\t文件内容:\r\n" + filedata + "\r\n");
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	len = buff.length() - 1;
+	mLen = buff.length() - 1;
 
-	uchar crctmp = crcsum(buff.data(), 5, len - 1);
-	crc = *(buff.data() + len);
+	uchar crctmp = crcsum(buff.data(), 5, mLen - 1);
+	crc = *(buff.data() + mLen);
 	if(crc != crctmp)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
 		return false;
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

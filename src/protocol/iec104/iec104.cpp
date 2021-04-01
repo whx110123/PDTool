@@ -28,15 +28,15 @@ bool IEC104::init(const QByteArray& buff)
 		mRecvData = buff.left(APCI_LEN);
 		return false;
 	}
-	len = apci.length + LENGTH_LEN + 1;
+	mLen = apci.length + LENGTH_LEN + 1;
 	mMasterState = apci.mMasterState;
 	mSlaveState = apci.mSlaveState;
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
-	mRecvData = buff.left(len);
+	mRecvData = buff.left(mLen);
 
 	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
 	{
@@ -45,31 +45,31 @@ bool IEC104::init(const QByteArray& buff)
 	}
 	else if(apci.control.type == UTYPE || apci.control.type == STYPE)
 	{
-		if(len != APCI_LEN)
+		if(mLen != APCI_LEN)
 		{
 			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
 		}
 		else
 		{
-			if(len > buff.length())
+			if(mLen > buff.length())
 			{
-				mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+				mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 				return false;
 			}
 			return true;
 		}
 	}
 
-	if(!asdu.init(buff.mid(APCI_LEN, len - APCI_LEN)))
+	if(!asdu.init(buff.mid(APCI_LEN, mLen - APCI_LEN)))
 	{
 		return false;
 	}
 	mMasterState = asdu.mMasterState;
 	mSlaveState = asdu.mSlaveState;
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
@@ -79,11 +79,11 @@ bool IEC104::init(const QByteArray& buff)
 QString IEC104::showToText()
 {
 	QString text(mText);
-	if(len > 5)
+	if(mLen > 5)
 	{
 		text.append(apci.showToText());
 	}
-	if(len > 6 && apci.control.type == ITYPE)
+	if(mLen > 6 && apci.control.type == ITYPE)
 	{
 		text.append(asdu.showToText());
 	}

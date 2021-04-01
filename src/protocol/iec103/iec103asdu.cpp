@@ -79,16 +79,16 @@ bool IEC103AsduData::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	fun = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + funToText() + "\r\n");
-	len++;
+	fun = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + funToText() + "\r\n");
+	mLen++;
 
-	inf = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
-	len++;
-	if(len > buff.length())
+	inf = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + infToText() + "\r\n");
+	mLen++;
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -104,12 +104,12 @@ bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun)
 
 	fun = ch_fun & 0xff;
 
-	inf = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + infToText() + "\r\n");
-	len++;
-	if(len > buff.length())
+	inf = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + infToText() + "\r\n");
+	mLen++;
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -125,9 +125,9 @@ bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun, uchar ch_inf)
 
 	fun = ch_fun & 0xff;
 	inf = ch_inf & 0xff;
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -454,47 +454,47 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		return false;
 	}
 
-	type = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + typeToText() + "\r\n");
-	len++;
+	type = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + typeToText() + "\r\n");
+	mLen++;
 
-	vsq = *(buff.data() + len);
+	vsq = *(buff.data() + mLen);
 	uchar sqflag = (vsq >> 7) & 0x01;
 	uchar datanum = vsq & 0x7f;
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + vsqToText() + "\r\n");
-	len++;
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + vsqToText() + "\r\n");
+	mLen++;
 
 	if(mConfig.cotlen > 0)
 	{
-		cot = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len, mConfig.cotlen) + "\t" + cotToText() + "\r\n");
+		cot = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen, mConfig.cotlen) + "\t" + cotToText() + "\r\n");
 	}
 	else
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
-	len += mConfig.cotlen;
+	mLen += mConfig.cotlen;
 
-	commonaddr = charTouint(buff.data() + len, mConfig.comaddrlen);
+	commonaddr = charTouint(buff.data() + mLen, mConfig.comaddrlen);
 	if(mConfig.comaddrlen == 1)
 	{
-		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址:" + QString::number(commonaddr & 0xff) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t公共地址:" + QString::number(commonaddr & 0xff) + "\r\n");
 	}
 	else if(mConfig.comaddrlen == 2)
 	{
-		mText.append(CharToHexStr(buff.data() + len) + "\t公共地址低位:" + QString::number(commonaddr & 0xff) + "\r\n");
-		mText.append(CharToHexStr(buff.data() + len + 1) + "\t公共地址高位:" + QString::number((commonaddr >> 8) & 0xff) + " 装置地址\r\n");
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t公共地址低位:" + QString::number(commonaddr & 0xff) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + mLen + 1) + "\t公共地址高位:" + QString::number((commonaddr >> 8) & 0xff) + " 装置地址\r\n");
 	}
 	else
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！公共地址字节数错误");
 		return false;
 	}
-	len += mConfig.comaddrlen;
+	mLen += mConfig.comaddrlen;
 
-	uchar fun = *(buff.data() + len);
-	uchar inf = *(buff.data() + len + 1);;
+	uchar fun = *(buff.data() + mLen);
+	uchar inf = *(buff.data() + mLen + 1);;
 	for(int index = 0; index < datanum; index++)
 	{
 		IEC103AsduData *mdata = CreateAsduData(type);
@@ -508,7 +508,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		bool isOk = false;
 		if(index == 0)
 		{
-			isOk = mdata->init(buff.mid(len));
+			isOk = mdata->init(buff.mid(mLen));
 		}
 		else if(sqflag == 1)
 		{
@@ -535,11 +535,11 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			}
 			if(sq == 0)
 			{
-				isOk = mdata->init(buff.mid(len));
+				isOk = mdata->init(buff.mid(mLen));
 			}
 			else
 			{
-				isOk = mdata->init(buff.mid(len), fun);
+				isOk = mdata->init(buff.mid(mLen), fun);
 			}
 		}
 		else
@@ -561,7 +561,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			default:
 				break;
 			}
-			isOk = mdata->init(buff.mid(len), fun, (uchar)(inf + index * k));
+			isOk = mdata->init(buff.mid(mLen), fun, (uchar)(inf + index * k));
 		}
 		if(!isOk)
 		{
@@ -571,17 +571,17 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			return false;
 		}
 		datalist.append(mdata);
-		len += mdata->len;
+		mLen += mdata->mLen;
 	}
 
 	if(endflag != IEC103END_NO)
 	{
-		end = *(buff.data() + len);
-		len++;
+		end = *(buff.data() + mLen);
+		mLen++;
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

@@ -382,7 +382,7 @@ void frmMain::on_pushButton_Analysis_clicked()
 			if(myprotocol->init(buffer))
 			{
 				tmp.append(myprotocol->showToText());
-				buffer.remove(0, myprotocol->len);
+				buffer.remove(0, myprotocol->mLen);
 			}
 			else
 			{

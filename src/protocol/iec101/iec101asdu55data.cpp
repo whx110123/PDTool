@@ -19,53 +19,53 @@ bool IEC101Asdu55Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	code = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + codeToText() + "\r\n");
-	len++;
+	code = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + codeToText() + "\r\n");
+	mLen++;
 
-	ctrlNo = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t控制对象顺序号:" + QString::number(ctrlNo) + "\r\n");
-	len++;
+	ctrlNo = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t控制对象顺序号:" + QString::number(ctrlNo) + "\r\n");
+	mLen++;
 
-	objlen = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t控制对象长度:" + QString::number(objlen) + "\r\n");
-	len++;
+	objlen = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t控制对象长度:" + QString::number(objlen) + "\r\n");
+	mLen++;
 
-	QByteArray ba(buff.data() + len, objlen);
+	QByteArray ba(buff.data() + mLen, objlen);
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	obj = gbk->toUnicode(ba);
-	mText.append(CharToHexStr(buff.data() + len, objlen) + "\t控制对象:" + obj + "\r\n");
-	len += objlen;
+	mText.append(CharToHexStr(buff.data() + mLen, objlen) + "\t控制对象:" + obj + "\r\n");
+	mLen += objlen;
 
-	step = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t步骤号:" + QString::number(step) + (step > 0 ? QString() : QString("  0代表整张票")) + "\r\n");
-	len++;
+	step = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t步骤号:" + QString::number(step) + (step > 0 ? QString() : QString("  0代表整张票")) + "\r\n");
+	mLen++;
 
 	if(buff.length() == 5 + objlen)
 	{
-		rii = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t" + riiToText() + "\r\n");
-		len++;
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + riiToText() + "\r\n");
+		mLen++;
 	}
 	else if(buff.length() > 5 + objlen)
 	{
-		userlen = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t操作用户名长度:" + QString::number(userlen) + "\r\n");
-		len++;
+		userlen = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t操作用户名长度:" + QString::number(userlen) + "\r\n");
+		mLen++;
 
-		QByteArray ba(buff.data() + len, userlen);
+		QByteArray ba(buff.data() + mLen, userlen);
 		user = gbk->toUnicode(ba);
-		mText.append(CharToHexStr(buff.data() + len, userlen) + "\t操作用户名 :" + user + "\r\n");
-		len += userlen;
+		mText.append(CharToHexStr(buff.data() + mLen, userlen) + "\t操作用户名 :" + user + "\r\n");
+		mLen += userlen;
 	}
 	else
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度错误");
 		return false;
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

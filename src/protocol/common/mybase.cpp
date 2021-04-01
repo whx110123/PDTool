@@ -32,7 +32,7 @@ void MyBase::setDefault(const QByteArray& buff)
 	mRecvData = buff;
 	mText.clear();
 	mError.clear();
-	len = 0;
+	mLen = 0;
 }
 
 QString MyBase::mError = QString();

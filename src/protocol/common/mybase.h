@@ -17,7 +17,7 @@ public:
 public:
 	QByteArray mSendData;	//发送报文
 	QByteArray mRecvData;	//接收报文
-	int len;				//接收报文长度
+	int mLen;				//接收报文长度
 	QString mText;			//详细解析
 	static QString mTextS;	//简要解析
 	static QString mError;	//错误说明

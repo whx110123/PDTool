@@ -16,37 +16,37 @@ bool IEC101Asdu167Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	ctrl = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + ctrlToText() + "\r\n");
-	len++;
+	ctrl = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + ctrlToText() + "\r\n");
+	mLen++;
 
-	memcpy(devaddr, buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len) + "\t保护装置地址L:" + QString::number(devaddr[0]) + "\r\n");
-	len++;
-	mText.append(CharToHexStr(buff.data() + len) + "\t保护装置地址H:" + QString::number(devaddr[1]) + "\r\n");
-	len++;
+	memcpy(devaddr, buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t保护装置地址L:" + QString::number(devaddr[0]) + "\r\n");
+	mLen++;
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t保护装置地址H:" + QString::number(devaddr[1]) + "\r\n");
+	mLen++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	iec103len = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
-	len++;
+	iec103len = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\tIEC103数据长度:" + QString::number(iec103len) + "\r\n");
+	mLen++;
 
 	asdu.mConfig.cotlen = 1;
 	asdu.mConfig.comaddrlen = 1;
 
-	if(!asdu.init(buff.mid(len, iec103len)))
+	if(!asdu.init(buff.mid(mLen, iec103len)))
 	{
 		return false;
 	}
-	len += asdu.len;
-	if(asdu.len != iec103len)
+	mLen += asdu.mLen;
+	if(asdu.mLen != iec103len)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

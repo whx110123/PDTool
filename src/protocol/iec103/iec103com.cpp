@@ -41,19 +41,19 @@ bool IEC103COM::init(const QByteArray& buff)
 		mRecvData = buff.left(APCI_LEN);
 		return false;
 	}
-	len = APCI_LEN + apci.length;
+	mLen = APCI_LEN + apci.length;
 	mMasterState = apci.mMasterState;
 	mSlaveState = apci.mSlaveState;
-	if(len > buff.count())
+	if(mLen > buff.count())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
-	mRecvData = buff.left(len);
+	mRecvData = buff.left(mLen);
 
 	if(apci.flag == 0x68 && buff.count() > APCI_LEN + 3)
 	{
-		if(!asdu.init(buff.mid(APCI_LEN, len - APCI_LEN - 2)))
+		if(!asdu.init(buff.mid(APCI_LEN, mLen - APCI_LEN - 2)))
 		{
 			return false;
 		}
@@ -62,7 +62,7 @@ bool IEC103COM::init(const QByteArray& buff)
 	}
 	else if(apci.flag == 0x10)
 	{
-		if(len != APCI_LEN + 2)
+		if(mLen != APCI_LEN + 2)
 		{
 			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 			return false;
@@ -74,23 +74,23 @@ bool IEC103COM::init(const QByteArray& buff)
 		return false;
 	}
 
-	uchar crctmp = crcsum(buff.data(), APCI_LEN - 2, len - 3);
-	crc = *(buff.data() + len - 2);
+	uchar crctmp = crcsum(buff.data(), APCI_LEN - 2, mLen - 3);
+	crc = *(buff.data() + mLen - 2);
 	if(crc != crctmp)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
 		return false;
 	}
 
-	end = *(buff.data() + len - 1);
+	end = *(buff.data() + mLen - 1);
 	if(end != 0x16)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文结束位错误");
 		return false;
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

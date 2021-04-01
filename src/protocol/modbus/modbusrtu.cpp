@@ -27,14 +27,14 @@ bool ModbusRTU::init(const QByteArray& buff)
 		}
 		i++;
 	}
-	len += i;
+	mLen += i;
 	if(!isOk)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未发现正确的modbus RTU报文");
 		return false;
 	}
 
-	if((int) * (buff.data() + 2) == len - 3)
+	if((int) * (buff.data() + 2) == mLen - 3)
 	{
 		mb.isMaster = false;
 	}
@@ -43,12 +43,12 @@ bool ModbusRTU::init(const QByteArray& buff)
 		mb.isMaster = true;
 	}
 
-	if(mb.isMaster && len < 6)
+	if(mb.isMaster && mLen < 6)
 	{
 		crc = charTouint(buff.data() + 6, 2);
 		if(crc16((uchar *)buff.data(), 6) == crc)
 		{
-			len = 6;
+			mLen = 6;
 		}
 		else
 		{
@@ -57,22 +57,22 @@ bool ModbusRTU::init(const QByteArray& buff)
 		}
 	}
 
-	if(!mb.init(buff.left(len)))
+	if(!mb.init(buff.left(mLen)))
 	{
 		return false;
 	}
 
-	if(len != mb.len)
+	if(mLen != mb.mLen)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU报文解析错误");
 		return false;
 	}
 
-	len += 2;
-	mRecvData = buff.left(len);
-	if(len > buff.length())
+	mLen += 2;
+	mRecvData = buff.left(mLen);
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

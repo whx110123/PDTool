@@ -16,22 +16,22 @@ bool IEC101Asdu124Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 
-	nof = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t文件名称NOF: " + QString::number(nof) + "\r\n");
-	len += 2;
+	nof = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t文件名称NOF: " + QString::number(nof) + "\r\n");
+	mLen += 2;
 
-	nos = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t节名称NOS: " + QString::number(nos) + "\r\n");
-	len++;
+	nos = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t节名称NOS: " + QString::number(nos) + "\r\n");
+	mLen++;
 
-	afq = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + afqToText_iec101(afq) + "\r\n");
-	len++;
+	afq = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + afqToText_iec101(afq) + "\r\n");
+	mLen++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

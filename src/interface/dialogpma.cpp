@@ -92,8 +92,8 @@ void DialogPMA::handleData()
 		else
 		{
 			haveData = true;
-			showToText(recvData.left(mProtocol->len));
-			recvData.remove(0, mProtocol->len);
+			showToText(recvData.left(mProtocol->mLen));
+			recvData.remove(0, mProtocol->mLen);
 		}
 	}
 	if(haveData || (ui->comboBox_state->currentText() == QString("模拟主站") && mProtocol->mMasterState == STATE_INIT))
@@ -253,7 +253,7 @@ void DialogPMA::showToText(QByteArray ba)
 					}
 				}
 			}
-			ba.remove(0, mProtocolShow->len);
+			ba.remove(0, mProtocolShow->mLen);
 		}
 	}
 }

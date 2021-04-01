@@ -15,22 +15,22 @@ bool IEC103Asdu11DataSet::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	kod = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + kodToText(kod) + "\r\n");
-	len++;
+	kod = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + kodToText(kod) + "\r\n");
+	mLen++;
 
-	if(buff.size() == len)
+	if(buff.size() == mLen)
 	{
 		return true;
 	}
-	if(!mygdd.init(buff.mid(len)))
+	if(!mygdd.init(buff.mid(mLen)))
 	{
 		return false;
 	}
-	len += mygdd.len;
-	if(len > buff.length())
+	mLen += mygdd.mLen;
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
@@ -62,23 +62,23 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 	qDeleteAll(setlist);
 	setlist.clear();
 
-	rii = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	len++;
+	rii = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+	mLen++;
 
-	memcpy(gin, buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\tGIN:组号" + QString::number(gin[0]) + "   条目号" + QString::number(gin[1]) + "\r\n");
-	len += 2;
+	memcpy(gin, buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\tGIN:组号" + QString::number(gin[0]) + "   条目号" + QString::number(gin[1]) + "\r\n");
+	mLen += 2;
 
-	nde = *(buff.data() + len);
+	nde = *(buff.data() + mLen);
 	setnum = nde & 0x3f;
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + ndeToText(nde) + "\r\n");
-	len++;
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + ndeToText(nde) + "\r\n");
+	mLen++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < setnum; index++)
 	{
 		IEC103Asdu11DataSet *mset = new IEC103Asdu11DataSet(mConfig);
-		bool isOk = mset->init(buff.mid(len));
+		bool isOk = mset->init(buff.mid(mLen));
 		if(!isOk)
 		{
 			delete mset;
@@ -86,13 +86,13 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 			return false;
 		}
 		mset->mIndex = index;
-		len += mset->len;
+		mLen += mset->mLen;
 		setlist.append(mset);
 	}
 
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

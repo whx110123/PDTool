@@ -23,13 +23,13 @@ bool MTApci::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
 	}
-	flag = *(buff.data() + len);
+	flag = *(buff.data() + mLen);
 
 	if(flag == 0x68)
 	{
 
-		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
-		len++;
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t启动字符:0x68\r\n");
+		mLen++;
 
 		int lengthlen = stringToInt(mConfig.lengthType);
 		if(lengthlen == 0)
@@ -39,13 +39,13 @@ bool MTApci::init(const QByteArray& buff)
 		}
 		if(mConfig.lengthType == IEC_DOUBLESAME)
 		{
-			length = *(uchar *)(buff.data() + len);
-			mText.append(CharToHexStr(buff.data() + len) + "\t长度域1:" + QString::number(length) + "\r\n");
-			len++;
+			length = *(uchar *)(buff.data() + mLen);
+			mText.append(CharToHexStr(buff.data() + mLen) + "\t长度域1:" + QString::number(length) + "\r\n");
+			mLen++;
 
-			uchar length2 = *(buff.data() + len);
-			mText.append(CharToHexStr(buff.data() + len) + "\t长度域2:" + QString::number(length2) + "\r\n");
-			len++;
+			uchar length2 = *(buff.data() + mLen);
+			mText.append(CharToHexStr(buff.data() + mLen) + "\t长度域2:" + QString::number(length2) + "\r\n");
+			mLen++;
 
 			if(length != length2)
 			{
@@ -55,19 +55,19 @@ bool MTApci::init(const QByteArray& buff)
 		}
 		else if(mConfig.lengthType == IEC_SINGLE || mConfig.lengthType == IEC_DOUBLEDIFF)
 		{
-			length = charTouint(buff.data() + len, lengthlen);
-			mText.append(CharToHexStr(buff.data() + len, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
-			len += lengthlen;
+			length = charTouint(buff.data() + mLen, lengthlen);
+			mText.append(CharToHexStr(buff.data() + mLen, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
+			mLen += lengthlen;
 		}
 		else if(mConfig.lengthType == IEC_FOURDIFF)
 		{
-			length = charTouint(buff.data() + len, 2);
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域:" + QString::number(length) + "\r\n");
-			len += 2;
+			length = charTouint(buff.data() + mLen, 2);
+			mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t长度域:" + QString::number(length) + "\r\n");
+			mLen += 2;
 
-			ushort length2 = charTouint(buff.data() + len, 2);
-			mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度域2:" + QString::number(length2) + "\r\n");
-			len += 2;
+			ushort length2 = charTouint(buff.data() + mLen, 2);
+			mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t长度域2:" + QString::number(length2) + "\r\n");
+			mLen += 2;
 
 			if(length != length2)
 			{
@@ -82,9 +82,9 @@ bool MTApci::init(const QByteArray& buff)
 			return false;
 		}
 
-		uchar flag2 = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t启动字符:0x68\r\n");
-		len++;
+		uchar flag2 = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t启动字符:0x68\r\n");
+		mLen++;
 		if(flag2 != flag)
 		{
 			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！第二个标志位错误");
@@ -94,35 +94,35 @@ bool MTApci::init(const QByteArray& buff)
 	}
 	else
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + len) + "\t出错！启动字符不是0x68");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(CharToHexStr(buff.data() + mLen) + "\t出错！启动字符不是0x68");
 		return false;
 	}
 
-	if(!code.init(buff.mid(len, 1)))
+	if(!code.init(buff.mid(mLen, 1)))
 	{
 		return false;
 	}
 	mMasterState = code.mMasterState;
 	mSlaveState = code.mSlaveState;
 	mText.append(code.showToText());
-	len++;
+	mLen++;
 
-	A1 = charTouint(buff.data() + len, 3);
-	mText.append(CharToHexStr(buff.data() + len, 3) + "\t" + A1ToText() + "\r\n");
-	len += 3;
+	A1 = charTouint(buff.data() + mLen, 3);
+	mText.append(CharToHexStr(buff.data() + mLen, 3) + "\t" + A1ToText() + "\r\n");
+	mLen += 3;
 
-	A2 = charTouint(buff.data() + len, 3);
-	mText.append(CharToHexStr(buff.data() + len, 3) + "\t终端地址:" + QString::number(A2) + "\r\n");
-	len += 3;
+	A2 = charTouint(buff.data() + mLen, 3);
+	mText.append(CharToHexStr(buff.data() + mLen, 3) + "\t终端地址:" + QString::number(A2) + "\r\n");
+	mLen += 3;
 
-	A3 = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t主站地址:" + QString::number(A3) + "\r\n");
-	len++;
+	A3 = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t主站地址:" + QString::number(A3) + "\r\n");
+	mLen++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

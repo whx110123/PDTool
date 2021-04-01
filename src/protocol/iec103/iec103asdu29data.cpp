@@ -17,24 +17,24 @@ bool IEC103Asdu29Data::handle(const QByteArray& buff)
 {
 	qDeleteAll(setlist);
 	setlist.clear();
-	fan = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t故障序号FAN:" + QString::number(fan) + "\r\n");
-	len += 2;
+	fan = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t故障序号FAN:" + QString::number(fan) + "\r\n");
+	mLen += 2;
 
-	_not = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t带标志的状态变位的数目NOT:" + QString::number(_not) + "\r\n");
-	len++;
+	_not = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t带标志的状态变位的数目NOT:" + QString::number(_not) + "\r\n");
+	mLen++;
 
-	tap = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t带标志的状态变位的位置TAP:" + QString::number(tap) + "\r\n");
-	len += 2;
+	tap = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t带标志的状态变位的位置TAP:" + QString::number(tap) + "\r\n");
+	mLen += 2;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 
 	for(int index = 0; index < _not; index++)
 	{
 		IEC103Asdu1Data *mset = new IEC103Asdu1Data(mConfig);
-		bool isOk = mset->init(buff.mid(len, 3));
+		bool isOk = mset->init(buff.mid(mLen, 3));
 		if(!isOk)
 		{
 			delete mset;
@@ -42,12 +42,12 @@ bool IEC103Asdu29Data::handle(const QByteArray& buff)
 			return false;
 		}
 		mset->mIndex = index;
-		len += mset->len;
+		mLen += mset->mLen;
 		setlist.append(mset);
 	}
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

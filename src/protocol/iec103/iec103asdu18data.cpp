@@ -18,52 +18,52 @@ bool HisInfo::init(const QByteArray& buff)
 	qDeleteAll(setlist);
 	setlist.clear();
 
-	eventType = *(buff.data() + len);
+	eventType = *(buff.data() + mLen);
 	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
-		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText_nw(eventType) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + eventTypeToText_nw(eventType) + "\r\n");
 	}
 	else
 	{
-		mText.append(CharToHexStr(buff.data() + len) + "\t" + eventTypeToText(eventType) + "\r\n");
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + eventTypeToText(eventType) + "\r\n");
 	}
-	len++;
+	mLen++;
 
-	fun = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t功能类型FUN:" + QString::number(fun) + "\r\n");
-	len++;
-	inf = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t信息序号INF:" + QString::number(inf) + "\r\n");
-	len++;
+	fun = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t功能类型FUN:" + QString::number(fun) + "\r\n");
+	mLen++;
+	inf = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t信息序号INF:" + QString::number(inf) + "\r\n");
+	mLen++;
 
-	dpi = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + dpiToText(dpi) + "\r\n");
-	len++;
-	ret = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t相对时间RET:" + QString::number(ret));
+	dpi = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + dpiToText(dpi) + "\r\n");
+	mLen++;
+	ret = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t相对时间RET:" + QString::number(ret));
 	mText.append("   秒:" + QString::number(ret / 1000) + "   毫秒:" + QString::number(ret % 1000) + " \r\n");
-	len += 2;
-	fan = charToint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t故障序号FAN :" + QString::number(fan) + "\r\n");
-	len += 2;
+	mLen += 2;
+	fan = charToint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t故障序号FAN :" + QString::number(fan) + "\r\n");
+	mLen += 2;
 
-	dt = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + len, 7));
-	len += 7;
+	dt = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + mLen, 7));
+	mLen += 7;
 
-	rcvdt = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + len, 7));
-	len += 7;
+	rcvdt = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + mLen, 7));
+	mLen += 7;
 
-	eventNum = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t故障量个数:" + QString::number(eventNum) + "\r\n");
-	len++;
+	eventNum = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t故障量个数:" + QString::number(eventNum) + "\r\n");
+	mLen++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < eventNum; index++)
 	{
 		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
-		bool isOk = mset->init(buff.mid(len));
+		bool isOk = mset->init(buff.mid(mLen));
 		if(!isOk)
 		{
 			delete mset;
@@ -71,13 +71,13 @@ bool HisInfo::init(const QByteArray& buff)
 			return false;
 		}
 		mset->mIndex = index;
-		len += mset->len;
+		mLen += mset->mLen;
 		setlist.append(mset);
 	}
 
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
@@ -111,32 +111,32 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 	hisInfos.clear();
 	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
-		rii = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-		len++;
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		mLen++;
 	}
 
-	isLast = *(buff.data() + len) & 0x01;
-	mText.append(CharToHexStr(buff.data() + len) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
-	len++;
+	isLast = *(buff.data() + mLen) & 0x01;
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
+	mLen++;
 
-	dtBegin = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + len, 7));
-	len += 7;
+	dtBegin = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + mLen, 7));
+	mLen += 7;
 
-	dtEnd = charToDateTime(buff.data() + len, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + len, 7));
-	len += 7;
+	dtEnd = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+	mText.append(timeToText(buff.data() + mLen, 7));
+	mLen += 7;
 
-	hisNum = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t历史信息条数: " + QString::number(hisNum) + "\r\n");
-	len++;
+	hisNum = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t历史信息条数: " + QString::number(hisNum) + "\r\n");
+	mLen++;
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	for(int index = 0; index < hisNum; index++)
 	{
 		HisInfo *minfo = new HisInfo(mConfig);
-		bool isOk = minfo->init(buff.mid(len));
+		bool isOk = minfo->init(buff.mid(mLen));
 		if(!isOk)
 		{
 			delete minfo;
@@ -144,13 +144,13 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 			return false;
 		}
 		minfo->mIndex = index;
-		len += minfo->len;
+		mLen += minfo->mLen;
 		hisInfos.append(minfo);
 	}
 
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

@@ -15,21 +15,21 @@ IEC101Asdu20Data::~IEC101Asdu20Data()
 bool IEC101Asdu20Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	yx16 = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + yx16ToText() + "\r\n");
-	len += 2;
+	yx16 = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t" + yx16ToText() + "\r\n");
+	mLen += 2;
 
-	yx16flag = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + yx16FlagToText() + "\r\n");
-	len += 2;
+	yx16flag = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t" + yx16FlagToText() + "\r\n");
+	mLen += 2;
 
-	qds = *(buff.data() + len);
-	mText.append(CharToHexStr(buff.data() + len) + "\t品质位:" + ivToText(qds) + "   " + ntToText(qds) + "   " + sbToText(qds) + "   " + blToText(qds) + "   " + ovToText(qds) + "\r\n");
-	len++;
+	qds = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t品质位:" + ivToText(qds) + "   " + ntToText(qds) + "   " + sbToText(qds) + "   " + blToText(qds) + "   " + ovToText(qds) + "\r\n");
+	mLen++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

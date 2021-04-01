@@ -18,17 +18,17 @@ bool MTAsduData::init(const QByteArray& buff)
 
 	dataClear();
 
-	memcpy(DA, buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t" + DAToText() + "\r\n");
-	len += 2;
+	memcpy(DA, buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t" + DAToText() + "\r\n");
+	mLen += 2;
 
-	memcpy(DI, buff.data() + len, 4);
-	mText.append(CharToHexStr(buff.data() + len, 4) + "\t" + DIToText() + "\r\n");
-	len += 4;
+	memcpy(DI, buff.data() + mLen, 4);
+	mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t" + DIToText() + "\r\n");
+	mLen += 4;
 
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	if(!handle(buff))
@@ -210,15 +210,15 @@ bool MTAsduData::handle(const QByteArray& buff)
 {
 	if(flag & ISMASTER && afn == 0x0d)
 	{
-		dt1 = charToDateTime(buff.data() + len, 6, MYTIME2);
-		mText.append(myTime2ToText(buff.data() + len, 6));
-		len += 6;
-		dt2 = charToDateTime(buff.data() + len, 6, MYTIME2);
-		mText.append(myTime2ToText(buff.data() + len, 6));
-		len += 6;
-		density = *(buff.data() + len);
-		mText.append(CharToHexStr(buff.data() + len) + "\t" + densityToText() + "\r\n");
-		len++;
+		dt1 = charToDateTime(buff.data() + mLen, 6, MYTIME2);
+		mText.append(myTime2ToText(buff.data() + mLen, 6));
+		mLen += 6;
+		dt2 = charToDateTime(buff.data() + mLen, 6, MYTIME2);
+		mText.append(myTime2ToText(buff.data() + mLen, 6));
+		mLen += 6;
+		density = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + densityToText() + "\r\n");
+		mLen++;
 
 	}
 	bool ret = true;
@@ -251,9 +251,9 @@ bool MTAsduData::handle(const QByteArray& buff)
 //		len += 6;
 //	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	if(len > buff.length())
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
@@ -265,16 +265,16 @@ bool MTAsduData::handleData_1(const QByteArray& buff)
 	{
 		return true;
 	}
-	uint data = charTouint(buff.data() + len, 4);
+	uint data = charTouint(buff.data() + mLen, 4);
 	uint dataH = data / 100;
 	uint dataL = data % 100;
 	QString str = QString::number(dataH) + "." + QString("%1").arg(QString::number(dataL), 2, QLatin1Char('0'));
-	mText.append(CharToHexStr(buff.data() + len, 4) + "\t值:" + str + "\r\n");
+	mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t值:" + str + "\r\n");
 	uintLst.append(data);
-	len += 4;
-	if(len > buff.length())
+	mLen += 4;
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
@@ -282,12 +282,12 @@ bool MTAsduData::handleData_1(const QByteArray& buff)
 
 bool MTAsduData::handleData_2(const QByteArray& buff)
 {
-	uchar confirm = *(buff.data() + len) & 0x01;
-	mText.append(CharToHexStr(buff.data() + len) + "\t" + QString(confirm ? "全部否定" : "全部肯定") + "\r\n");
-	len++;
-	if(len > buff.length())
+	uchar confirm = *(buff.data() + mLen) & 0x01;
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + QString(confirm ? "全部否定" : "全部肯定") + "\r\n");
+	mLen++;
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
@@ -299,12 +299,12 @@ bool MTAsduData::handleData_3(const QByteArray& buff)
 	{
 		return true;
 	}
-	ushort data = charTouint(buff.data() + len, 2);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t值:" + QString::number(data) + "\r\n");
-	len += 2;
-	if(len > buff.length())
+	ushort data = charTouint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t值:" + QString::number(data) + "\r\n");
+	mLen += 2;
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;

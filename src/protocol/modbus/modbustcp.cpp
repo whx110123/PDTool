@@ -21,22 +21,22 @@ bool ModbusTCP::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP报文过短");
 		return false;
 	}
-	flagIndex = charTouint(buff.data() + len, 2, 1);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t事务处理标识: " + QString::number(flagIndex) + "\r\n");
-	len += 2;
+	flagIndex = charTouint(buff.data() + mLen, 2, 1);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t事务处理标识: " + QString::number(flagIndex) + "\r\n");
+	mLen += 2;
 
-	flag = charTouint(buff.data() + len, 2, 1);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t协议标识符: " + QString::number(flag) + "\r\n");
-	len += 2;
+	flag = charTouint(buff.data() + mLen, 2, 1);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t协议标识符: " + QString::number(flag) + "\r\n");
+	mLen += 2;
 
 	if(flag != 0)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP协议标识符必须为0");
 		return false;
 	}
-	length = charTouint(buff.data() + len, 2, 1);
-	mText.append(CharToHexStr(buff.data() + len, 2) + "\t长度: " + QString::number(length) + "\r\n");
-	len += 2;
+	length = charTouint(buff.data() + mLen, 2, 1);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t长度: " + QString::number(length) + "\r\n");
+	mLen += 2;
 	if(length > 255)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！modbus TCP长度(%1)大于255").arg(length));
@@ -48,7 +48,7 @@ bool ModbusTCP::init(const QByteArray& buff)
 		return false;
 	}
 
-	if(length == *(uchar *)(buff.data() + len + 2) + 3)
+	if(length == *(uchar *)(buff.data() + mLen + 2) + 3)
 	{
 		mb.isMaster = false;
 	}
@@ -58,22 +58,22 @@ bool ModbusTCP::init(const QByteArray& buff)
 	}
 
 
-	if(!mb.init(buff.mid(len, length)))
+	if(!mb.init(buff.mid(mLen, length)))
 	{
 		return false;
 	}
 
-	if(length != mb.len)
+	if(length != mb.mLen)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus TCP报文解析错误");
 		return false;
 	}
 
-	len += length;
-	mRecvData = buff.left(len);
-	if(len > buff.length())
+	mLen += length;
+	mRecvData = buff.left(mLen);
+	if(mLen > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(len).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
 	return true;
