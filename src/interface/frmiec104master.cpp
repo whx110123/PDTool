@@ -3,8 +3,10 @@
 
 #include <app.h>
 #include <iec101asdu100data.h>
+#include <iec101asdu167data.h>
 #include <iec101asdu45data.h>
 #include <iec101asdu46data.h>
+#include <iec103asdu21data.h>
 #include <iec104.h>
 #include <quiwidget.h>
 
@@ -277,7 +279,39 @@ void frmIEC104Master::on_pushButton_SetTime_clicked()
 
 void frmIEC104Master::on_pushButton_CallTitle_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0x15;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x2a;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu21Data *asdudata103 = new IEC103Asdu21Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf0;
+	asdudata103->rii = 0x00;
+	asdudata103->nog = 0x00;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
 
 void frmIEC104Master::on_pushButton_CallDimension_clicked()

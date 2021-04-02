@@ -599,6 +599,47 @@ QString IEC103Asdu::showToText()
 
 bool IEC103Asdu::createData(MyData& proData)
 {
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	tmp.data += type;
+	tmp.data += vsq & 0x80 + datalist.count();
+	tmp.data += cot;
+	tmp.data += uintToBa(commonaddr, mConfig.comaddrlen);
+	int index = 0;
+
+	for(IEC103AsduData *mdata : datalist)
+	{
+		if(index == 0)
+		{
+			tmp.sqFlag = SQ_FUNINF;
+		}
+		else if(index > 0 && (vsq & 0x80))
+		{
+			tmp.sqFlag = proData.sqFlag;
+		}
+		else
+		{
+			tmp.sqFlag = SQ_NOADDR;
+		}
+		if(!mdata->createData(tmp))
+		{
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
+		}
+		index++;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	return true;
+
 //	qDeleteAll(datalist);
 //	datalist.clear();
 

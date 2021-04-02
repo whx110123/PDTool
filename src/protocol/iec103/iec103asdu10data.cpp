@@ -454,6 +454,7 @@ IEC103Asdu10DataSet::IEC103Asdu10DataSet(const MyConfig& Config): MyBase(Config)
 {
 	memset(gin, 0, sizeof(gin));
 	kod = 0;
+	hasgdd = false;
 }
 
 IEC103Asdu10DataSet::~IEC103Asdu10DataSet()
@@ -475,8 +476,10 @@ bool IEC103Asdu10DataSet::init(const QByteArray& buff)
 
 	if(buff.size() == mLen)
 	{
+		hasgdd = false;
 		return true;
 	}
+	hasgdd = true;
 	if(!mygdd.init(buff.mid(mLen)))
 	{
 		return false;

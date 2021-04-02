@@ -54,6 +54,7 @@ public:
 public:
 	uchar gin[2];
 	uchar kod;
+	bool hasgdd;
 	IEC103Asdu10DataSetGdd mygdd;
 };
 

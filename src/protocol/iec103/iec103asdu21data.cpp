@@ -72,6 +72,42 @@ QString IEC103Asdu21Data::showToText()
 
 bool IEC103Asdu21Data::createData(MyData& proData)
 {
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(tmp.sqFlag == SQ_FUNINF)
+	{
+		tmp.data += fun;
+		tmp.data += inf;
+	}
+	else if(tmp.sqFlag == SQ_INF)
+	{
+		tmp.data += inf;
+	}
+	tmp.data += rii;
+	tmp.data += nog;
+
+	int index = 0;
+	for(IEC103Asdu10DataSet *mset : setlist)
+	{
+		if(!mset->createData(tmp))
+		{
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
+		}
+		index++;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+
+	return true;
 //	config.data += config.inf;
 //	config.data += config.rii;
 //	config.data += config.nog;
@@ -85,6 +121,6 @@ bool IEC103Asdu21Data::createData(MyData& proData)
 //		}
 //		return true;
 //	}
-	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-	return false;
+//	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+//	return false;
 }

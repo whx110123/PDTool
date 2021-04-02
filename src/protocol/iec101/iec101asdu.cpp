@@ -233,20 +233,26 @@ bool IEC101Asdu::createData(MyData& proData)
 	tmp.getAttribute(proData);
 
 	tmp.data += type;
-	tmp.data += vsq & 0x80 + datalist.count();
+	tmp.data += (type == 167 ? vsq : (vsq & 0x80 + datalist.count()));
 	tmp.data += QByteArray((char *)cot, mConfig.cotlen);
 	tmp.data += uintToBa(commonaddr, mConfig.comaddrlen);
 	int index = 0;
 
-	tmp.flag = SQ_INF;
-	tmp.reverse = false;
 	for(IEC101AsduData *mdata : datalist)
 	{
 		if(index > 0 && (vsq & 0x80))
 		{
-			tmp.flag = SQ_NOADDR;
+			tmp.sqFlag = SQ_NOADDR;
 		}
-		mdata->createData(tmp);
+		else
+		{
+			tmp.sqFlag = SQ_INF;
+		}
+		if(!mdata->createData(tmp))
+		{
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
+		}
 		index++;
 	}
 

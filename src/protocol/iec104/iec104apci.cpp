@@ -288,6 +288,10 @@ QString IEC104Apci::showToText()
 
 bool IEC104Apci::createData(MyData& proData)
 {
+	MyData tmp;
+	tmp.getAttribute(proData);
+	tmp.data += 0x68;
+
 	MyData tmp1;
 	tmp1.getAttribute(proData);
 	if(!control.createData(tmp1))
@@ -296,18 +300,15 @@ bool IEC104Apci::createData(MyData& proData)
 		return false;
 	}
 
-	MyData tmp2;
-	tmp2.getAttribute(proData);
-	tmp2.data += 0x68;
 	if(proData.reverse)
 	{
-		tmp2.data += uintToBa(tmp1.data.length() + proData.data.length(), stringToInt(mConfig.lengthType));
-		proData = tmp2 + tmp1 + proData;
+		tmp.data += uintToBa(tmp1.data.length() + proData.data.length(), stringToInt(mConfig.lengthType));
+		proData = tmp + tmp1 + proData;
 	}
 	else
 	{
-		tmp2.data += uintToBa(tmp1.data.length(), stringToInt(mConfig.lengthType));
-		proData = proData + tmp2 + tmp1;
+		tmp.data += uintToBa(tmp1.data.length(), stringToInt(mConfig.lengthType));
+		proData = proData + tmp + tmp1;
 	}
 	return true;
 }

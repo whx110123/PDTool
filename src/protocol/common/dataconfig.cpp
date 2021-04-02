@@ -2,7 +2,7 @@
 
 MyData::MyData()
 {
-	flag = 0;
+	sqFlag = SQ_INF;
 	reverse = false;
 }
 
@@ -13,7 +13,7 @@ MyData::~MyData()
 
 void MyData::getAttribute(const MyData& md)
 {
-	flag = md.flag;
+	sqFlag = md.sqFlag;
 }
 
 MyData MyData::operator+(const MyData& md) const

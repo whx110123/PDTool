@@ -31,7 +31,7 @@ public:
 	MyData operator+(const MyData& md) const;
 
 	QByteArray data;		//总报文
-	uchar flag;				//标记是否需要带地址
+	uchar sqFlag;				//标记是否需要带地址
 	bool reverse;			//0:在后面添加，1:在前面添加
 
 };

@@ -31,7 +31,7 @@ bool IEC101Asdu103Data::createData(MyData& proData)
 	MyData tmp;
 	tmp.getAttribute(proData);
 
-	if(tmp.flag == SQ_INF)
+	if(tmp.sqFlag == SQ_INF)
 	{
 		tmp.data += uintToBa(infaddr, mConfig.infaddrlen);
 	}
