@@ -86,7 +86,7 @@ bool IEC101Asdu167Data::createData(MyData& proData)
 		tmp.data += uintToBa(tmp1.data.length(), 1);
 		proData = proData + tmp + tmp1;
 	}
-
+	mSendData = proData.data;
 	return true;
 
 

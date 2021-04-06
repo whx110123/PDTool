@@ -638,6 +638,7 @@ bool IEC103Asdu::createData(MyData& proData)
 	{
 		proData = proData + tmp;
 	}
+	mSendData = proData.data;
 	return true;
 
 //	qDeleteAll(datalist);

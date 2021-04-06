@@ -115,7 +115,7 @@ bool IEC104::createData(MyData& proData)
 	{
 		proData = proData + tmp;
 	}
-
+	mSendData = proData.data;
 	return true;
 
 

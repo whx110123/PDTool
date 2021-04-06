@@ -94,6 +94,7 @@ QDateTime charToDateTime(uchar *data, int len, int model = BINARYTIME2A); //将l
 QDateTime charToDateTime(const char *data, int len, int model = BINARYTIME2A);//将len个char合成一个日期,model时间类型
 
 QByteArray uintToBa(uint data, int len);
+QByteArray intToBa(int data, int len);
 QByteArray floatToBa(float data);
 QByteArray dateTimeToBa(QDateTime datatime, int len, int model = BINARYTIME2A);
 
@@ -105,6 +106,9 @@ ushort crc16(uchar *data, ushort len);
 uint bcdTouint(const char *bcd, int len);
 uint bcdTouint(uchar *bcd, int len);
 int stringToInt(QString data);					//长度域类型转换
+
+void stringToHtmlFilter(QString& str);
+void stringToHtml(QString& str, QColor crl);
 
 #define APPTITLE QString("Protocol Debug Tool V3.01     作者: 王洪星")
 

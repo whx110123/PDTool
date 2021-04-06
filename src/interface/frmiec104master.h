@@ -40,41 +40,52 @@ private slots:
 	void showToText(const QString& data, int type);		//type 0接收 1发送
 	void showLog(const QString& data);
 	void emitsignals(const QString& data);
-	QByteArray getYKYTData(uchar type);
+	IEC101AsduData *getYKYTData(uchar type);			//type 0x00执行 0x80选择
 
-	void on_pushButton_Start_clicked();
+	void on_pushButton_Start_clicked();					//开始模拟
 
-	void on_pushButton_SendUStart_clicked();
+	void on_pushButton_SendUStart_clicked();			//启动链路
 
-	void on_pushButton_SendUTest_clicked();
+	void on_pushButton_SendUTest_clicked();				//发送测试
 
-	void on_pushButton_SendS_clicked();
+	void on_pushButton_SendS_clicked();					//发送确认
 
-	void on_pushButton_CallAll_clicked();
+	void on_pushButton_CallAll_clicked();				//总召
 
-	void on_pushButton_SetTime_clicked();
+	void on_pushButton_SetTime_clicked();				//对时
 
-	void on_pushButton_CallTitle_clicked();
+	void on_pushButton_CallTitle_clicked();				//召唤组标题
 
-	void on_pushButton_CallDimension_clicked();
+	void on_pushButton_CallUnit_clicked();				//召唤量纲
 
-	void on_pushButton_CallAccuracy_clicked();
+	void on_pushButton_CallAccuracy_clicked();			//召唤精度
 
-	void on_pushButton_CallRange_clicked();
+	void on_pushButton_CallRange_clicked();				//召唤量程
 
-	void on_pushButton_CallSetting_clicked();
+	void on_pushButton_CallDescription_clicked();		//召唤描述
 
-	void on_pushButton_CallDescription_clicked();
+	void on_pushButton_SelectSetting_clicked();			//选择定值区
 
-	void on_pushButton_SetValue_clicked();
+	void on_pushButton_CallSetting_clicked();			//召唤定值
 
-	void on_pushButton_solidify_clicked();
+	void on_pushButton_SetValue_clicked();				//修改定值
+
+	void on_pushButton_solidify_clicked();				//固化定值
+
+	void on_comboBox_RemoteType_currentIndexChanged(const QString& arg1);
+
+	void on_pushButton_Select_clicked();
+
+	void on_pushButton_Execute_clicked();
+
+	void on_pushButton_Cancel_clicked();
 
 private:
 	Ui::frmIEC104Master *ui;
 	ManagerIEC104Master *manager;
 	ConfigIEC104Master managerConfig;		//参数配置
 	MyConfig config;						//报文格式
+	uchar myngd;
 
 };
 

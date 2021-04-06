@@ -230,6 +230,13 @@ QByteArray uintToBa(uint data, int len)
 	}
 	return tmp;
 }
+
+QByteArray intToBa(int data, int len)
+{
+	uint tmp = (uint)data;
+	return uintToBa(tmp, len);
+}
+
 QByteArray floatToBa(float data)
 {
 	char ch[4];
@@ -244,44 +251,44 @@ QByteArray dateTimeToBa(QDateTime datatime, int len, int model)
 	switch(model)
 	{
 	case BINARYTIME2A:
+	{
+		ushort tmp = datatime.time().msec() + datatime.time().second() * 1000;
+		char ch[2];
+		memcpy(ch, &tmp, 2);
+		ba.append(ch, 2);
+		if(len == 2)
 		{
-			ushort tmp = datatime.time().msec() + datatime.time().second() * 1000;
-			char ch[2];
-			memcpy(ch, &tmp, 2);
-			ba.append(ch, 2);
-			if(len == 2)
-			{
-				break;
-			}
-			uchar uch = datatime.time().minute();
-			ba.append(uch);
-			if(len == 3)
-			{
-				break;
-			}
-			uch = datatime.time().hour();
-			ba.append(uch);
-			if(len == 4)
-			{
-				break;
-			}
-			uch = datatime.date().dayOfWeek();
-			uch = (uch << 5) + datatime.date().day();
-			ba.append(uch);
-			if(len == 5)
-			{
-				break;
-			}
-			uch = datatime.date().month();
-			ba.append(uch);
-			if(len == 6)
-			{
-				break;
-			}
-			uch = datatime.date().year() % 100;
-			ba.append(uch);
 			break;
 		}
+		uchar uch = datatime.time().minute();
+		ba.append(uch);
+		if(len == 3)
+		{
+			break;
+		}
+		uch = datatime.time().hour();
+		ba.append(uch);
+		if(len == 4)
+		{
+			break;
+		}
+		uch = datatime.date().dayOfWeek();
+		uch = (uch << 5) + datatime.date().day();
+		ba.append(uch);
+		if(len == 5)
+		{
+			break;
+		}
+		uch = datatime.date().month();
+		ba.append(uch);
+		if(len == 6)
+		{
+			break;
+		}
+		uch = datatime.date().year() % 100;
+		ba.append(uch);
+		break;
+	}
 	case BINARYTIME2B:
 		break;
 	default:
@@ -448,4 +455,28 @@ double charTodouble(uchar *data, int model)
 {
 	char *mdata = (char *)data;
 	return charTodouble(mdata, model);
+}
+
+void stringToHtmlFilter(QString& str)
+{
+	//注意这几行代码的顺序不能乱，否则会造成多次替换
+	str.replace("&", "&amp;");
+	str.replace("	", "<br>");
+	str.replace(">", "&gt;");
+	str.replace("<", "&lt;");
+	str.replace("\"", "&quot;");
+	str.replace("\'", "&#39;");
+	str.replace(" ", "&nbsp;");
+	str.replace("\n", "<br>");
+	str.replace("\r", "");
+
+}
+void stringToHtml(QString& str, QColor crl)
+{
+	QByteArray array;
+	array.append(crl.red());
+	array.append(crl.green());
+	array.append(crl.blue());
+	QString strC(array.toHex());
+	str = QString("<span style=\" color:#%1;\">%2</span>").arg(strC).arg(str);
 }

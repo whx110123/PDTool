@@ -33,7 +33,24 @@ bool IEC101Asdu50Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu50Data::createData(MyData& proData)
 {
-//	config.data += uintToBa(config.infaddr, mConfig.infaddrlen);
-//	config.data += config.infdata;
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(tmp.sqFlag == SQ_INF)
+	{
+		tmp.data += uintToBa(infaddr, mConfig.infaddrlen);
+	}
+	tmp.data += floatToBa(floatdata);
+	tmp.data += qos;
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	mSendData = proData.data;
 	return true;
 }

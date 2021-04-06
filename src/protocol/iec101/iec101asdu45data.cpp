@@ -29,7 +29,24 @@ bool IEC101Asdu45Data::handle(const QByteArray& buff)
 
 bool IEC101Asdu45Data::createData(MyData& proData)
 {
-//	config.data += uintToBa(config.infaddr, mConfig.infaddrlen);
-//	config.data += config.infdata;
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(tmp.sqFlag == SQ_INF)
+	{
+		tmp.data += uintToBa(infaddr, mConfig.infaddrlen);
+	}
+	tmp.data += sco;
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	mSendData = proData.data;
 	return true;
+
 }

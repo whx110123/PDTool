@@ -17,6 +17,20 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 	qDeleteAll(gddlist);
 	gddlist.clear();
 
+	QString gbkstr;
+	QString bit8;
+	float datafloat;
+	short datashort;
+	uint datauint;
+	uint datauint2;
+	int dataint;
+	uchar datauchar;
+	uchar datauchar2;
+	uchar datauchar3;
+	uchar datauchar4;
+	QDateTime datet;
+	QDateTime datet2;
+
 	switch(gdd[0])
 	{
 	case 1:
@@ -362,6 +376,7 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		return false;
 		break;
 	}
+	gid = mRecvData.left(mLen);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(mLen > buff.length())
 	{
@@ -379,6 +394,35 @@ QString IEC103Asdu10DataSetGid::showToText()
 		text.append(mgdd->showToText());
 	}
 	return text;
+}
+
+bool IEC103Asdu10DataSetGid::createData(MyData& proData)
+{
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	tmp.data += gid;
+	int index = 0;
+	for(IEC103Asdu10DataSetGdd *mgdd : gddlist)
+	{
+		if(!mgdd->createData(tmp))
+		{
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
+		}
+		index++;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	mSendData = proData.data;
+	return true;
 }
 
 
@@ -449,12 +493,41 @@ QString IEC103Asdu10DataSetGdd::showToText()
 	return text;
 }
 
+bool IEC103Asdu10DataSetGdd::createData(MyData& proData)
+{
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	tmp.data += QByteArray((char *)gdd, 3);
+
+	int index = 0;
+	for(IEC103Asdu10DataSetGid *mgid : gidlist)
+	{
+		if(!mgid->createData(tmp))
+		{
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
+		}
+		index++;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	mSendData = proData.data;
+	return true;
+}
+
 
 IEC103Asdu10DataSet::IEC103Asdu10DataSet(const MyConfig& Config): MyBase(Config), mygdd(Config)
 {
 	memset(gin, 0, sizeof(gin));
 	kod = 0;
-	hasgdd = false;
 }
 
 IEC103Asdu10DataSet::~IEC103Asdu10DataSet()
@@ -476,10 +549,9 @@ bool IEC103Asdu10DataSet::init(const QByteArray& buff)
 
 	if(buff.size() == mLen)
 	{
-		hasgdd = false;
 		return true;
 	}
-	hasgdd = true;
+
 	if(!mygdd.init(buff.mid(mLen)))
 	{
 		return false;
@@ -498,6 +570,32 @@ QString IEC103Asdu10DataSet::showToText()
 	QString text = mText;
 	text.append(mygdd.showToText());
 	return text;
+}
+
+bool IEC103Asdu10DataSet::createData(MyData& proData)
+{
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	tmp.data += QByteArray((char *)gin, 2);
+	tmp.data += kod;
+
+	if(!mygdd.createData(tmp))
+	{
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+		return false;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	mSendData = proData.data;
+	return true;
 }
 
 
@@ -527,11 +625,10 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 	}
 
 	ngd = *(buff.data() + mLen);
-	setnum = ngd & 0x3f;
 	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + ngdToText(ngd) + "\r\n");
 	mLen++;
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	for(int index = 0; index < setnum; index++)
+	for(int index = 0; index < (ngd & 0x3f); index++)
 	{
 		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
 		bool isOk = mset->init(buff.mid(mLen));
@@ -567,6 +664,44 @@ QString IEC103Asdu10Data::showToText()
 
 bool IEC103Asdu10Data::createData(MyData& proData)
 {
+
+	MyData tmp;
+	tmp.getAttribute(proData);
+
+	if(tmp.sqFlag == SQ_FUNINF)
+	{
+		tmp.data += fun;
+		tmp.data += inf;
+	}
+	else if(tmp.sqFlag == SQ_INF)
+	{
+		tmp.data += inf;
+	}
+	tmp.data += rii;
+	ngd = (ngd & 0xc0) + setlist.count();
+	tmp.data += ngd;
+
+	int index = 0;
+	for(IEC103Asdu10DataSet *mset : setlist)
+	{
+		if(!mset->createData(tmp))
+		{
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+			return false;
+		}
+		index++;
+	}
+
+	if(proData.reverse)
+	{
+		proData = tmp + proData;
+	}
+	else
+	{
+		proData = proData + tmp;
+	}
+	mSendData = proData.data;
+	return true;
 //	config.data += config.inf;
 //	config.data += config.rii;
 //	config.data += config.ngd;
@@ -587,8 +722,8 @@ bool IEC103Asdu10Data::createData(MyData& proData)
 //		}
 //		return true;
 //	}
-	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-	return false;
+//	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
+//	return false;
 }
 
 

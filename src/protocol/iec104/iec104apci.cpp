@@ -198,6 +198,7 @@ bool IEC104Control::createData(MyData& proData)
 	{
 		proData = proData + tmp;
 	}
+	mSendData = proData.data;
 	return true;
 }
 IEC104Apci::IEC104Apci(const MyConfig& Config): MyBase(Config), control(Config)
@@ -310,6 +311,7 @@ bool IEC104Apci::createData(MyData& proData)
 		tmp.data += uintToBa(tmp1.data.length(), stringToInt(mConfig.lengthType));
 		proData = proData + tmp + tmp1;
 	}
+	mSendData = proData.data;
 	return true;
 }
 

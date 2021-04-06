@@ -45,5 +45,6 @@ bool IEC101Asdu103Data::createData(MyData& proData)
 	{
 		proData = proData + tmp;
 	}
+	mSendData = proData.data;
 	return true;
 }

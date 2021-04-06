@@ -6,6 +6,12 @@
 #include <iec101asdu167data.h>
 #include <iec101asdu45data.h>
 #include <iec101asdu46data.h>
+#include <iec101asdu47data.h>
+#include <iec101asdu48data.h>
+#include <iec101asdu49data.h>
+#include <iec101asdu50data.h>
+#include <iec101asdu58data.h>
+#include <iec101asdu59data.h>
 #include <iec103asdu21data.h>
 #include <iec104.h>
 #include <quiwidget.h>
@@ -28,6 +34,7 @@ frmIEC104Master::~frmIEC104Master()
 void frmIEC104Master::initfrm()
 {
 	ui->comboBox->addItems(App::Transferlst);
+	ui->lineEdit_YTValue->hide();
 }
 
 void frmIEC104Master::init()
@@ -58,6 +65,8 @@ void frmIEC104Master::initConfig()
 	config.cotlen = 2;
 	config.comaddrlen = 2;
 	config.infaddrlen = 3;
+
+	myngd = 0;
 }
 
 void frmIEC104Master::dealRcvData(const QString& data, const QString& title)
@@ -158,65 +167,77 @@ void frmIEC104Master::emitsignals(const QString& data)
 	}
 }
 
-QByteArray frmIEC104Master::getYKYTData(uchar type)
+IEC101AsduData *frmIEC104Master::getYKYTData(uchar type)
 {
+	IEC101AsduData *asduData = NULL;
 	uchar asdutype = ui->comboBox_RemoteType->currentText().split(" ").at(0).toUShort();
-	QByteArray tmp;
-	ushort tmp_us = 0;
-	short tmp_s = 0;
-	float tmp_f = 0;
-	QDateTime datetime = QDateTime::currentDateTime();
 	switch(asdutype)
 	{
 	case 45:
-	case 58:
-		if(ui->comboBox_YKValue->currentText().contains("合"))
-		{
-			tmp += 0x01 | type;
-		}
-		else
-		{
-			tmp += type;
-		}
-		if(asdutype == 58)
-		{
-			tmp += dateTimeToBa(datetime, 7, BINARYTIME2A);
-		}
+	{
+		IEC101Asdu45Data *tmp = new IEC101Asdu45Data(config);
+		tmp->sco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x01 : 0x00) | (type & 0x80);
+		asduData = tmp;
 		break;
+	}
 	case 46:
+	{
+		IEC101Asdu46Data *tmp = new IEC101Asdu46Data(config);
+		tmp->dco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x02 : 0x01) | (type & 0x80);
+		asduData = tmp;
+		break;
+	}
 	case 47:
-	case 59:
-		if(ui->comboBox_YKValue->currentText().contains("合"))
-		{
-			tmp += 0x02 | type;
-		}
-		else
-		{
-			tmp += 0x01 | type;
-		}
-		if(asdutype == 59)
-		{
-			tmp += dateTimeToBa(datetime, 7, BINARYTIME2A);
-		}
+	{
+		IEC101Asdu47Data *tmp = new IEC101Asdu47Data(config);
+		tmp->rco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x02 : 0x01) | (type & 0x80);
+		asduData = tmp;
 		break;
+	}
 	case 48:
+	{
+		IEC101Asdu48Data *tmp = new IEC101Asdu48Data(config);
+		tmp->shortdata = ui->lineEdit_YTValue->text().toShort();
+		tmp->qos = type & 0x80;
+		asduData = tmp;
+		break;
+	}
 	case 49:
-		tmp_s = ui->lineEdit_YTValue->text().toShort();
-		tmp_us = (ushort)tmp_s;
-		tmp += tmp_us & 0xff;
-		tmp += (tmp_us >> 8) & 0xff;
-		tmp += type;
+	{
+		IEC101Asdu49Data *tmp = new IEC101Asdu49Data(config);
+		tmp->shortdata = ui->lineEdit_YTValue->text().toShort();
+		tmp->qos = type & 0x80;
+		asduData = tmp;
 		break;
+	}
 	case 50:
-		tmp_f = ui->lineEdit_YTValue->text().toFloat();
-		tmp += floatToBa(tmp_f);
-		tmp += type;
+	{
+		IEC101Asdu50Data *tmp = new IEC101Asdu50Data(config);
+		tmp->floatdata = ui->lineEdit_YTValue->text().toFloat();
+		tmp->qos = type & 0x80;
+		asduData = tmp;
 		break;
+	}
+	case 58:
+	{
+		IEC101Asdu58Data *tmp = new IEC101Asdu58Data(config);
+		tmp->sco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x01 : 0x00) | (type & 0x80);
+		tmp->datetime = QDateTime::currentDateTime();
+		asduData = tmp;
+		break;
+	}
+	case 59:
+	{
+		IEC101Asdu59Data *tmp = new IEC101Asdu59Data(config);
+		tmp->dco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x02 : 0x01) | (type & 0x80);
+		tmp->datetime = QDateTime::currentDateTime();
+		asduData = tmp;
+		break;
+	}
 	default:
 		break;
-
 	}
-	return tmp;
+	return asduData;
 }
 
 void frmIEC104Master::on_pushButton_Start_clicked()
@@ -308,43 +329,515 @@ void frmIEC104Master::on_pushButton_CallTitle_clicked()
 	asdudata103->fun = 0xfe;
 	asdudata103->inf = 0xf0;
 	asdudata103->rii = 0x00;
-	asdudata103->nog = 0x00;
 
 	asdu.createData(sendData);
 	manager->SendI(sendData.data);
 }
 
-void frmIEC104Master::on_pushButton_CallDimension_clicked()
+void frmIEC104Master::on_pushButton_CallUnit_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0x15;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x2a;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu21Data *asdudata103 = new IEC103Asdu21Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf1;
+	asdudata103->rii = 0x00;
+	IEC103Asdu21DataSet *set = new IEC103Asdu21DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x09;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
 
 void frmIEC104Master::on_pushButton_CallAccuracy_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0x15;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x2a;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu21Data *asdudata103 = new IEC103Asdu21Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf1;
+	asdudata103->rii = 0x00;
+	IEC103Asdu21DataSet *set = new IEC103Asdu21DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x05;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
 
 void frmIEC104Master::on_pushButton_CallRange_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-}
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
 
-void frmIEC104Master::on_pushButton_CallSetting_clicked()
-{
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
 
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0x15;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x2a;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu21Data *asdudata103 = new IEC103Asdu21Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf1;
+	asdudata103->rii = 0x00;
+	IEC103Asdu21DataSet *set = new IEC103Asdu21DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x03;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
 
 void frmIEC104Master::on_pushButton_CallDescription_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0x15;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x2a;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu21Data *asdudata103 = new IEC103Asdu21Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf1;
+	asdudata103->rii = 0x00;
+	IEC103Asdu21DataSet *set = new IEC103Asdu21DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x0a;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
+}
+
+void frmIEC104Master::on_pushButton_SelectSetting_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
+
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0xa;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x28;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu10Data *asdudata103 = new IEC103Asdu10Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xfa;
+	asdudata103->rii = 0x00;
+	IEC103Asdu10DataSet *set = new IEC103Asdu10DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x01;
+	set->mygdd.gdd[0] = 0x03;
+	set->mygdd.gdd[1] = 0x01;
+	set->mygdd.gdd[2] = 0x01;
+	IEC103Asdu10DataSetGid *gid = new IEC103Asdu10DataSetGid(config);
+	set->mygdd.gidlist.append(gid);
+	gid->gid += ui->lineEdit_SetNo->text().toUShort() & 0xff;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
+}
+
+void frmIEC104Master::on_pushButton_CallSetting_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
+
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0x15;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x2a;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu21Data *asdudata103 = new IEC103Asdu21Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf1;
+	asdudata103->rii = 0x00;
+	IEC103Asdu21DataSet *set = new IEC103Asdu21DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x01;
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
 
 void frmIEC104Master::on_pushButton_SetValue_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0xa;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x28;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu10Data *asdudata103 = new IEC103Asdu10Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xf9;
+	asdudata103->rii = 0x00;
+	asdudata103->ngd = 0;
+	myngd = 0x40;
+	IEC103Asdu10DataSet *set = new IEC103Asdu10DataSet(config);
+	asdudata103->setlist.append(set);
+	set->gin[0] = ui->lineEdit_SetGroup->text().toUShort();
+	set->gin[1] = ui->lineEdit_SetEntry->text().toUShort();
+	set->kod = 0x01;
+	IEC103Asdu10DataSetGid *gid = new IEC103Asdu10DataSetGid(config);
+	set->mygdd.gidlist.append(gid);
+	QString valType = ui->comboBox_ValueType->currentText();
+	if(valType == QString("FLOAT"))
+	{
+		set->mygdd.gdd[0] = 0x07;
+		set->mygdd.gdd[1] = 0x04;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += floatToBa(ui->lineEdit_SetValue->text().toFloat());
+	}
+	else if(valType == QString("INT8"))
+	{
+		set->mygdd.gdd[0] = 0x04;
+		set->mygdd.gdd[1] = 0x01;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += intToBa(ui->lineEdit_SetValue->text().toInt(), set->mygdd.gdd[1]);
+	}
+	else if(valType == QString("INT16"))
+	{
+		set->mygdd.gdd[0] = 0x04;
+		set->mygdd.gdd[1] = 0x02;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += intToBa(ui->lineEdit_SetValue->text().toInt(), set->mygdd.gdd[1]);
+	}
+	else if(valType == QString("INT32"))
+	{
+		set->mygdd.gdd[0] = 0x04;
+		set->mygdd.gdd[1] = 0x04;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += intToBa(ui->lineEdit_SetValue->text().toInt(), set->mygdd.gdd[1]);
+	}
+	else if(valType == QString("UINT8"))
+	{
+		set->mygdd.gdd[0] = 0x03;
+		set->mygdd.gdd[1] = 0x01;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += uintToBa(ui->lineEdit_SetValue->text().toUInt(), set->mygdd.gdd[1]);
+	}
+	else if(valType == QString("UINT16"))
+	{
+		set->mygdd.gdd[0] = 0x03;
+		set->mygdd.gdd[1] = 0x02;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += uintToBa(ui->lineEdit_SetValue->text().toUInt(), set->mygdd.gdd[1]);
+	}
+	else if(valType == QString("UINT32"))
+	{
+		set->mygdd.gdd[0] = 0x03;
+		set->mygdd.gdd[1] = 0x04;
+		set->mygdd.gdd[2] = 0x01;
+		gid->gid += uintToBa(ui->lineEdit_SetValue->text().toUInt(), set->mygdd.gdd[1]);
+	}
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
 
 void frmIEC104Master::on_pushButton_solidify_clicked()
 {
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = 0xa7;
+	asdu.vsq = 0;
+	asdu.cot[0] = 5;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
+	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	asdu.datalist.append(asduData);
+
+	asduData->ctrl = 0;
+	asduData->devaddr[0] = ui->lineEdit_DevAddr->text().toUShort() & 0xff;
+	asduData->devaddr[1] = (ui->lineEdit_DevAddr->text().toUShort() >> 8) & 0xff;
+
+	asduData->asdu.mConfig.cotlen = 1;
+	asduData->asdu.mConfig.comaddrlen = 1;
+	asduData->asdu.type = 0xa;
+	asduData->asdu.vsq = 0x81;
+	asduData->asdu.cot = 0x28;
+	asduData->asdu.commonaddr = 0x01;
+	IEC103Asdu10Data *asdudata103 = new IEC103Asdu10Data(config);
+	asduData->asdu.datalist.append(asdudata103);
+	asdudata103->fun = 0xfe;
+	asdudata103->inf = 0xfa;
+	asdudata103->rii = 0x00;
+	asdudata103->ngd = myngd;
+	myngd = 0;
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
+}
+
+
+
+void frmIEC104Master::on_comboBox_RemoteType_currentIndexChanged(const QString& arg1)
+{
+	uchar asduType = arg1.split(" ").at(0).toUShort();
+	switch(asduType)
+	{
+	case 45:
+	case 46:
+	case 47:
+	case 58:
+	case 59:
+		ui->comboBox_YKValue->show();
+		ui->lineEdit_YTValue->hide();
+		break;
+	case 48:
+	case 49:
+	case 50:
+		ui->comboBox_YKValue->hide();
+		ui->lineEdit_YTValue->show();
+		break;
+	default:
+		ui->comboBox_YKValue->show();
+		ui->lineEdit_YTValue->show();
+		break;
+	}
+
+}
+
+void frmIEC104Master::on_pushButton_Select_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = ui->comboBox_RemoteType->currentText().split(" ").at(0).toUShort();
+	asdu.vsq = 1;
+	asdu.cot[0] = 6;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
+
+	IEC101AsduData *asduData = getYKYTData(0x80);
+
+	if(asduData)
+	{
+		if(ui->checkBox_isHex->isChecked())
+		{
+			asduData->infaddr = ui->lineEdit_InfAddr->text().toUInt(0, 16);
+		}
+		else
+		{
+			asduData->infaddr = ui->lineEdit_InfAddr->text().toUInt();
+		}
+		asdu.datalist.append(asduData);
+	}
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
+}
+
+void frmIEC104Master::on_pushButton_Execute_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = ui->comboBox_RemoteType->currentText().split(" ").at(0).toUShort();
+	asdu.vsq = 1;
+	asdu.cot[0] = 6;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
+
+	IEC101AsduData *asduData = getYKYTData(0x00);
+
+	if(asduData)
+	{
+		if(ui->checkBox_isHex->isChecked())
+		{
+			asduData->infaddr = ui->lineEdit_InfAddr->text().toUInt(0, 16);
+		}
+		else
+		{
+			asduData->infaddr = ui->lineEdit_InfAddr->text().toUInt();
+		}
+		asdu.datalist.append(asduData);
+	}
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
+}
+
+void frmIEC104Master::on_pushButton_Cancel_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	MyData sendData;
+	IEC101Asdu asdu(config);
+	asdu.type = ui->comboBox_RemoteType->currentText().split(" ").at(0).toUShort();
+	asdu.vsq = 1;
+	asdu.cot[0] = 8;
+	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
+
+	IEC101AsduData *asduData = getYKYTData(0x00);
+
+	if(asduData)
+	{
+		if(ui->checkBox_isHex->isChecked())
+		{
+			asduData->infaddr = ui->lineEdit_InfAddr->text().toUInt(0, 16);
+		}
+		else
+		{
+			asduData->infaddr = ui->lineEdit_InfAddr->text().toUInt();
+		}
+		asdu.datalist.append(asduData);
+	}
+
+	asdu.createData(sendData);
+	manager->SendI(sendData.data);
 }
