@@ -40,6 +40,7 @@ private slots:
 	void showToText(const QString& data, int type);		//type 0接收 1发送
 	void showLog(const QString& data);
 	void emitsignals(const QString& data);
+	void showRemoteResult(const QString& data);
 	IEC101AsduData *getYKYTData(uchar type);			//type 0x00执行 0x80选择
 
 	void on_pushButton_Start_clicked();					//开始模拟
@@ -79,6 +80,20 @@ private slots:
 	void on_pushButton_Execute_clicked();
 
 	void on_pushButton_Cancel_clicked();
+
+	void on_checkBox_isHex_stateChanged(int arg1);
+
+	void on_pushButton_SendAsdu1_clicked();
+
+	void on_pushButton_SendAsdu2_clicked();
+
+	void on_pushButton_SendAsdu3_clicked();
+
+	void on_pushButton_SendAsdu4_clicked();
+
+	void on_pushButton_SendAsdu5_clicked();
+
+	void on_pushButton_SendAsdu6_clicked();
 
 private:
 	Ui::frmIEC104Master *ui;

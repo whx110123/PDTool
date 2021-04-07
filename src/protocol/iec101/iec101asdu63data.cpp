@@ -34,9 +34,3 @@ bool IEC101Asdu63Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC101Asdu63Data::createData(MyData& proData)
-{
-//	config.data += uintToBa(config.infaddr, mConfig.infaddrlen);
-//	config.data += config.infdata;
-	return true;
-}

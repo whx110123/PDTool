@@ -7,8 +7,9 @@
 #include "qdesktopwidget.h"
 #include "qdebug.h"
 #include "myhighlighter.h"
-#include "dialogmodbus.h"
-#include "dialogintroduction.h"
+#include "dlgmodbus.h"
+#include "dlgintroduction.h"
+#include "dlgchangelog.h"
 
 #include <app.h>
 #include <iec101.h>
@@ -26,7 +27,7 @@ frmMain::frmMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::frmMain)
 	ui->setupUi(this);
 	highlighter1 = new myhighlighter(ui->resulttext->document());
 	highlighter2 = new myhighlighter(ui->originaltext->document());
-	modbusdlg = new DialogModbus(this);
+	modbusdlg = new DlgModbus(this);
 	this->initForm();
 }
 
@@ -723,7 +724,7 @@ void frmMain::on_action_psblack_triggered()
 
 void frmMain::on_action_Update_triggered()
 {
-	DialogIntroduction dlg;
+	DlgChangeLog dlg;
 	dlg.exec();
 }
 
@@ -756,4 +757,10 @@ void frmMain::on_pushButton_after_clicked()
 	auto sum = ui->resulttext->toPlainText().count(ui->highlightEdit->text(), Qt::CaseInsensitive);
 	ui->pushButton_before->setToolTip(QString("%1/%2").arg(currentIndex).arg(sum));
 	ui->pushButton_after->setToolTip(QString("%1/%2").arg(currentIndex).arg(sum));
+}
+
+void frmMain::on_action_About_triggered()
+{
+	DlgIntroduction dlg;
+	dlg.exec();
 }

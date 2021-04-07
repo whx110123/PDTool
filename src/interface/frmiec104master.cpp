@@ -47,7 +47,7 @@ void frmIEC104Master::init()
 
 	initConfig();
 	manager = new ManagerIEC104Master(config);
-	manager->initConfig(&managerConfig);
+	manager->initProConfig(&managerConfig);
 	connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
 	connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
 	connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);
@@ -87,10 +87,17 @@ void frmIEC104Master::sendData(const QByteArray& data)
 {
 	if(manager)
 	{
-		manager->protocolShow.init(data);
-		showToText(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText(), 1);
+		if(manager->protocolShow.init(data))
+		{
+			showToText(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText(), 1);
+		}
+		else
+		{
+			showLog("未识别的报文: " + data.toHex(' ') + "\r\n" + manager->protocolShow.mError);
+		}
+		emitsignals(data.toHex(' '));
 	}
-	emitsignals(data.toHex(' '));
+
 }
 
 void frmIEC104Master::startdebug()
@@ -130,6 +137,7 @@ void frmIEC104Master::showToText(const QString& data, int type) //type 0接收 1
 	{
 		ui->textEdit_data->setTextColor(QColor("red"));
 		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
+		showRemoteResult(data);
 	}
 	ui->textEdit_data->append(data);
 
@@ -164,6 +172,37 @@ void frmIEC104Master::emitsignals(const QString& data)
 	else if(ui->comboBox->currentText().contains("COM串口"))
 	{
 		emit ToCom(data);
+	}
+}
+
+void frmIEC104Master::showRemoteResult(const QString& data)
+{
+	QString result;
+	if(data.contains("命令类型:选择"))
+	{
+		result.append("选择");
+	}
+	else if(data.contains("命令类型:执行"))
+	{
+		result.append("执行");
+	}
+
+	if(data.contains("07	传送原因COT"))
+	{
+		result.append("成功");
+	}
+	else
+	{
+		result.append("失败");
+	}
+
+	if(result.contains("选择"))
+	{
+		ui->label_Select->setText(result);
+	}
+	else if(result.contains("执行"))
+	{
+		ui->label_Execute->setText(result);
 	}
 }
 
@@ -776,6 +815,9 @@ void frmIEC104Master::on_pushButton_Select_clicked()
 
 	asdu.createData(sendData);
 	manager->SendI(sendData.data);
+
+	ui->label_Select->setText("正在选择");
+	ui->label_Execute->setText("");
 }
 
 void frmIEC104Master::on_pushButton_Execute_clicked()
@@ -808,6 +850,9 @@ void frmIEC104Master::on_pushButton_Execute_clicked()
 
 	asdu.createData(sendData);
 	manager->SendI(sendData.data);
+
+	ui->label_Select->setText("");
+	ui->label_Execute->setText("正在执行");
 }
 
 void frmIEC104Master::on_pushButton_Cancel_clicked()
@@ -840,4 +885,67 @@ void frmIEC104Master::on_pushButton_Cancel_clicked()
 
 	asdu.createData(sendData);
 	manager->SendI(sendData.data);
+
+	ui->label_Select->setText("");
+	ui->label_Execute->setText("");
+}
+
+void frmIEC104Master::on_checkBox_isHex_stateChanged(int arg1)
+{
+	uint ss = ui->lineEdit_InfAddr->text().toUInt(0, arg1 ? 10 : 16);
+	ui->lineEdit_InfAddr->setText(QString::number(ss, arg1 ? 16 : 10));
+}
+
+void frmIEC104Master::on_pushButton_SendAsdu1_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu1->toPlainText()));
+}
+
+void frmIEC104Master::on_pushButton_SendAsdu2_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu2->toPlainText()));
+}
+
+void frmIEC104Master::on_pushButton_SendAsdu3_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu3->toPlainText()));
+}
+
+void frmIEC104Master::on_pushButton_SendAsdu4_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu4->toPlainText()));
+}
+
+void frmIEC104Master::on_pushButton_SendAsdu5_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu5->toPlainText()));
+}
+
+void frmIEC104Master::on_pushButton_SendAsdu6_clicked()
+{
+	if(!manager)
+	{
+		return;
+	}
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu6->toPlainText()));
 }

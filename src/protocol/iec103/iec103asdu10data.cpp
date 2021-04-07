@@ -664,7 +664,6 @@ QString IEC103Asdu10Data::showToText()
 
 bool IEC103Asdu10Data::createData(MyData& proData)
 {
-
 	MyData tmp;
 	tmp.getAttribute(proData);
 
@@ -702,28 +701,6 @@ bool IEC103Asdu10Data::createData(MyData& proData)
 	}
 	mSendData = proData.data;
 	return true;
-//	config.data += config.inf;
-//	config.data += config.rii;
-//	config.data += config.ngd;
-//	if(config.isMaster)
-//	{
-//		for(int i = 0; i < (config.ngd & 0x3f); i++)
-//		{
-//			config.data += config.gin[i][0];
-//			config.data += config.gin[i][1];
-//			config.data += config.kod[i];
-//			config.data += config.gdd[i][0];
-//			config.data += config.gdd[i][1];
-//			config.data += config.gdd[i][2];
-//			for(int j = 0; j < config.gdd[i][1] * config.gdd[i][2] ; j++)
-//			{
-//				config.data += config.gid[i * config.gdd[i][1] * config.gdd[i][2] + j];
-//			}
-//		}
-//		return true;
-//	}
-//	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-//	return false;
 }
 
 

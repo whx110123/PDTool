@@ -1,7 +1,7 @@
 FORMS += \
-	$$PWD/dialogintroduction.ui \
-	$$PWD/dialogmodbus.ui \
-	$$PWD/dialogpma.ui \
+	$$PWD/dlgchangelog.ui \
+	$$PWD/dlgintroduction.ui \
+	$$PWD/dlgmodbus.ui \
 	$$PWD/frmcomtool.ui \
 	$$PWD/frmdebug.ui \
 	$$PWD/frmhandledata.ui \
@@ -14,9 +14,9 @@ FORMS += \
 	$$PWD/frmudpserver.ui
 
 HEADERS += \
-	$$PWD/dialogintroduction.h \
-	$$PWD/dialogmodbus.h \
-	$$PWD/dialogpma.h \
+	$$PWD/dlgchangelog.h \
+	$$PWD/dlgintroduction.h \
+	$$PWD/dlgmodbus.h \
 	$$PWD/frmcomtool.h \
 	$$PWD/frmdebug.h \
 	$$PWD/frmhandledata.h \
@@ -30,9 +30,9 @@ HEADERS += \
 	$$PWD/myhighlighter.h
 
 SOURCES += \
-	$$PWD/dialogintroduction.cpp \
-	$$PWD/dialogmodbus.cpp \
-	$$PWD/dialogpma.cpp \
+	$$PWD/dlgchangelog.cpp \
+	$$PWD/dlgintroduction.cpp \
+	$$PWD/dlgmodbus.cpp \
 	$$PWD/frmcomtool.cpp \
 	$$PWD/frmdebug.cpp \
 	$$PWD/frmhandledata.cpp \

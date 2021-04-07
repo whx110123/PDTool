@@ -54,18 +54,6 @@ void ManagerBase::restoreDefaults()
 
 }
 
-void ManagerBase::initConfig(ManagerConfig *config)
-{
-	protocolName = config->protocolName;
-	isMaster = config->isMaster;
-	initMyConfig(config);
-}
-
-void ManagerBase::initMyConfig(ManagerConfig *config)
-{
-	return;
-}
-
 void ManagerBase::addRcvData(const QByteArray& data)
 {
 	if(!isRun || data.isEmpty())

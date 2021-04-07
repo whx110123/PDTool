@@ -21,7 +21,3 @@ bool IEC103Asdu7Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC103Asdu7Data::createData(MyData& proData)
-{
-	return true;
-}

@@ -1,20 +1,20 @@
-﻿#ifndef DIALOGMODBUS_H
-#define DIALOGMODBUS_H
+﻿#ifndef DLGMODBUS_H
+#define DLGMODBUS_H
 
 #include <QDialog>
 
 namespace Ui
 {
-	class DialogModbus;
+class DlgModbus;
 }
 
-class DialogModbus : public QDialog
+class DlgModbus : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit DialogModbus(QWidget *parent = nullptr);
-	~DialogModbus();
+	explicit DlgModbus(QWidget *parent = nullptr);
+	~DlgModbus();
 private:
 	enum FieldColNum {colType = 0, colAnaly, colLen, colDes};
 	void initShow();
@@ -22,7 +22,7 @@ private:
 	void addItem(QStringList list);
 	void setItem(int rowNo, QStringList list);
 private:
-	Ui::DialogModbus *ui;
+	Ui::DlgModbus *ui;
 };
 
 #endif // DIALOGMODBUS_H

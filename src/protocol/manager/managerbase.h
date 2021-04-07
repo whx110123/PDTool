@@ -24,8 +24,6 @@ public:
 	virtual bool start();
 	virtual bool stop();
 	virtual void restoreDefaults();
-	void initConfig(ManagerConfig *config);
-	virtual void initMyConfig(ManagerConfig *config);
 
 	void addRcvData(const QByteArray& data);
 	void addSndData(const QByteArray& data);
@@ -36,16 +34,16 @@ public:
 
 signals:
 	void Send(const QByteArray& data);
-	void toText(const QString& text, int type);			//报文的解析,type 0接收 1发送
-	void toLog(const QString& text);					//发送报告
+	void toText(const QString& text, int type = 0);			//接收报文的解析,type 0接收 1发送
+	void toLog(const QString& text);					//接收报文的错误报告
 
 	void handleData();
 
 public:
 
 	uint flag;						//状态标识
-	QString protocolName;
-	bool isMaster;
+//	QString protocolName;
+//	bool isMaster;
 	bool isRun;
 	QMutex mutexRD;
 	QByteArray rcvData;

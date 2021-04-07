@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DlgIntroduction</class>
+ <widget class="QDialog" name="DlgIntroduction">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>515</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>软件介绍</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>50</number>
+   </property>
+   <property name="rightMargin">
+    <number>50</number>
+   </property>
+   <property name="bottomMargin">
+    <number>50</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>新宋体</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>功能介绍</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="plainTextEdit">
+     <property name="font">
+      <font>
+       <family>隶书</family>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string>基本功能：
+1：16进制数据和ASCII数据收发。
+2：定时器自动发送。
+3：自动从配置文件加载最后一次的界面设置。
+4：自动从配置文件加载数据发送下拉框的数据。可以将经常使用的数据填写在send.txt中，可写多行。send.txt与可执行文件同一目录。
+5：可启用设备模拟回复，当收到某个数据时，模拟设备自动回复数据。对应数据格式填写在device.txt中。10 49 01 4A 16;10 0B 01 0C 16 用;号隔开，收到前面的报文，自动回复后面的报文，可写多行，device.txt与可执行文件同一目录
+6：可对单个在线连接发送数据，也可勾选全部进行发送。
+7：支持多个客户端连接并发。
+8：采用单线程。
+9：五种模式，tcp客户端、tcp服务器、udp客户端、udp服务器、串口。
+10：提供101、103、104报文解析功能。</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -7,7 +7,13 @@
 
 ConfigIEC104Master::ConfigIEC104Master()
 {
-
+	isMaster = true;
+	asduAddr = 0;
+	t1 = 15;
+	t2 = 10;
+	t3 = 20;
+	kMax = 12;
+	wMax = 8;
 }
 
 ConfigIEC104Master::~ConfigIEC104Master()
@@ -18,9 +24,7 @@ ConfigIEC104Master::~ConfigIEC104Master()
 ManagerIEC104Master::ManagerIEC104Master(const MyConfig& Config): protocolShow(Config), myPro(Config)
 {
 	sSend = false;
-	isMaster = true;
 	mConfig = Config;
-	asduAddr = 0;
 	noDataTimes = 0;
 	SecondTimer = new QTimer(this);
 	connect(SecondTimer, &QTimer::timeout, this, &ManagerIEC104Master::update);
@@ -51,7 +55,7 @@ void ManagerIEC104Master::timerRcv()
 	{
 		if(myPro.init(rcvData))
 		{
-			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText(), 0);
+			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText());
 			noDataTimes = 0;
 			if(myPro.apci.control.type == UTYPE)
 			{
@@ -94,7 +98,7 @@ void ManagerIEC104Master::timerRcv()
 					k = 0;
 				}
 				flag = STATE_NODATA;
-				if(w >= 8)
+				if(w >= proConfig.wMax)
 				{
 					flag = STATE_NORMAL;
 				}
@@ -149,111 +153,84 @@ void ManagerIEC104Master::timerSnd()
 			SendU(0x07);
 		}
 	}
-	else if(flag == STATE_NORMAL || (sSend == true && noDataTimes > 10))
+	else if(flag == STATE_NORMAL || (sSend == true && noDataTimes > proConfig.t2))
 	{
 		SendS();
-		flag = STATE_NODATA;
-		w = 0;
-		sSend = false;
 	}
 	else if(flag == STATE_TESTACT)
 	{
 		SendU(0x43);
-		flag = STATE_NODATA;
 	}
 	else if(flag == STATE_TESTCONFIRM)
 	{
 		SendU(0x83);
-		flag = STATE_NODATA;
 	}
-	else if(!sndDatas.isEmpty())
+	else if(!sndDatas.isEmpty() && k < proConfig.kMax)
 	{
-		if(k < 12)
-		{
-			mutexSD.lock();
-			QByteArray Ba = sndDatas.takeFirst();
-			mutexSD.unlock();
+		mutexSD.lock();
+		QByteArray Ba = sndDatas.takeFirst();
+		mutexSD.unlock();
 
-			SendI(Ba);
-			k++;
-			sndNo++;
-			w = 0;
-		}
+		SendI(Ba);
 	}
-	else if(noDataTimes > 20)
+	else if(noDataTimes > proConfig.t3)
 	{
 		flag = STATE_TESTACT;
 		noDataTimes = 0;
 	}
 }
 
-void ManagerIEC104Master::initMyConfig(ManagerConfig *config)
+void ManagerIEC104Master::initProConfig(ConfigIEC104Master *config)
 {
-	ConfigIEC104Master *myConfig = (ConfigIEC104Master *)config;
-	asduAddr = myConfig->asduAddr;
+	proConfig = *config;
 }
 
 QByteArray ManagerIEC104Master::SendU(uchar ch)
 {
 	MyData sendData;
-	IEC104Apci c104(mConfig);
-//	c104.first = 0x68;
-//	c104.length = 0x04;
-	c104.control.type = UTYPE;
-	c104.control.code = ch;
-	if(c104.createData(sendData))
+	IEC104Apci apci(mConfig);
+
+	apci.control.type = UTYPE;
+	apci.control.code = ch;
+	if(apci.createData(sendData))
 	{
 		emit Send(sendData.data);
 	}
+
+	flag = STATE_NODATA;
+
 	return sendData.data;
-
-//	QByteArray ba;
-//	ba += 0x68;
-//	ba += 0x04;
-//	ba += ch;
-//	ba += '\0';
-//	ba += '\0';
-//	ba += '\0';
-//	emit Send(ba);
-//	return ba;
-
 }
 
 QByteArray ManagerIEC104Master::SendS()
 {
 	MyData sendData;
 	IEC104Apci apci(mConfig);
-//	apci.first = 0x68;
-//	apci.length = 0x04;
+
 	apci.control.type = STYPE;
 	apci.control.localRecvNo = rcvNo;
 	if(apci.createData(sendData))
 	{
 		emit Send(sendData.data);
 	}
-	return sendData.data;
 
-//	QByteArray ba;
-//	ba += 0x68;
-//	ba += 0x04;
-//	ba += 0x01;
-//	ba += '\0';
-//	ba += uintToBa(rcvNo * 2, 2);
-//	emit Send(ba);
-//	return ba;
+	w = 0;
+	sSend = false;
+	flag = STATE_NODATA;
+
+	return sendData.data;
 }
 
 QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
 {
-	if(data.size() > 249)
+	if(data.isEmpty() || data.size() > 249)
 	{
 		return NULL;
 	}
 	MyData sendData;
 	sendData.data += data;
 	IEC104Apci apci(mConfig);
-//	apci.first = 0x68;
-//	apci.length = 0x04 + data.size();
+
 	apci.control.type = ITYPE;
 	apci.control.localSendNo = sndNo;
 	apci.control.localRecvNo = rcvNo;
@@ -262,16 +239,12 @@ QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
 	{
 		emit Send(sendData.data);
 	}
-	return sendData.data;
 
-//	QByteArray ba;
-//	ba += 0x68;
-//	ba += data.size() + 4;
-//	ba += uintToBa(sndNo * 2, 2);
-//	ba += uintToBa(rcvNo * 2, 2);
-//	ba += data;
-//	emit Send(ba);
-//	return ba;
+	k++;
+	sndNo++;
+	w = 0;
+
+	return sendData.data;
 }
 
 QByteArray ManagerIEC104Master::asdu100Create()
@@ -281,7 +254,7 @@ QByteArray ManagerIEC104Master::asdu100Create()
 	asdu.type = 0x64;
 	asdu.vsq = 0x01;
 	asdu.cot[0] = 0x06;
-	asdu.commonaddr = asduAddr;
+	asdu.commonaddr = proConfig.asduAddr;
 
 	IEC101Asdu100Data *asduData  = new IEC101Asdu100Data(mConfig);
 	asdu.datalist.append(asduData);
@@ -291,18 +264,6 @@ QByteArray ManagerIEC104Master::asdu100Create()
 
 	asdu.createData(sendData);
 	return sendData.data;
-
-//	QByteArray ba;
-//	ba += 0x64;
-//	ba += 0x01;
-//	ba += 0x06;
-//	ba += '\0';
-//	ba += uintToBa(asduAddr, 2);
-//	ba += '\0';
-//	ba += '\0';
-//	ba += '\0';
-//	ba += 0x14;
-	//	return ba;
 }
 
 QByteArray ManagerIEC104Master::asdu103Create()
@@ -312,7 +273,7 @@ QByteArray ManagerIEC104Master::asdu103Create()
 	asdu.type = 0x67;
 	asdu.vsq = 0x01;
 	asdu.cot[0] = 0x06;
-	asdu.commonaddr = asduAddr;
+	asdu.commonaddr = proConfig.asduAddr;
 
 	IEC101Asdu103Data *asduData  = new IEC101Asdu103Data(mConfig);
 	asdu.datalist.append(asduData);

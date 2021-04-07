@@ -161,21 +161,6 @@ bool IEC103Asdu21Data::createData(MyData& proData)
 	}
 	mSendData = proData.data;
 	return true;
-//	config.data += config.inf;
-//	config.data += config.rii;
-//	config.data += config.nog;
-//	if(config.isMaster)
-//	{
-//		for(int i = 0; i < config.nog; i++)
-//		{
-//			config.data += config.gin[i][0];
-//			config.data += config.gin[i][1];
-//			config.data += config.kod[i];
-//		}
-//		return true;
-//	}
-//	mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！生成报文失败");
-//	return false;
 }
 
 

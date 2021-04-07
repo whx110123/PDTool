@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <mybase.h>
 #include "globaldefine.h"
-#include "dialogmodbus.h"
+#include "dlgmodbus.h"
 #include "myhighlighter.h"
 
 namespace Ui
@@ -27,7 +27,7 @@ private:
 	Ui::frmMain *ui;
 	myhighlighter *highlighter1;
 	myhighlighter *highlighter2;
-	DialogModbus *modbusdlg;
+	DlgModbus *modbusdlg;
 	int currentIndex;
 	QTextCursor tc;
 private slots:
@@ -94,6 +94,8 @@ private slots:
 	void on_pushButton_before_clicked();
 
 	void on_pushButton_after_clicked();
+
+	void on_action_About_triggered();
 
 public:
 	MyBase *createByName(QString name);

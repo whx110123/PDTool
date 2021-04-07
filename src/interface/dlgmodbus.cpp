@@ -1,21 +1,21 @@
-﻿#include "dialogmodbus.h"
-#include "ui_dialogmodbus.h"
+﻿#include "dlgmodbus.h"
+#include "ui_dlgmodbus.h"
 
-DialogModbus::DialogModbus(QWidget *parent) :
+DlgModbus::DlgModbus(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::DialogModbus)
+	ui(new Ui::DlgModbus)
 {
 	ui->setupUi(this);
 	initShow();
 	addItems();
 }
 
-DialogModbus::~DialogModbus()
+DlgModbus::~DlgModbus()
 {
 	delete ui;
 }
 
-void DialogModbus::initShow()
+void DlgModbus::initShow()
 {
 	QTableWidgetItem    *headerItem;
 	QStringList headerText;
@@ -39,7 +39,7 @@ void DialogModbus::initShow()
 	ui->tableInfo->setAlternatingRowColors(true); //设置交替行背景颜色
 }
 
-void DialogModbus::addItems()
+void DlgModbus::addItems()
 {
 
 	addItem(QStringList() << "遥测" << "0" << "2字节" << "有符号整数");
@@ -63,14 +63,14 @@ void DialogModbus::addItems()
 
 }
 
-void DialogModbus::addItem(QStringList list)
+void DlgModbus::addItem(QStringList list)
 {
 	int curRow = ui->tableInfo->rowCount(); //当前行号
 	ui->tableInfo->insertRow(curRow);//在表格尾部添加一行
 	setItem(curRow, list);
 }
 
-void DialogModbus::setItem(int rowNo, QStringList list)
+void DlgModbus::setItem(int rowNo, QStringList list)
 {
 	QTableWidgetItem *item;
 	QColor color(Qt::white);
@@ -93,20 +93,20 @@ void DialogModbus::setItem(int rowNo, QStringList list)
 	item = new QTableWidgetItem(type);
 	item->setBackgroundColor(color);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
-	ui->tableInfo->setItem(rowNo, DialogModbus::colType, item); //为单元格设置Item
+	ui->tableInfo->setItem(rowNo, DlgModbus::colType, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(analy);
 	item->setBackgroundColor(color);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
-	ui->tableInfo->setItem(rowNo, DialogModbus::colAnaly, item); //为单元格设置Item
+	ui->tableInfo->setItem(rowNo, DlgModbus::colAnaly, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(len);
 	item->setBackgroundColor(color);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
-	ui->tableInfo->setItem(rowNo, DialogModbus::colLen, item); //为单元格设置Item
+	ui->tableInfo->setItem(rowNo, DlgModbus::colLen, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(des);
 	item->setBackgroundColor(color);
 	item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter); //文本对齐格式
-	ui->tableInfo->setItem(rowNo, DialogModbus::colDes, item); //为单元格设置Item
+	ui->tableInfo->setItem(rowNo, DlgModbus::colDes, item); //为单元格设置Item
 }

@@ -32,7 +32,7 @@ void ManagerMTMaster::timerRcv()
 	{
 		if(myPro.init(rcvData))
 		{
-			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText(), 0);
+			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText());
 			noDataTimes = 0;
 			if(myPro.asdu.afn == 0)
 			{
@@ -105,12 +105,9 @@ void ManagerMTMaster::timerSnd()
 	}
 }
 
-void ManagerMTMaster::initMyConfig(ManagerConfig *config)
+void ManagerMTMaster::initProConfig(ConfigMTMaster *config)
 {
-	ConfigMTMaster *myConfig = (ConfigMTMaster *)config;
-	A1 = myConfig->A1;
-	A2 = myConfig->A2;
-	A3 = myConfig->A3;
+	proConfig = *config;
 }
 
 QByteArray ManagerMTMaster::SendAFN(const QByteArray& data)
@@ -126,9 +123,9 @@ QByteArray ManagerMTMaster::SendAFN(const QByteArray& data)
 	ba += uintToBa(length, 2);
 	ba += 0x68;
 	ba += createCode(*(uchar *)data.data());
-	ba += uintToBa(A1, 3);
-	ba += uintToBa(A2, 3);
-	ba += uintToBa(A3, 1);
+	ba += uintToBa(proConfig.A1, 3);
+	ba += uintToBa(proConfig.A2, 3);
+	ba += uintToBa(proConfig.A3, 1);
 	ba += data;
 
 	uchar *mdata = (uchar *)ba.data();

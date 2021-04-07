@@ -34,7 +34,7 @@ void frmMeasuredTerminalMaster::init()
 
 	initConfig();
 	manager = new ManagerMTMaster(myConfig);
-	manager->initConfig(&managerConfig);
+	manager->initProConfig(&managerConfig);
 	connect(manager, &ManagerMTMaster::Send, this, &frmMeasuredTerminalMaster::sendData);
 	connect(manager, &ManagerMTMaster::toText, this, &frmMeasuredTerminalMaster::showToText);
 	connect(manager, &ManagerMTMaster::toLog, this, &frmMeasuredTerminalMaster::showLog);
