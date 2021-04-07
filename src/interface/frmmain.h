@@ -97,6 +97,8 @@ private slots:
 
 	void on_action_About_triggered();
 
+	void on_action_wiscom_triggered();
+
 public:
 	MyBase *createByName(QString name);
 	void SaveAll();

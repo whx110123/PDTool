@@ -557,6 +557,7 @@
     <addaction name="action_lightblue"/>
     <addaction name="action_flatwhite"/>
     <addaction name="action_psblack"/>
+    <addaction name="action_wiscom"/>
    </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_E"/>
@@ -720,7 +721,7 @@
   </action>
   <action name="action_lightblue">
    <property name="text">
-    <string>蓝色</string>
+    <string>浅蓝</string>
    </property>
   </action>
   <action name="action_flatwhite">
@@ -731,6 +732,11 @@
   <action name="action_psblack">
    <property name="text">
     <string>黑色</string>
+   </property>
+  </action>
+  <action name="action_wiscom">
+   <property name="text">
+    <string>深蓝</string>
    </property>
   </action>
  </widget>

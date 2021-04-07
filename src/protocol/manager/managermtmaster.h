@@ -34,9 +34,7 @@ public:
 	MeasuredTerminal protocolShow;
 private:
 	MeasuredTerminal myPro;
-//	uint A1;				//省地市区县码
-//	uint A2;				//终端地址
-//	uchar A3;				//主站地址
+
 	uchar fcb;
 	uchar pseq;
 	int noDataTimes;

@@ -57,5 +57,15 @@
         <file>qss/lightblue/radiobutton_checked_disable.png</file>
         <file>qss/lightblue/radiobutton_unchecked.png</file>
         <file>qss/lightblue/radiobutton_unchecked_disable.png</file>
+        <file>qss/style/arrow-down.png</file>
+        <file>qss/style/arrow-down-dis.png</file>
+        <file>qss/style/arrow-left.png</file>
+        <file>qss/style/arrow-right.png</file>
+        <file>qss/style/arrow-up.png</file>
+        <file>qss/style/arrow-up-dis.png</file>
+        <file>qss/style/dropdown.png</file>
+        <file>qss/style/tree-close.png</file>
+        <file>qss/style/tree-open.png</file>
+        <file>qss/wiscom.css</file>
     </qresource>
 </RCC>
