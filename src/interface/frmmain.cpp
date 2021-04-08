@@ -132,7 +132,7 @@ void frmMain::initSignalAndSlots()
 
 void frmMain::initStyle()
 {
-	on_action_wiscom_triggered();
+	on_action_flatwhite_triggered();
 }
 
 void frmMain::initTranslator()
