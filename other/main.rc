@@ -7,7 +7,7 @@ IDI_ICON1 ICON DISCARDABLE "main.ico"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
-	FILEVERSION 2,0,0,0
+	FILEVERSION 3,0,0,0
 	FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
 	FILEFLAGS VS_FF_DEBUG
@@ -22,13 +22,13 @@ VS_VERSION_INFO VERSIONINFO
 		BEGIN
 			BLOCK "080404b0"
 			BEGIN
-				VALUE "FileDescription", "网络串口调试工具"
-				VALUE "ProductName", "网络串口调试工具"
+				VALUE "FileDescription", "规约调试工具"
+				VALUE "ProductName", "规约调试工具"
 				VALUE "ProductVersion", "王洪星"
 				VALUE "LegalCopyright", "Copyright(C) 江苏金智科技股份有限公司"
-				VALUE "OriginalFilename", "netcomtool.exe"
+				VALUE "OriginalFilename", "PDTool.exe"
 				VALUE "CompanyName", "江苏金智科技股份有限公司"
-				VALUE "InternalName", "netcomtool.exe"
+				VALUE "InternalName", "PDTool.exe"
 			END
 		END
 		BLOCK "VarFileInfo"
