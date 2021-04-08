@@ -8,6 +8,9 @@
 #include <QTextCodec>
 #include <QVector>
 #include <QMutexLocker>
+#include <QFile>
+#include <QTextStream>
+#include <QtDebug>
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -109,7 +112,7 @@ int stringToInt(QString data);					//长度域类型转换
 
 void stringToHtmlFilter(QString& str);
 void stringToHtml(QString& str, QColor crl);
-
+void outputMessage(QtMsgType type, const QMessageLogContext& context, const QString& msg);
 #define APPTITLE QString("Protocol Debug Tool V3.02     作者: 王洪星")
 
 #define IEC_104 "104"

@@ -605,26 +605,26 @@
   </action>
   <action name="action_TCPClient">
    <property name="text">
-    <string>TCP客户端(&amp;1) </string>
+    <string>TCP客户端</string>
    </property>
    <property name="toolTip">
-    <string>TCP客户端(1)</string>
+    <string>TCP客户端</string>
    </property>
   </action>
   <action name="action_TCPServer">
    <property name="text">
-    <string>TCP服务端(&amp;2)</string>
+    <string>TCP服务端</string>
    </property>
    <property name="toolTip">
-    <string>TCP服务端(2)</string>
+    <string>TCP服务端</string>
    </property>
   </action>
   <action name="action_UDPClient">
    <property name="text">
-    <string>UDP客户端(&amp;3) </string>
+    <string>UDP客户端</string>
    </property>
    <property name="toolTip">
-    <string>UDP客户端(3) </string>
+    <string>UDP客户端</string>
    </property>
   </action>
   <action name="action_Analys">
@@ -650,18 +650,18 @@
   </action>
   <action name="action_UDPServer">
    <property name="text">
-    <string>UDP服务端(&amp;4)</string>
+    <string>UDP服务端</string>
    </property>
    <property name="toolTip">
-    <string>UDP服务端(4)</string>
+    <string>UDP服务端</string>
    </property>
   </action>
   <action name="action_COM">
    <property name="text">
-    <string>COM串口(&amp;5)</string>
+    <string>COM串口</string>
    </property>
    <property name="toolTip">
-    <string>COM串口(5)</string>
+    <string>COM串口</string>
    </property>
   </action>
   <action name="action_HandleData">

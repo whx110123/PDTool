@@ -1,11 +1,6 @@
 ﻿//#pragma execution_character_set("utf-8")
 #include "frmmain.h"
 #include "ui_frmmain.h"
-#include "qfile.h"
-#include "qtextstream.h"
-#include "qtranslator.h"
-#include "qdesktopwidget.h"
-#include "qdebug.h"
 #include "myhighlighter.h"
 #include "dlgmodbus.h"
 #include "dlgintroduction.h"

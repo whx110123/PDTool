@@ -19,7 +19,7 @@ OBJECTS_DIR         = temp/obj
 DESTDIR             = bin
 win32:RC_FILE       = other/main.rc
 CONFIG              += warn_off
-
+DEFINES				+= QT_MESSAGELOGCONTEXT
 include             ($$PWD/src/src.pri)
 
 INCLUDEPATH         += $$PWD

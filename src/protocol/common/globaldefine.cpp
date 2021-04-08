@@ -1,5 +1,7 @@
 ﻿#include "globaldefine.h"
 
+#include <quiwidget.h>
+
 
 QString CharToHexStr(uchar data)
 {
@@ -479,4 +481,52 @@ void stringToHtml(QString& str, QColor crl)
 	array.append(crl.blue());
 	QString strC(array.toHex());
 	str = QString("<span style=\" color:#%1;\">%2</span>").arg(strC).arg(str);
+}
+
+void outputMessage(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+{
+	// 加锁
+	static QMutex mutex;
+	mutex.lock();
+
+	QString text;
+
+	switch(type)
+	{
+	case QtDebugMsg:
+		text = QString("Debug:");
+		break;
+	case QtWarningMsg:
+		text = QString("Warning:");
+		break;
+	case QtCriticalMsg:
+		text = QString("Critical:");
+		break;
+	case QtFatalMsg:
+		text = QString("Fatal:");
+		break;
+	case QtInfoMsg:
+		text = QString("Info:");
+		break;
+	default:
+		break;
+	}
+
+	// 设置输出信息格式
+	QString context_info = QString("(%1) \"%2\" [%3]").arg(QString(context.file)).arg(QString(context.function)).arg(context.line);
+	QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss zzz");
+	QString message = QString("%1    %2 %3    %4").arg(current_date_time).arg(text).arg(msg).arg(context_info);
+
+	// 输出信息至文件中（读写、追加形式）
+	QFile file(QString("%1/%2.log").arg(QUIHelper::appPath()).arg(QUIHelper::appName()));
+	if(file.open(QIODevice::WriteOnly | QIODevice::Append))
+	{
+		QTextStream text_stream(&file);
+		text_stream << message << "\r\n";
+		file.flush();
+		file.close();
+	}
+
+	// 解锁
+	mutex.unlock();
 }
