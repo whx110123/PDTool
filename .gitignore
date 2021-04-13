@@ -1,2 +1,7 @@
-
-PDTool.pro.user
+.qmake.stash
+PDTool.vcxproj.filters
+.vs
+temp
+*.user
+*.vcxproj
+bin
