@@ -18,7 +18,13 @@ bool IEC103Asdu1Data::handle(const QByteArray& buff)
 	mLen++;
 	if(buff.length() != mLen)
 	{
-		if(buff.length() < 16)
+		if(mConfig.protocolName == IEC_103HUABEI)
+		{
+			datetime1 = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+			mText.append(timeToText(buff.data() + mLen, 7));
+			mLen += 7;
+		}
+		else if(buff.length() < 16)
 		{
 			datetime1 = charToDateTime(buff.data() + mLen, 4, BINARYTIME2A);
 			mText.append(timeToText(buff.data() + mLen, 4));

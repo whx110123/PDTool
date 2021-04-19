@@ -27,7 +27,13 @@ bool IEC103Asdu2Data::handle(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t故障序号FAN:" + QString::number(fan) + "\r\n");
 	mLen += 2;
 
-	if(buff.length() < 20)
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		datetime1 = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + mLen, 7));
+		mLen += 7;
+	}
+	else if(buff.length() < 20)
 	{
 		datetime1 = charToDateTime(buff.data() + mLen, 4, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + mLen, 4));
