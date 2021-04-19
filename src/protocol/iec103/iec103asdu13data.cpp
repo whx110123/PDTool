@@ -35,7 +35,11 @@ bool IEC103Asdu13Data::handle(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t起始传输位置: " + QString::number(fileIndex) + "\r\n");
 	mLen += 4;
 
-	if(mConfig.protocolName != IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
+	{
+		//南网无此部分
+	}
+	else
 	{
 		no = charTouint(buff.data() + mLen, 4);
 		mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t录波文件在装置中的编号: " + QString::number(no) + "\r\n");

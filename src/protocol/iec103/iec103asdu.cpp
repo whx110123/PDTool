@@ -654,7 +654,15 @@ QString IEC103Asdu::typeToText()
 		break;
 	case 2:
 		text.append("具有相对时间的带时标的报文");
-		endflag = IEC103END_SIN;
+		if(mConfig.protocolName == IEC_103HUABEI ||
+				mConfig.protocolName == IEC_103BAOXINNET_NW)
+		{
+			endflag = IEC103END_FPT;
+		}
+		else
+		{
+			endflag = IEC103END_SIN;
+		}
 		break;
 	case 3:
 		text.append("被测值I");
@@ -1017,10 +1025,9 @@ QString IEC103Asdu::endToText()
 		break;
 	case IEC103END_SIN:
 		text.append("附加信息SIN:");
-		if(mConfig.protocolName == IEC_103BAOXINNET_NW)
-		{
-			text.append(fptToText(endflag));
-		}
+		break;
+	case IEC103END_FPT:
+		text.append(fptToText(endflag));
 		break;
 	default:
 		break;

@@ -33,13 +33,8 @@ bool IEC103Asdu2Data::handle(const QByteArray& buff)
 		mText.append(timeToText(buff.data() + mLen, 7));
 		mLen += 7;
 	}
-	else if(buff.length() < 20)
-	{
-		datetime1 = charToDateTime(buff.data() + mLen, 4, BINARYTIME2A);
-		mText.append(timeToText(buff.data() + mLen, 4));
-		mLen += 4;
-	}
-	else
+	else if(mConfig.protocolName == IEC_103BAOXINNET ||
+			mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		datetime1 = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + mLen, 7));
@@ -47,6 +42,12 @@ bool IEC103Asdu2Data::handle(const QByteArray& buff)
 		datetime2 = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
 		mText.append(timeToText(buff.data() + mLen, 7));
 		mLen += 7;
+	}
+	else
+	{
+		datetime1 = charToDateTime(buff.data() + mLen, 4, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + mLen, 4));
+		mLen += 4;
 	}
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(mLen > buff.length())
