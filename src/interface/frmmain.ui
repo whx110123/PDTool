@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
+    <width>752</width>
     <height>620</height>
    </rect>
   </property>
@@ -41,7 +41,7 @@
            <item>
             <widget class="QCheckBox" name="checkBox_error">
              <property name="toolTip">
-              <string>解析错误时保留解析过程,使用此功能可能出现程序异常</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;打勾后，即使解析错误仍然显示解析结果，但可能出现不存在的数据，仅供参考&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -506,7 +506,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>748</width>
+     <width>752</width>
      <height>23</height>
     </rect>
    </property>
