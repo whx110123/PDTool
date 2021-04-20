@@ -114,7 +114,7 @@ int stringToInt(QString data);					//长度域类型转换
 void stringToHtmlFilter(QString& str);
 void stringToHtml(QString& str, QColor crl);
 void outputMessage(QtMsgType type, const QMessageLogContext& context, const QString& msg);
-#define APPTITLE QString("Protocol Debug Tool V3.02     作者: 王洪星")
+#define APPTITLE QString("Protocol Debug Tool V3.03     作者: 王洪星")
 
 #define IEC_104 "104"
 #define IEC_101 "101"

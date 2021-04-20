@@ -132,7 +132,25 @@ void frmMain::initSignalAndSlots()
 
 void frmMain::initStyle()
 {
-	on_action_flatwhite_triggered();
+	switch(App::CurrentSkin)
+	{
+	case 0:
+		on_action_lightblue_triggered();
+		break;
+	case 1:
+		on_action_flatwhite_triggered();
+		break;
+	case 2:
+		on_action_psblack_triggered();
+		break;
+	case 3:
+		on_action_wiscom_triggered();
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 void frmMain::initTranslator()
@@ -649,6 +667,8 @@ void frmMain::on_action_lightblue_triggered()
 		qApp->setStyleSheet(qss);
 		file.close();
 	}
+	App::CurrentSkin = 0;
+	App::writeConfig();
 }
 
 void frmMain::on_action_flatwhite_triggered()
@@ -682,6 +702,8 @@ void frmMain::on_action_flatwhite_triggered()
 		qApp->setStyleSheet(qss);
 		file.close();
 	}
+	App::CurrentSkin = 1;
+	App::writeConfig();
 }
 
 void frmMain::on_action_psblack_triggered()
@@ -715,6 +737,8 @@ void frmMain::on_action_psblack_triggered()
 		qApp->setStyleSheet(qss);
 		file.close();
 	}
+	App::CurrentSkin = 2;
+	App::writeConfig();
 }
 
 void frmMain::on_action_Update_triggered()
@@ -792,4 +816,6 @@ void frmMain::on_action_wiscom_triggered()
 		qApp->setStyleSheet(qss);
 		file.close();
 	}
+	App::CurrentSkin = 3;
+	App::writeConfig();
 }

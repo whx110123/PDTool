@@ -12,13 +12,20 @@ IEC103Asdu104Data::~IEC103Asdu104Data()
 
 bool IEC103Asdu104Data::handle(const QByteArray& buff)
 {
-	rii = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	mLen++;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		//规约无此内容
+	}
+	else
+	{
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		mLen++;
 
-	isLast = *(buff.data() + mLen) & 0x01;
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
-	mLen++;
+		isLast = *(buff.data() + mLen) & 0x01;
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
+		mLen++;
+	}
 
 	if(mLen == buff.size())
 	{

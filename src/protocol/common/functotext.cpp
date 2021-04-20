@@ -2132,6 +2132,12 @@ QString eventTypeToText(uchar ch)
 	case 3:
 		text.append("开关量变位");
 		break;
+	case 4:
+		text.append("SOE事件信息");
+		break;
+	case 5:
+		text.append("故障测距事件");
+		break;
 	case 255:
 		text.append("本装置的所有事件");
 		break;

@@ -69,7 +69,7 @@ int App::SleepTime = 100;
 bool App::AutoConnect = false;
 
 QString App::DefaultProtocol = "104";
-
+uint App::CurrentSkin = 1;
 void App::readConfig()
 {
 	if(!checkConfig())
@@ -81,6 +81,7 @@ void App::readConfig()
 
 	set.beginGroup("AppConfig");
 	App::CurrentIndex = set.value("CurrentIndex").toInt();
+	App::CurrentSkin = set.value("CurrentSkin").toUInt();
 	set.endGroup();
 
 	set.beginGroup("TcpClientConfig");
@@ -165,6 +166,7 @@ void App::writeConfig()
 
 	set.beginGroup("AppConfig");
 	set.setValue("CurrentIndex", App::CurrentIndex);
+	set.setValue("CurrentSkin", App::CurrentSkin);
 	set.endGroup();
 
 	set.beginGroup("TcpClientConfig");
@@ -246,47 +248,52 @@ void App::newConfig()
 
 bool App::checkConfig()
 {
-	//如果配置文件大小为0,则以初始值继续运行,并生成配置文件
+	bool ok = true;						//正确的配置文件
 	QFile file(App::ConfigFile);
-	if(file.size() == 0)
+	if(file.size() == 0)				//如果配置文件大小为0,则以初始值继续运行,并生成配置文件
 	{
-		newConfig();
-		return false;
+		ok = false;
 	}
-
-	//如果配置文件不完整,则以初始值继续运行,并生成配置文件
-	if(file.open(QFile::ReadOnly))
+	else if(file.open(QFile::ReadOnly)) //如果配置文件不完整,则以初始值继续运行,并生成配置文件
 	{
-		bool ok = true;
 		while(!file.atEnd())
 		{
 			QString line = file.readLine();
 			line = line.replace("\r", "");
 			line = line.replace("\n", "");
+			if(line.isEmpty())
+			{
+				continue;
+			}
 			QStringList list = line.split("=");
 
-			if(list.count() == 2)
+			if(line.contains("[") && line.contains("]"))
 			{
-				if(list.at(1) == "")
-				{
-					ok = false;
-					break;
-				}
+				continue;
+			}
+			else if(list.count() != 2)
+			{
+				ok = false;
+				break;
+			}
+			else if(list.at(1) == "")
+			{
+				ok = false;
+				break;
 			}
 		}
-
-		if(!ok)
-		{
-			newConfig();
-			return false;
-		}
+		file.close();
 	}
 	else
+	{
+		ok = false;
+	}
+
+	if(!ok)
 	{
 		newConfig();
 		return false;
 	}
-
 	return true;
 }
 

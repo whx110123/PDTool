@@ -14,14 +14,20 @@ bool IEC103Asdu16Data::handle(const QByteArray& buff)
 {
 	files.clear();
 
-	rii = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	mLen++;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		//规约无此内容
+	}
+	else
+	{
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		mLen++;
 
-	isLast = *(buff.data() + mLen) & 0x01;
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
-	mLen++;
-
+		isLast = *(buff.data() + mLen) & 0x01;
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
+		mLen++;
+	}
 	fileNum = charTouint(buff.data() + mLen, 2);
 	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t本帧包含文件数:" + QString::number(fileNum) + "\r\n");
 	mLen += 2;
@@ -34,7 +40,26 @@ bool IEC103Asdu16Data::handle(const QByteArray& buff)
 	mText.append(timeToText(buff.data() + mLen, 7));
 	mLen += 7;
 
-	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		for(int i = 0; i < fileNum; i++)
+		{
+			WaveFileInfo info;
+			info.addr = *(buff.data() + mLen);
+			mText.append(CharToHexStr(buff.data() + mLen) + "\t文件" + QString::number(i + 1) + "录波装置地址: " + QString::number(info.addr) + "\r\n");
+			mLen++;
+			QByteArray ba(buff.data() + mLen, 40);
+			info.fileName = gbk->toUnicode(ba);
+			mText.append(CharToHexStr(buff.data() + mLen, 40) + "\t文件" + QString::number(i + 1) + "文件名: " + info.fileName + "\r\n");
+			mLen += 40;
+			info.dt = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+			mText.append(timeToText(buff.data() + mLen, 7));
+			mLen += 7;
+
+			files.append(info);
+		}
+	}
+	else if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		for(int i = 0; i < fileNum; i++)
 		{
@@ -54,7 +79,6 @@ bool IEC103Asdu16Data::handle(const QByteArray& buff)
 			mLen += 4;
 
 			files.append(info);
-
 		}
 	}
 	else

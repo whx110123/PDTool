@@ -82,6 +82,9 @@ public:
 	//解析报文配置参数
 	static QString DefaultProtocol;       //默认规约
 
+	//皮肤
+	static uint CurrentSkin;			//默认皮肤
+
 	//读写配置参数及其他操作
 	static void readConfig();           //读取配置参数
 	static void writeConfig();          //写入配置参数

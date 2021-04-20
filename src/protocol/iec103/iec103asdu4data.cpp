@@ -27,9 +27,19 @@ bool IEC103Asdu4Data::handle(const QByteArray& buff)
 	mLen += 2;
 
 
-	datetime = charToDateTime(buff.data() + mLen, 4, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + mLen, 4));
-	mLen += 4;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		datetime = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + mLen, 7));
+		mLen += 7;
+	}
+	else
+	{
+		datetime = charToDateTime(buff.data() + mLen, 4, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + mLen, 4));
+		mLen += 4;
+	}
+
 
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(mLen > buff.length())

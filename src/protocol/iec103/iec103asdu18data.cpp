@@ -2,7 +2,7 @@
 
 HisInfo::HisInfo(const MyConfig& Config): MyBase(Config)
 {
-
+	devaddr = 0;
 }
 
 HisInfo::~HisInfo()
@@ -17,6 +17,13 @@ bool HisInfo::init(const QByteArray& buff)
 
 	qDeleteAll(setlist);
 	setlist.clear();
+
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		devaddr = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t装置地址:" + QString::number(devaddr) + "\r\n");
+		mLen++;
+	}
 
 	eventType = *(buff.data() + mLen);
 	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
@@ -47,34 +54,51 @@ bool HisInfo::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t故障序号FAN :" + QString::number(fan) + "\r\n");
 	mLen += 2;
 
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		scl = charTofloat(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t短路位置SCL: " + QString::number(scl) + "\r\n");
+		mLen += 4;
+
+		fpt = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + fptToText(fpt) + "\r\n");
+		mLen++;
+	}
+
 	dt = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
 	mText.append(timeToText(buff.data() + mLen, 7));
 	mLen += 7;
 
-	rcvdt = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
-	mText.append(timeToText(buff.data() + mLen, 7));
-	mLen += 7;
-
-	eventNum = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t故障量个数:" + QString::number(eventNum) + "\r\n");
-	mLen++;
-
-	mText.append("-----------------------------------------------------------------------------------------------\r\n");
-	for(int index = 0; index < eventNum; index++)
+	if(mConfig.protocolName == IEC_103HUABEI)
 	{
-		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
-		bool isOk = mset->init(buff.mid(mLen));
-		if(!isOk)
-		{
-			delete mset;
-			mset = NULL;
-			return false;
-		}
-		mset->mIndex = index;
-		mLen += mset->mLen;
-		setlist.append(mset);
+		//规约无此内容
 	}
+	else
+	{
+		rcvdt = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
+		mText.append(timeToText(buff.data() + mLen, 7));
+		mLen += 7;
 
+		eventNum = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t故障量个数:" + QString::number(eventNum) + "\r\n");
+		mLen++;
+
+		mText.append("-----------------------------------------------------------------------------------------------\r\n");
+		for(int index = 0; index < eventNum; index++)
+		{
+			IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
+			bool isOk = mset->init(buff.mid(mLen));
+			if(!isOk)
+			{
+				delete mset;
+				mset = NULL;
+				return false;
+			}
+			mset->mIndex = index;
+			mLen += mset->mLen;
+			setlist.append(mset);
+		}
+	}
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
@@ -116,9 +140,16 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 		mLen++;
 	}
 
-	isLast = *(buff.data() + mLen) & 0x01;
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
-	mLen++;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		//规约无此内容
+	}
+	else
+	{
+		isLast = *(buff.data() + mLen) & 0x01;
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t后续位标志: " + QString(isLast ? "1 有后续帧" : "0 最后的帧") + "\r\n");
+		mLen++;
+	}
 
 	dtBegin = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
 	mText.append(timeToText(buff.data() + mLen, 7));

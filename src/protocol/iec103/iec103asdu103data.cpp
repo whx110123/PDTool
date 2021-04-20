@@ -12,9 +12,16 @@ IEC103Asdu103Data::~IEC103Asdu103Data()
 
 bool IEC103Asdu103Data::handle(const QByteArray& buff)
 {
-	rii = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	mLen++;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		//规约无此内容
+	}
+	else
+	{
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		mLen++;
+	}
 
 	QByteArray ba(buff.data() + mLen, 100);
 	fileName = gbk->toUnicode(ba);

@@ -77,14 +77,21 @@ IEC103AsduData::~IEC103AsduData()
 bool IEC103AsduData::init(const QByteArray& buff)
 {
 	setDefault(buff);
+	if(mConfig.protocolName == IEC_103HUABEI &&
+			(asduType == 14 || asduType == 16 || asduType == 102 || asduType == 104))
+	{
+		//规约无此内容
+	}
+	else
+	{
+		fun = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + funToText() + "\r\n");
+		mLen++;
 
-	fun = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + funToText() + "\r\n");
-	mLen++;
-
-	inf = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + infToText() + "\r\n");
-	mLen++;
+		inf = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\t" + infToText() + "\r\n");
+		mLen++;
+	}
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
@@ -508,7 +515,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		}
 		else if(sqflag == 1)
 		{
-			int sq = 0;
+			uchar sq = SQ_FUNINF;
 			switch(type)
 			{
 			case 40:
@@ -517,7 +524,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			case 43:
 				if(mConfig.protocolName == IEC_103XUJINET)
 				{
-					sq = 1;
+					sq = SQ_INF;
 				}
 				break;
 			case 45:
@@ -529,7 +536,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			default:
 				break;
 			}
-			if(sq == 0)
+			if(sq == SQ_FUNINF)
 			{
 				isOk = mdata->init(buff.mid(mLen));
 			}

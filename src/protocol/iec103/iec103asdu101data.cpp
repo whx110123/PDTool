@@ -12,9 +12,16 @@ IEC103Asdu101Data::~IEC103Asdu101Data()
 
 bool IEC103Asdu101Data::handle(const QByteArray& buff)
 {
-	rii = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	mLen++;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		//规约无此内容
+	}
+	else
+	{
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		mLen++;
+	}
 
 	dtBegin = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
 	mText.append(timeToText(buff.data() + mLen, 7));

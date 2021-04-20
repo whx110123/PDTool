@@ -12,14 +12,25 @@ IEC103Asdu13Data::~IEC103Asdu13Data()
 
 bool IEC103Asdu13Data::handle(const QByteArray& buff)
 {
-	rii = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
-	mLen++;
+	if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		//规约无此内容
+	}
+	else
+	{
+		rii = *(buff.data() + mLen);
+		mText.append(CharToHexStr(buff.data() + mLen) + "\tRII:" + QString::number(rii) + " 返回信息标识符\r\n");
+		mLen++;
+	}
 
-	uchar waveFileNameLen;
+	uchar waveFileNameLen = 0;
 	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
 	{
 		waveFileNameLen = 128;
+	}
+	else if(mConfig.protocolName == IEC_103HUABEI)
+	{
+		waveFileNameLen = 40;
 	}
 	else
 	{
@@ -35,9 +46,10 @@ bool IEC103Asdu13Data::handle(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + mLen, 4) + "\t起始传输位置: " + QString::number(fileIndex) + "\r\n");
 	mLen += 4;
 
-	if(mConfig.protocolName == IEC_103BAOXINNET_NW)
+	if(mConfig.protocolName == IEC_103BAOXINNET_NW ||
+			mConfig.protocolName == IEC_103HUABEI)
 	{
-		//南网无此部分
+		//规约无此部分
 	}
 	else
 	{

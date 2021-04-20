@@ -13,12 +13,15 @@ public:
 	virtual QString showToText();
 
 public:
+	uchar devaddr;
 	uchar eventType;
 	uchar fun;
 	uchar inf;
 	uchar dpi;
 	ushort ret;
 	short fan;
+	float scl;
+	uchar fpt;
 	QDateTime dt;
 	QDateTime rcvdt;
 	uchar eventNum;
