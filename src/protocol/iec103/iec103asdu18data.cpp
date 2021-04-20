@@ -110,7 +110,7 @@ bool HisInfo::init(const QByteArray& buff)
 QString HisInfo::showToText()
 {
 	QString text = mText;
-	for(IEC103Asdu10DataSet *mset : setlist)
+	for(IEC103Asdu10DataSet *mset : qAsConst(setlist))
 	{
 		text.append(mset->showToText());
 	}
@@ -190,7 +190,7 @@ bool IEC103Asdu18Data::handle(const QByteArray& buff)
 QString IEC103Asdu18Data::showToText()
 {
 	QString text = mText;
-	for(HisInfo *info : hisInfos)
+	for(HisInfo *info : qAsConst(hisInfos))
 	{
 		text.append(info->showToText());
 	}

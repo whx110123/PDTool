@@ -1,20 +1,24 @@
-﻿#include "iec101asdu60data.h"
+﻿#include "iec104asdu61data.h"
 
-IEC101Asdu60Data::IEC101Asdu60Data(const MyConfig& Config): IEC101Asdu47Data(Config)
+IEC104Asdu61Data::IEC104Asdu61Data(const MyConfig& Config): IEC101Asdu48Data(Config)
 {
 
 }
 
-IEC101Asdu60Data::~IEC101Asdu60Data()
+IEC104Asdu61Data::~IEC104Asdu61Data()
 {
 
 }
 
-bool IEC101Asdu60Data::handle(const QByteArray& buff)
+bool IEC104Asdu61Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	rco = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + rcsToText_iec101(rco) + "   " + seToText(rco) + "   " + quToText_iec101(rco) + "\r\n");
+	shortdata = charToint(buff.data() + mLen, 2);
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t规一化值:" + QString::number(shortdata) + "\r\n");
+	mLen += 2;
+
+	qos = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + qosToText(qos) + "\r\n");
 	mLen++;
 
 	datetime = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);

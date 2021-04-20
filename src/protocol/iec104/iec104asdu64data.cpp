@@ -1,16 +1,16 @@
-﻿#include "iec101asdu64data.h"
+﻿#include "iec104asdu64data.h"
 
-IEC101Asdu64Data::IEC101Asdu64Data(const MyConfig& Config): IEC101Asdu51Data(Config)
+IEC104Asdu64Data::IEC104Asdu64Data(const MyConfig& Config): IEC101Asdu51Data(Config)
 {
 
 }
 
-IEC101Asdu64Data::~IEC101Asdu64Data()
+IEC104Asdu64Data::~IEC104Asdu64Data()
 {
 
 }
 
-bool IEC101Asdu64Data::handle(const QByteArray& buff)
+bool IEC104Asdu64Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	uintdata = charTouint(buff.data() + mLen, 4);

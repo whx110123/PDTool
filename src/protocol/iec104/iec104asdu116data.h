@@ -1,15 +1,15 @@
-﻿#ifndef IEC101ASDU116DATA_H
-#define IEC101ASDU116DATA_H
+﻿#ifndef IEC104ASDU116DATA_H
+#define IEC104ASDU116DATA_H
 
 #include "iec101asdu.h"
 
 
-
-class IEC101Asdu116Data : public IEC101AsduData
+//源端维护
+class IEC104Asdu116Data : public IEC101AsduData
 {
 public:
-	IEC101Asdu116Data(const MyConfig& Config);
-	~IEC101Asdu116Data();
+	IEC104Asdu116Data(const MyConfig& Config);
+	~IEC104Asdu116Data();
 	virtual bool handle(const QByteArray& buff);
 
 public:
@@ -27,4 +27,4 @@ public:
 	QTextCodec *gbk;
 };
 
-#endif // IEC101ASDU116DATA_H
+#endif // IEC104ASDU116DATA_H

@@ -86,7 +86,7 @@ void frmComTool::initConfig()
 {
 	QList<QSerialPortInfo> mSerialPortList = QSerialPortInfo::availablePorts();
 	QStringList mStrList;
-	for(QSerialPortInfo SerialPortInfo : mSerialPortList)
+	for(QSerialPortInfo SerialPortInfo : qAsConst(mSerialPortList))
 	{
 		mStrList << SerialPortInfo.portName();
 	}

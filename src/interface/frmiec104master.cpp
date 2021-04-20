@@ -3,15 +3,15 @@
 
 #include <app.h>
 #include <iec101asdu100data.h>
-#include <iec101asdu167data.h>
+#include <iec104asdu167data.h>
 #include <iec101asdu45data.h>
 #include <iec101asdu46data.h>
 #include <iec101asdu47data.h>
 #include <iec101asdu48data.h>
 #include <iec101asdu49data.h>
 #include <iec101asdu50data.h>
-#include <iec101asdu58data.h>
-#include <iec101asdu59data.h>
+#include <iec104asdu58data.h>
+#include <iec104asdu59data.h>
 #include <iec103asdu21data.h>
 #include <iec104.h>
 #include <quiwidget.h>
@@ -259,7 +259,7 @@ IEC101AsduData *frmIEC104Master::getYKYTData(uchar type)
 	}
 	case 58:
 	{
-		IEC101Asdu58Data *tmp = new IEC101Asdu58Data(config);
+		IEC104Asdu58Data *tmp = new IEC104Asdu58Data(config);
 		tmp->sco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x01 : 0x00) | (type & 0x80);
 		tmp->datetime = QDateTime::currentDateTime();
 		asduData = tmp;
@@ -267,7 +267,7 @@ IEC101AsduData *frmIEC104Master::getYKYTData(uchar type)
 	}
 	case 59:
 	{
-		IEC101Asdu59Data *tmp = new IEC101Asdu59Data(config);
+		IEC104Asdu59Data *tmp = new IEC104Asdu59Data(config);
 		tmp->dco = (ui->comboBox_YKValue->currentText().contains("合") ? 0x02 : 0x01) | (type & 0x80);
 		tmp->datetime = QDateTime::currentDateTime();
 		asduData = tmp;
@@ -350,7 +350,7 @@ void frmIEC104Master::on_pushButton_CallTitle_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -386,7 +386,7 @@ void frmIEC104Master::on_pushButton_CallUnit_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -427,7 +427,7 @@ void frmIEC104Master::on_pushButton_CallAccuracy_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -468,7 +468,7 @@ void frmIEC104Master::on_pushButton_CallRange_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -509,7 +509,7 @@ void frmIEC104Master::on_pushButton_CallDescription_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -550,7 +550,7 @@ void frmIEC104Master::on_pushButton_SelectSetting_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -597,7 +597,7 @@ void frmIEC104Master::on_pushButton_CallSetting_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -638,7 +638,7 @@ void frmIEC104Master::on_pushButton_SetValue_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;
@@ -732,7 +732,7 @@ void frmIEC104Master::on_pushButton_solidify_clicked()
 	asdu.cot[0] = 5;
 	asdu.commonaddr = ui->lineEdit_comaddr->text().toUInt();
 
-	IEC101Asdu167Data *asduData  = new IEC101Asdu167Data(config);
+	IEC104Asdu167Data *asduData  = new IEC104Asdu167Data(config);
 	asdu.datalist.append(asduData);
 
 	asduData->ctrl = 0;

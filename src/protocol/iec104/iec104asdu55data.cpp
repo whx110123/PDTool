@@ -1,6 +1,6 @@
-﻿#include "iec101asdu55data.h"
+﻿#include "iec104asdu55data.h"
 
-IEC101Asdu55Data::IEC101Asdu55Data(const MyConfig& Config): IEC101AsduData(Config)
+IEC104Asdu55Data::IEC104Asdu55Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	code = 0;
 	ctrlNo = 0;
@@ -10,12 +10,12 @@ IEC101Asdu55Data::IEC101Asdu55Data(const MyConfig& Config): IEC101AsduData(Confi
 	userlen = 0;
 }
 
-IEC101Asdu55Data::~IEC101Asdu55Data()
+IEC104Asdu55Data::~IEC104Asdu55Data()
 {
 
 }
 
-bool IEC101Asdu55Data::init(const QByteArray& buff)
+bool IEC104Asdu55Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -71,7 +71,7 @@ bool IEC101Asdu55Data::init(const QByteArray& buff)
 	return true;
 }
 
-QString IEC101Asdu55Data::codeToText()
+QString IEC104Asdu55Data::codeToText()
 {
 	QString text = "序列控制命令限定词:" + QString::number(code & 0x7f) + " ";
 	switch(code & 0x7f)
@@ -128,7 +128,7 @@ QString IEC101Asdu55Data::codeToText()
 	return text;
 }
 
-QString IEC101Asdu55Data::riiToText()
+QString IEC104Asdu55Data::riiToText()
 {
 	QString text = "返回信息功能码:" + QString::number(rii) + " ";
 	switch(rii)

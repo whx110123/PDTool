@@ -1,16 +1,16 @@
-﻿#include "iec101asdu116data.h"
+﻿#include "iec104asdu116data.h"
 
-IEC101Asdu116Data::IEC101Asdu116Data(const MyConfig& Config): IEC101AsduData(Config)
+IEC104Asdu116Data::IEC104Asdu116Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	gbk = QTextCodec::codecForName("GB18030");
 }
 
-IEC101Asdu116Data::~IEC101Asdu116Data()
+IEC104Asdu116Data::~IEC104Asdu116Data()
 {
 
 }
 
-bool IEC101Asdu116Data::handle(const QByteArray& buff)
+bool IEC104Asdu116Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	dataType = *(buff.data() + mLen);

@@ -593,7 +593,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 QString IEC103Asdu::showToText()
 {
 	QString text = mText;
-	for(IEC103AsduData *mdata : datalist)
+	for(IEC103AsduData *mdata : qAsConst(datalist))
 	{
 		text.append(mdata->showToText());
 	}
@@ -615,7 +615,7 @@ bool IEC103Asdu::createData(MyData& proData)
 	tmp.data += uintToBa(commonaddr, mConfig.comaddrlen);
 	int index = 0;
 
-	for(IEC103AsduData *mdata : datalist)
+	for(IEC103AsduData *mdata : qAsConst(datalist))
 	{
 		if(index == 0)
 		{

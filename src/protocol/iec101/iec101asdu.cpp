@@ -12,22 +12,13 @@
 #include "iec101asdu38data.h"
 #include "iec101asdu39data.h"
 #include "iec101asdu40data.h"
-#include "iec101asdu43data.h"
-#include "iec101asdu55data.h"
-#include "iec101asdu58data.h"
-#include "iec101asdu59data.h"
-#include "iec101asdu60data.h"
-#include "iec101asdu61data.h"
-#include "iec101asdu62data.h"
-#include "iec101asdu63data.h"
-#include "iec101asdu64data.h"
 #include "iec101asdu70data.h"
 #include "iec101asdu100data.h"
 #include "iec101asdu101data.h"
 #include "iec101asdu102data.h"
+#include "iec101asdu104data.h"
 #include "iec101asdu105data.h"
 #include "iec101asdu106data.h"
-#include "iec101asdu107data.h"
 #include "iec101asdu111data.h"
 #include "iec101asdu112data.h"
 #include "iec101asdu113data.h"
@@ -38,11 +29,21 @@
 #include "iec101asdu124data.h"
 #include "iec101asdu125data.h"
 #include "iec101asdu126data.h"
-#include "iec101asdu127data.h"
-#include "iec101asdu137data.h"
-#include "iec101asdu167data.h"
-#include "iec101asdu104data.h"
-#include "iec101asdu116data.h"
+
+#include "iec104asdu43data.h"
+#include "iec104asdu55data.h"
+#include "iec104asdu58data.h"
+#include "iec104asdu59data.h"
+#include "iec104asdu60data.h"
+#include "iec104asdu61data.h"
+#include "iec104asdu62data.h"
+#include "iec104asdu63data.h"
+#include "iec104asdu64data.h"
+#include "iec104asdu107data.h"
+#include "iec104asdu116data.h"
+#include "iec104asdu127data.h"
+#include "iec104asdu137data.h"
+#include "iec104asdu167data.h"
 
 IEC101AsduData::IEC101AsduData(const MyConfig& Config): MyBase(Config)
 {
@@ -220,7 +221,7 @@ bool IEC101Asdu::init(const QByteArray& buff)
 QString IEC101Asdu::showToText()
 {
 	QString text = mText;
-	for(IEC101AsduData *mdata : datalist)
+	for(IEC101AsduData *mdata : qAsConst(datalist))
 	{
 		text.append(mdata->showToText());
 	}
@@ -238,7 +239,7 @@ bool IEC101Asdu::createData(MyData& proData)
 	tmp.data += uintToBa(commonaddr, mConfig.comaddrlen);
 	int index = 0;
 
-	for(IEC101AsduData *mdata : datalist)
+	for(IEC101AsduData *mdata : qAsConst(datalist))
 	{
 		if(index > 0 && (vsq & 0x80))
 		{
@@ -768,7 +769,7 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC101Asdu40Data(mConfig);
 		break;
 	case 43:
-		asdudata = new IEC101Asdu43Data(mConfig);
+		asdudata = new IEC104Asdu43Data(mConfig);
 		break;
 	case 45:
 		asdudata = new IEC101Asdu45Data(mConfig);
@@ -792,28 +793,28 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC101Asdu51Data(mConfig);
 		break;
 	case 55:
-		asdudata = new IEC101Asdu55Data(mConfig);
+		asdudata = new IEC104Asdu55Data(mConfig);
 		break;
 	case 58:
-		asdudata = new IEC101Asdu58Data(mConfig);
+		asdudata = new IEC104Asdu58Data(mConfig);
 		break;
 	case 59:
-		asdudata = new IEC101Asdu59Data(mConfig);
+		asdudata = new IEC104Asdu59Data(mConfig);
 		break;
 	case 60:
-		asdudata = new IEC101Asdu60Data(mConfig);
+		asdudata = new IEC104Asdu60Data(mConfig);
 		break;
 	case 61:
-		asdudata = new IEC101Asdu61Data(mConfig);
+		asdudata = new IEC104Asdu61Data(mConfig);
 		break;
 	case 62:
-		asdudata = new IEC101Asdu62Data(mConfig);
+		asdudata = new IEC104Asdu62Data(mConfig);
 		break;
 	case 63:
-		asdudata = new IEC101Asdu63Data(mConfig);
+		asdudata = new IEC104Asdu63Data(mConfig);
 		break;
 	case 64:
-		asdudata = new IEC101Asdu64Data(mConfig);
+		asdudata = new IEC104Asdu64Data(mConfig);
 		break;
 	case 70:
 		asdudata = new IEC101Asdu70Data(mConfig);
@@ -840,7 +841,7 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC101Asdu106Data(mConfig);
 		break;
 	case 107:
-		asdudata = new IEC101Asdu107Data(mConfig);
+		asdudata = new IEC104Asdu107Data(mConfig);
 		break;
 	case 110:
 		asdudata = new IEC101Asdu110Data(mConfig);
@@ -855,7 +856,7 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC101Asdu113Data(mConfig);
 		break;
 	case 116:
-		asdudata = new IEC101Asdu116Data(mConfig);
+		asdudata = new IEC104Asdu116Data(mConfig);
 		break;
 	case 120:
 		asdudata = new IEC101Asdu120Data(mConfig);
@@ -879,13 +880,13 @@ IEC101AsduData *IEC101Asdu::CreateAsduData(uchar type)
 		asdudata = new IEC101Asdu126Data(mConfig);
 		break;
 	case 127:
-		asdudata = new IEC101Asdu127Data(mConfig);
+		asdudata = new IEC104Asdu127Data(mConfig);
 		break;
 	case 137:
-		asdudata = new IEC101Asdu137Data(mConfig);
+		asdudata = new IEC104Asdu137Data(mConfig);
 		break;
 	case 167:
-		asdudata = new IEC101Asdu167Data(mConfig);
+		asdudata = new IEC104Asdu167Data(mConfig);
 		break;
 	default:
 		break;

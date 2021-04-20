@@ -175,8 +175,7 @@ void frmHandleData::on_Bt1_clicked()
 	QString tmpgbk;
 	QString tmputf8;
 	QString tmpunicode;
-	QByteArray hex_data;
-	for(QChar byte : text)
+	for(QChar byte : qAsConst(text))
 	{
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
@@ -192,12 +191,11 @@ void frmHandleData::on_Bt2_clicked()
 	QString tmp;
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
-	QString tmpgbk;
 	QString tmputf8;
 	QString tmpunicode;
 	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le2->text());
 	tmp = gbk->toUnicode(ba);
-	for(QChar byte : tmp)
+	for(QChar byte : qAsConst(tmp))
 	{
 		tmputf8.append(utf8->fromUnicode(byte).toHex() + " ");
 		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
@@ -214,11 +212,10 @@ void frmHandleData::on_Bt3_clicked()
 	QTextCodec *gbk = QTextCodec::codecForName("GB18030");
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
 	QString tmpgbk;
-	QString tmputf8;
 	QString tmpunicode;
 	QByteArray ba = QUIHelper::hexStrToByteArray(ui->Le3->text());
 	tmp = utf8->toUnicode(ba);
-	for(QChar byte : tmp)
+	for(QChar byte : qAsConst(tmp))
 	{
 		tmpgbk.append(gbk->fromUnicode(byte).toHex() + " ");
 		tmpunicode.append(QString::number(byte.unicode(), 16) + " ");
@@ -238,7 +235,7 @@ void frmHandleData::on_Bt4_clicked()
 	QTextCodec *utf8 = QTextCodec::codecForName("UTF-8");
 	QString tmpgbk;
 	QString tmputf8;
-	for(QString str : strlst)
+	for(QString str : qAsConst(strlst))
 	{
 		QChar byte(str.toUInt(0, 16));
 		tmp.append(byte);

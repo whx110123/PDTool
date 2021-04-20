@@ -101,7 +101,7 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 QString IEC103Asdu11Data::showToText()
 {
 	QString text = mText;
-	for(IEC103Asdu11DataSet *mset : setlist)
+	for(IEC103Asdu11DataSet *mset : qAsConst(setlist))
 	{
 		text.append(mset->showToText());
 	}

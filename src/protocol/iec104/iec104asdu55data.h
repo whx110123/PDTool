@@ -1,13 +1,15 @@
-﻿#ifndef IEC101ASDU55DATA_H
-#define IEC101ASDU55DATA_H
+﻿#ifndef IEC104ASDU55DATA_H
+#define IEC104ASDU55DATA_H
 
 #include "iec101asdu.h"
 
-class IEC101Asdu55Data : public IEC101AsduData
+
+//序列控制命令交互(一键顺控扩展功能)
+class IEC104Asdu55Data : public IEC101AsduData
 {
 public:
-	IEC101Asdu55Data(const MyConfig& Config);
-	~IEC101Asdu55Data();
+	IEC104Asdu55Data(const MyConfig& Config);
+	~IEC104Asdu55Data();
 	virtual bool init(const QByteArray& buff);
 
 public:
@@ -24,4 +26,4 @@ private:
 	QString riiToText();
 };
 
-#endif // IEC101ASDU55DATA_H
+#endif // IEC104ASDU55DATA_H

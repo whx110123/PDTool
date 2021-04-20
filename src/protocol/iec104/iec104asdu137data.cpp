@@ -1,17 +1,17 @@
-﻿#include "iec101asdu137data.h"
+﻿#include "iec104asdu137data.h"
 
-IEC101Asdu137Data::IEC101Asdu137Data(const MyConfig& Config): IEC101AsduData(Config)
+IEC104Asdu137Data::IEC104Asdu137Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	shortdata = 0;
 	qos = 0;
 }
 
-IEC101Asdu137Data::~IEC101Asdu137Data()
+IEC104Asdu137Data::~IEC104Asdu137Data()
 {
 
 }
 
-bool IEC101Asdu137Data::handle(const QByteArray& buff)
+bool IEC104Asdu137Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 	shortdata = charToint(buff.data() + mLen, 2);

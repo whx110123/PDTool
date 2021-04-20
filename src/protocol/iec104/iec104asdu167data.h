@@ -1,13 +1,15 @@
-﻿#ifndef IEC101ASDU167DATA_H
-#define IEC101ASDU167DATA_H
+﻿#ifndef IEC104ASDU167DATA_H
+#define IEC104ASDU167DATA_H
 #include "iec101asdu.h"
 #include "iec103asdu.h"
 
-class IEC101Asdu167Data : public IEC101AsduData
+
+//定值处理(扩展功能)
+class IEC104Asdu167Data : public IEC101AsduData
 {
 public:
-	IEC101Asdu167Data(const MyConfig& Config);
-	~IEC101Asdu167Data();
+	IEC104Asdu167Data(const MyConfig& Config);
+	~IEC104Asdu167Data();
 	virtual bool init(const QByteArray& buff);
 	virtual QString showToText();
 	virtual bool createData(MyData& proData);
@@ -21,4 +23,4 @@ private:
 	QString ctrlToText();
 };
 
-#endif // IEC101ASDU167DATA_H
+#endif // IEC104ASDU167DATA_H

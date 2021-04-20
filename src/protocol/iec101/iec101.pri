@@ -9,13 +9,11 @@ HEADERS += \
 	$$PWD/iec101asdu104data.h \
 	$$PWD/iec101asdu105data.h \
 	$$PWD/iec101asdu106data.h \
-	$$PWD/iec101asdu107data.h \
 	$$PWD/iec101asdu10data.h \
 	$$PWD/iec101asdu110data.h \
 	$$PWD/iec101asdu111data.h \
 	$$PWD/iec101asdu112data.h \
 	$$PWD/iec101asdu113data.h \
-	$$PWD/iec101asdu116data.h \
 	$$PWD/iec101asdu11data.h \
 	$$PWD/iec101asdu120data.h \
 	$$PWD/iec101asdu121data.h \
@@ -24,13 +22,10 @@ HEADERS += \
 	$$PWD/iec101asdu124data.h \
 	$$PWD/iec101asdu125data.h \
 	$$PWD/iec101asdu126data.h \
-	$$PWD/iec101asdu127data.h \
 	$$PWD/iec101asdu12data.h \
-	$$PWD/iec101asdu137data.h \
 	$$PWD/iec101asdu13data.h \
 	$$PWD/iec101asdu14data.h \
 	$$PWD/iec101asdu15data.h \
-	$$PWD/iec101asdu167data.h \
 	$$PWD/iec101asdu16data.h \
 	$$PWD/iec101asdu17data.h \
 	$$PWD/iec101asdu18data.h \
@@ -51,7 +46,6 @@ HEADERS += \
 	$$PWD/iec101asdu39data.h \
 	$$PWD/iec101asdu3data.h \
 	$$PWD/iec101asdu40data.h \
-	$$PWD/iec101asdu43data.h \
 	$$PWD/iec101asdu45data.h \
 	$$PWD/iec101asdu46data.h \
 	$$PWD/iec101asdu47data.h \
@@ -60,15 +54,7 @@ HEADERS += \
 	$$PWD/iec101asdu4data.h \
 	$$PWD/iec101asdu50data.h \
 	$$PWD/iec101asdu51data.h \
-	$$PWD/iec101asdu55data.h \
-	$$PWD/iec101asdu58data.h \
-	$$PWD/iec101asdu59data.h \
 	$$PWD/iec101asdu5data.h \
-	$$PWD/iec101asdu60data.h \
-	$$PWD/iec101asdu61data.h \
-	$$PWD/iec101asdu62data.h \
-	$$PWD/iec101asdu63data.h \
-	$$PWD/iec101asdu64data.h \
 	$$PWD/iec101asdu6data.h \
 	$$PWD/iec101asdu70data.h \
 	$$PWD/iec101asdu7data.h \
@@ -86,13 +72,11 @@ SOURCES += \
 	$$PWD/iec101asdu104data.cpp \
 	$$PWD/iec101asdu105data.cpp \
 	$$PWD/iec101asdu106data.cpp \
-	$$PWD/iec101asdu107data.cpp \
 	$$PWD/iec101asdu10data.cpp \
 	$$PWD/iec101asdu110data.cpp \
 	$$PWD/iec101asdu111data.cpp \
 	$$PWD/iec101asdu112data.cpp \
 	$$PWD/iec101asdu113data.cpp \
-	$$PWD/iec101asdu116data.cpp \
 	$$PWD/iec101asdu11data.cpp \
 	$$PWD/iec101asdu120data.cpp \
 	$$PWD/iec101asdu121data.cpp \
@@ -101,13 +85,10 @@ SOURCES += \
 	$$PWD/iec101asdu124data.cpp \
 	$$PWD/iec101asdu125data.cpp \
 	$$PWD/iec101asdu126data.cpp \
-	$$PWD/iec101asdu127data.cpp \
 	$$PWD/iec101asdu12data.cpp \
-	$$PWD/iec101asdu137data.cpp \
 	$$PWD/iec101asdu13data.cpp \
 	$$PWD/iec101asdu14data.cpp \
 	$$PWD/iec101asdu15data.cpp \
-	$$PWD/iec101asdu167data.cpp \
 	$$PWD/iec101asdu16data.cpp \
 	$$PWD/iec101asdu17data.cpp \
 	$$PWD/iec101asdu18data.cpp \
@@ -128,7 +109,6 @@ SOURCES += \
 	$$PWD/iec101asdu39data.cpp \
 	$$PWD/iec101asdu3data.cpp \
 	$$PWD/iec101asdu40data.cpp \
-	$$PWD/iec101asdu43data.cpp \
 	$$PWD/iec101asdu45data.cpp \
 	$$PWD/iec101asdu46data.cpp \
 	$$PWD/iec101asdu47data.cpp \
@@ -137,15 +117,7 @@ SOURCES += \
 	$$PWD/iec101asdu4data.cpp \
 	$$PWD/iec101asdu50data.cpp \
 	$$PWD/iec101asdu51data.cpp \
-	$$PWD/iec101asdu55data.cpp \
-	$$PWD/iec101asdu58data.cpp \
-	$$PWD/iec101asdu59data.cpp \
 	$$PWD/iec101asdu5data.cpp \
-	$$PWD/iec101asdu60data.cpp \
-	$$PWD/iec101asdu61data.cpp \
-	$$PWD/iec101asdu62data.cpp \
-	$$PWD/iec101asdu63data.cpp \
-	$$PWD/iec101asdu64data.cpp \
 	$$PWD/iec101asdu6data.cpp \
 	$$PWD/iec101asdu70data.cpp \
 	$$PWD/iec101asdu7data.cpp \

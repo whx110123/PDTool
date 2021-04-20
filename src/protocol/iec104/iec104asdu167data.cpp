@@ -1,18 +1,18 @@
-﻿#include "iec101asdu167data.h"
+﻿#include "iec104asdu167data.h"
 
-IEC101Asdu167Data::IEC101Asdu167Data(const MyConfig& Config): IEC101AsduData(Config), asdu(Config)
+IEC104Asdu167Data::IEC104Asdu167Data(const MyConfig& Config): IEC101AsduData(Config), asdu(Config)
 {
 	ctrl = 0;
 	memset(devaddr, 0, sizeof(devaddr));
 	iec103len = 0;
 }
 
-IEC101Asdu167Data::~IEC101Asdu167Data()
+IEC104Asdu167Data::~IEC104Asdu167Data()
 {
 
 }
 
-bool IEC101Asdu167Data::init(const QByteArray& buff)
+bool IEC104Asdu167Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -53,14 +53,14 @@ bool IEC101Asdu167Data::init(const QByteArray& buff)
 }
 
 
-QString IEC101Asdu167Data::showToText()
+QString IEC104Asdu167Data::showToText()
 {
 	QString text = mText;
 	text.append(asdu.showToText());
 	return text;
 }
 
-bool IEC101Asdu167Data::createData(MyData& proData)
+bool IEC104Asdu167Data::createData(MyData& proData)
 {
 	MyData tmp;
 	tmp.getAttribute(proData);
@@ -92,7 +92,7 @@ bool IEC101Asdu167Data::createData(MyData& proData)
 
 }
 
-QString IEC101Asdu167Data::ctrlToText()
+QString IEC104Asdu167Data::ctrlToText()
 {
 	QString text = "保护信息传输控制字节，A/S(bit8):" + QString::number(ctrl & 0x80, 16).toUpper() + " ";
 	uchar datanum = ctrl & 0x7f;

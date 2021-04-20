@@ -1,16 +1,16 @@
-﻿#include "iec101asdu43data.h"
+﻿#include "iec104asdu43data.h"
 
-IEC101Asdu43Data::IEC101Asdu43Data(const MyConfig& Config): IEC101AsduData(Config)
+IEC104Asdu43Data::IEC104Asdu43Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 
 }
 
-IEC101Asdu43Data::~IEC101Asdu43Data()
+IEC104Asdu43Data::~IEC104Asdu43Data()
 {
 
 }
 
-bool IEC101Asdu43Data::init(const QByteArray& buff)
+bool IEC104Asdu43Data::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
@@ -44,7 +44,7 @@ bool IEC101Asdu43Data::init(const QByteArray& buff)
 	return true;
 }
 
-QString IEC101Asdu43Data::showToText()
+QString IEC104Asdu43Data::showToText()
 {
 	QString text = mText;
 	text.append(CharToHexStr(crc) + "\t校验和\r\n");
@@ -52,7 +52,7 @@ QString IEC101Asdu43Data::showToText()
 }
 
 
-QString IEC101Asdu43Data::contToText()
+QString IEC104Asdu43Data::contToText()
 {
 	QString text = "后续位标志(bit1): " + QString::number(cont) + "  ";
 	switch(cont)

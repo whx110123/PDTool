@@ -87,7 +87,7 @@ bool Modbus::init(const QByteArray& buff)
 		mText.append(CharToHexStr(buff.data() + mLen) + "\t长度: " + QString::number(mgroup.dataLen) + "\r\n");
 		mLen++;
 
-		for(ModbusDataGroup g : mConfig.groups)
+		for(const ModbusDataGroup& g : qAsConst(mConfig.groups))
 		{
 			if(g.dataLen == mgroup.dataLen)
 			{
@@ -140,7 +140,7 @@ bool Modbus::init(const QByteArray& buff)
 
 QString Modbus::showToText()
 {
-	for(ModbusData *d : datalist)
+	for(ModbusData *d : qAsConst(datalist))
 	{
 		mText.append(d->showToText());
 	}

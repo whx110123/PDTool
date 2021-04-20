@@ -389,7 +389,7 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 QString IEC103Asdu10DataSetGid::showToText()
 {
 	QString text = mText;
-	for(IEC103Asdu10DataSetGdd *mgdd : gddlist)
+	for(IEC103Asdu10DataSetGdd *mgdd : qAsConst(gddlist))
 	{
 		text.append(mgdd->showToText());
 	}
@@ -403,7 +403,7 @@ bool IEC103Asdu10DataSetGid::createData(MyData& proData)
 
 	tmp.data += gid;
 	int index = 0;
-	for(IEC103Asdu10DataSetGdd *mgdd : gddlist)
+	for(IEC103Asdu10DataSetGdd *mgdd : qAsConst(gddlist))
 	{
 		if(!mgdd->createData(tmp))
 		{
@@ -486,7 +486,7 @@ bool IEC103Asdu10DataSetGdd::init(const QByteArray& buff)
 QString IEC103Asdu10DataSetGdd::showToText()
 {
 	QString text = mText;
-	for(IEC103Asdu10DataSetGid *mgid : gidlist)
+	for(IEC103Asdu10DataSetGid *mgid : qAsConst(gidlist))
 	{
 		text.append(mgid->showToText());
 	}
@@ -501,7 +501,7 @@ bool IEC103Asdu10DataSetGdd::createData(MyData& proData)
 	tmp.data += QByteArray((char *)gdd, 3);
 
 	int index = 0;
-	for(IEC103Asdu10DataSetGid *mgid : gidlist)
+	for(IEC103Asdu10DataSetGid *mgid : qAsConst(gidlist))
 	{
 		if(!mgid->createData(tmp))
 		{
@@ -655,7 +655,7 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 QString IEC103Asdu10Data::showToText()
 {
 	QString text = mText;
-	for(IEC103Asdu10DataSet *mset : setlist)
+	for(IEC103Asdu10DataSet *mset : qAsConst(setlist))
 	{
 		text.append(mset->showToText());
 	}
@@ -681,7 +681,7 @@ bool IEC103Asdu10Data::createData(MyData& proData)
 	tmp.data += ngd;
 
 	int index = 0;
-	for(IEC103Asdu10DataSet *mset : setlist)
+	for(IEC103Asdu10DataSet *mset : qAsConst(setlist))
 	{
 		if(!mset->createData(tmp))
 		{

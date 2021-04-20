@@ -1,20 +1,20 @@
-﻿#include "iec101asdu58data.h"
+﻿#include "iec104asdu59data.h"
 
-IEC101Asdu58Data::IEC101Asdu58Data(const MyConfig& Config): IEC101Asdu45Data(Config)
+IEC104Asdu59Data::IEC104Asdu59Data(const MyConfig& Config): IEC101Asdu46Data(Config)
 {
 
 }
 
-IEC101Asdu58Data::~IEC101Asdu58Data()
+IEC104Asdu59Data::~IEC104Asdu59Data()
 {
 
 }
 
-bool IEC101Asdu58Data::handle(const QByteArray& buff)
+bool IEC104Asdu59Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
-	sco = *(buff.data() + mLen);
-	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + scsToText(sco) + "   " + seToText(sco) + "   " + quToText_iec101(sco) + "\r\n");
+	dco = *(buff.data() + mLen);
+	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + dcsToText(dco) + "   " + seToText(dco) + "   " + quToText_iec101(dco) + "\r\n");
 	mLen++;
 
 	datetime = charToDateTime(buff.data() + mLen, 7, BINARYTIME2A);
@@ -30,7 +30,7 @@ bool IEC101Asdu58Data::handle(const QByteArray& buff)
 	return true;
 }
 
-bool IEC101Asdu58Data::createData(MyData& proData)
+bool IEC104Asdu59Data::createData(MyData& proData)
 {
 	MyData tmp;
 	tmp.getAttribute(proData);
@@ -39,7 +39,7 @@ bool IEC101Asdu58Data::createData(MyData& proData)
 	{
 		tmp.data += uintToBa(infaddr, mConfig.infaddrlen);
 	}
-	tmp.data += sco;
+	tmp.data += dco;
 	tmp.data += dateTimeToBa(datetime, 7);
 	if(proData.reverse)
 	{

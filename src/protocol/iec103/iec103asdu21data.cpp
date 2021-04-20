@@ -115,7 +115,7 @@ bool IEC103Asdu21Data::handle(const QByteArray& buff)
 QString IEC103Asdu21Data::showToText()
 {
 	QString text = mText;
-	for(IEC103Asdu21DataSet *mset : setlist)
+	for(IEC103Asdu21DataSet *mset : qAsConst(setlist))
 	{
 		text.append(mset->showToText());
 	}
@@ -141,7 +141,7 @@ bool IEC103Asdu21Data::createData(MyData& proData)
 	tmp.data += nog;
 
 	int index = 0;
-	for(IEC103Asdu21DataSet *mset : setlist)
+	for(IEC103Asdu21DataSet *mset : qAsConst(setlist))
 	{
 		if(!mset->createData(tmp))
 		{

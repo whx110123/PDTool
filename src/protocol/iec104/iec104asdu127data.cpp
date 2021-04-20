@@ -1,16 +1,16 @@
-﻿#include "iec101asdu127data.h"
+﻿#include "iec104asdu127data.h"
 
-IEC101Asdu127Data::IEC101Asdu127Data(const MyConfig& Config): IEC101AsduData(Config)
+IEC104Asdu127Data::IEC104Asdu127Data(const MyConfig& Config): IEC101AsduData(Config)
 {
 	nof = 0;
 }
 
-IEC101Asdu127Data::~IEC101Asdu127Data()
+IEC104Asdu127Data::~IEC104Asdu127Data()
 {
 
 }
 
-bool IEC101Asdu127Data::handle(const QByteArray& buff)
+bool IEC104Asdu127Data::handle(const QByteArray& buff)
 {
 	mText.append("\r\n");
 
