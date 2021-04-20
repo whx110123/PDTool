@@ -44,9 +44,8 @@ int main(int argc, char *argv[])
 	w.show();
 
 	//居中显示窗体
-	QDesktopWidget deskWidget;
-	int deskWidth = deskWidget.availableGeometry().width();
-	int deskHeight = deskWidget.availableGeometry().height();
+	int deskWidth = QGuiApplication::screens().first()->availableGeometry().width();
+	int deskHeight = QGuiApplication::screens().first()->availableGeometry().height();
 	QPoint movePoint(deskWidth / 2 - w.width() / 2, deskHeight / 2 - w.height() / 2);
 	w.move(movePoint);
 

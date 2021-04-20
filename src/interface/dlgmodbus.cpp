@@ -91,22 +91,22 @@ void DlgModbus::setItem(int rowNo, QStringList list)
 		color = Qt::gray;
 	}
 	item = new QTableWidgetItem(type);
-	item->setBackgroundColor(color);
+	item->setBackground(color);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colType, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(analy);
-	item->setBackgroundColor(color);
+	item->setBackground(color);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colAnaly, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(len);
-	item->setBackgroundColor(color);
+	item->setBackground(color);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colLen, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(des);
-	item->setBackgroundColor(color);
+	item->setBackground(color);
 	item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colDes, item); //为单元格设置Item
 }
