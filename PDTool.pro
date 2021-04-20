@@ -17,7 +17,7 @@ RCC_DIR             = temp/rcc
 UI_DIR              = temp/ui
 OBJECTS_DIR         = temp/obj
 DESTDIR             = bin
-win32:RC_FILE       = other/main.rc
+win32:RC_FILE       = rcs/main.rc
 CONFIG              += warn_off
 DEFINES				+= QT_MESSAGELOGCONTEXT
 include             ($$PWD/src/src.pri)
@@ -26,8 +26,8 @@ INCLUDEPATH         += $$PWD
 INCLUDEPATH         += $$PWD/src
 
 RESOURCES += \
-	other/main.qrc \
-	other/qss.qrc
+	rcs/main.qrc \
+	rcs/qss.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
