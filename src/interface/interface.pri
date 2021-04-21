@@ -6,6 +6,7 @@ FORMS += \
 	$$PWD/frmdebug.ui \
 	$$PWD/frmhandledata.ui \
 	$$PWD/frmiec104master.ui \
+	$$PWD/frmlog.ui \
 	$$PWD/frmmain.ui \
 	$$PWD/frmmeasuredterminalmaster.ui \
 	$$PWD/frmtcpclient.ui \
@@ -21,6 +22,7 @@ HEADERS += \
 	$$PWD/frmdebug.h \
 	$$PWD/frmhandledata.h \
 	$$PWD/frmiec104master.h \
+	$$PWD/frmlog.h \
 	$$PWD/frmmain.h \
 	$$PWD/frmmeasuredterminalmaster.h \
 	$$PWD/frmtcpclient.h \
@@ -37,6 +39,7 @@ SOURCES += \
 	$$PWD/frmdebug.cpp \
 	$$PWD/frmhandledata.cpp \
 	$$PWD/frmiec104master.cpp \
+	$$PWD/frmlog.cpp \
 	$$PWD/frmmain.cpp \
 	$$PWD/frmmeasuredterminalmaster.cpp \
 	$$PWD/frmtcpclient.cpp \

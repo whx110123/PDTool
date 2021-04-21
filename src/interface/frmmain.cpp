@@ -325,10 +325,10 @@ void frmMain::on_highlightEdit_textChanged(const QString& arg1)
 {
 	highlighter1->hlstr = arg1;
 	highlighter2->hlstr = arg1;
-	ui->resulttext->setText(ui->resulttext->toPlainText());
+//	ui->resulttext->setText(ui->resulttext->toPlainText());
 	initcursor();
-	on_pushButton_after_clicked();
-	ui->originaltext->setText(ui->originaltext->toPlainText());
+//	on_pushButton_after_clicked();
+//	ui->originaltext->setText(ui->originaltext->toPlainText());
 }
 
 void frmMain::on_fontcolor_clicked()
@@ -337,9 +337,9 @@ void frmMain::on_fontcolor_clicked()
 	if(color.isValid())
 	{
 		highlighter1->hlformat.setForeground(color);
-		//      highlighter1->hlformat.setFontWeight(QFont::Bold);
+//      highlighter1->hlformat.setFontWeight(QFont::Bold);
 		highlighter2->hlformat.setForeground(color);
-		//      highlighter2->hlformat.setFontWeight(QFont::Bold);
+//      highlighter2->hlformat.setFontWeight(QFont::Bold);
 		ui->resulttext->setText(ui->resulttext->toPlainText());
 		initcursor();
 		ui->originaltext->setText(ui->originaltext->toPlainText());
