@@ -3,6 +3,38 @@
 
 #include "globaldefine.h"
 
+class MyLog
+{
+public:
+	MyLog();
+	~MyLog();
+
+	enum logType
+	{
+		DEFAULT,
+		SENDDATA,
+		RECVDATA,
+		ERRORLOG,
+	};
+
+	uchar type;			//log类型
+	QDateTime dt;
+	QString text_s;		//简易文本
+	QString text;		//详细文本
+};
+Q_DECLARE_METATYPE(MyLog)
+
+/*
+MyStruct s;
+QVariant var;
+var.setValue(s); // copy s into the variant
+
+...
+
+// retrieve the value
+MyStruct s2 = var.value<MyStruct>();
+*/
+
 struct ModbusDataGroup
 {
 	uchar dataLen;		//应答报文数据字节数

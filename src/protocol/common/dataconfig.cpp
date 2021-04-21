@@ -1,5 +1,15 @@
 ﻿#include "dataconfig.h"
 
+MyLog::MyLog()
+{
+	type = MyLog::DEFAULT;
+}
+
+MyLog::~MyLog()
+{
+
+}
+
 MyData::MyData()
 {
 	sqFlag = SQ_INF;
@@ -22,3 +32,4 @@ MyData MyData::operator+(const MyData& md) const
 	sum.data = data + md.data;
 	return sum;
 }
+

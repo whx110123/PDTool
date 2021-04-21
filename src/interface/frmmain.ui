@@ -25,7 +25,7 @@
         <enum>QFrame::StyledPanel</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>6</number>
        </property>
        <widget class="QWidget" name="page_analysis">
         <layout class="QGridLayout" name="gridLayout_2">
@@ -243,6 +243,7 @@
        <widget class="frmUdpClient" name="page_udpclient"/>
        <widget class="frmUdpServer" name="page_udpserver"/>
        <widget class="frmComTool" name="page_com"/>
+       <widget class="frmLog" name="page_log"/>
       </widget>
       <widget class="QStackedWidget" name="stackedWidget_config">
        <property name="minimumSize">
@@ -528,6 +529,7 @@
     <addaction name="action_UDPClient"/>
     <addaction name="action_UDPServer"/>
     <addaction name="action_COM"/>
+    <addaction name="action_Log"/>
    </widget>
    <widget class="QMenu" name="menu_B">
     <property name="title">
@@ -582,6 +584,7 @@
    <addaction name="action_UDPClient"/>
    <addaction name="action_UDPServer"/>
    <addaction name="action_COM"/>
+   <addaction name="action_Log"/>
   </widget>
   <action name="action_New">
    <property name="text">
@@ -739,6 +742,11 @@
     <string>深蓝</string>
    </property>
   </action>
+  <action name="action_Log">
+   <property name="text">
+    <string>日志系统</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -793,6 +801,12 @@
    <class>frmHandleData</class>
    <extends>QWidget</extends>
    <header location="global">frmhandledata.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmLog</class>
+   <extends>QWidget</extends>
+   <header location="global">frmlog.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

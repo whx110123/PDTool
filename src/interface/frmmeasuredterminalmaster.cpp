@@ -36,8 +36,8 @@ void frmMeasuredTerminalMaster::init()
 	manager = new ManagerMTMaster(myConfig);
 	manager->initProConfig(&managerConfig);
 	connect(manager, &ManagerMTMaster::Send, this, &frmMeasuredTerminalMaster::sendData);
-	connect(manager, &ManagerMTMaster::toText, this, &frmMeasuredTerminalMaster::showToText);
-	connect(manager, &ManagerMTMaster::toLog, this, &frmMeasuredTerminalMaster::showLog);
+//	connect(manager, &ManagerMTMaster::toText, this, &frmMeasuredTerminalMaster::showToText);
+	connect(manager, &ManagerMTMaster::toLog, this, &frmMeasuredTerminalMaster::handleLog);
 }
 
 void frmMeasuredTerminalMaster::initConfig()
@@ -75,14 +75,18 @@ void frmMeasuredTerminalMaster::sendData(const QByteArray& data)
 {
 	if(manager)
 	{
+		MyLog log;
 		if(manager->protocolShow.init(data))
 		{
-			showToText(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText(), 1);
+			log.type = MyLog::SENDDATA;
+			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText();
 		}
 		else
 		{
-			showLog(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.mError);
+			log.type = MyLog::ERRORLOG;
+			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.mError;
 		}
+		handleLog(log);
 	}
 	emitsignals(data.toHex(' '));
 }
@@ -112,27 +116,27 @@ void frmMeasuredTerminalMaster::stopdebug()
 	}
 }
 
-void frmMeasuredTerminalMaster::showToText(const QString& data, int type)
+void frmMeasuredTerminalMaster::handleLog(MyLog& log)
 {
-	if(type == 1)
+	switch(log.type)
 	{
+	case MyLog::SENDDATA:
 		ui->textEdit_data->setTextColor(QColor("darkgreen"));
 		ui->textEdit_data->append(QString("[发送报文][%1]").arg(DATETIME));
-	}
-	else
-	{
+		break;
+	case MyLog::RECVDATA:
 		ui->textEdit_data->setTextColor(QColor("red"));
 		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
-	}
-	ui->textEdit_data->append(data);
-	ui->textEdit_data->append("***********************************************");
-}
+		break;
+	case MyLog::ERRORLOG:
+		ui->textEdit_data->setTextColor(QColor("Magenta"));
+		ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
+		break;
+	default:
+		break;
 
-void frmMeasuredTerminalMaster::showLog(const QString& data)
-{
-	ui->textEdit_data->setTextColor(QColor("Magenta"));
-	ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
-	ui->textEdit_data->append(data);
+	}
+	ui->textEdit_data->append(log.text);
 	ui->textEdit_data->append("***********************************************");
 }
 

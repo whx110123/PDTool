@@ -29,6 +29,7 @@ signals:
 	void ToUdpServer(const QString& data);
 	void ToCom(const QString& data);
 
+	void toLog(const MyLog& log);
 
 public slots:
 	void dealRcvData(const QString& data, const QString& title);
@@ -37,9 +38,8 @@ private slots:
 	void sendData(const QByteArray& data);
 	void startdebug();
 	void stopdebug();
-	void showToText(const QString& data, int type);		//type 0接收 1发送
-	void showLog(const QString& data);
-	void emitsignals(const QString& data);
+	void handleLog(MyLog& log);					//处理日志
+	void emitsignals(const QString& data);				//发送报文到网口与串口
 	void showRemoteResult(const QString& data);
 	IEC101AsduData *getYKYTData(uchar type);			//type 0x00执行 0x80选择
 

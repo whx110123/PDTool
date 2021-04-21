@@ -49,8 +49,7 @@ void frmIEC104Master::init()
 	manager = new ManagerIEC104Master(config);
 	manager->initProConfig(&managerConfig);
 	connect(manager, &ManagerIEC104Master::Send, this, &frmIEC104Master::sendData);
-	connect(manager, &ManagerIEC104Master::toText, this, &frmIEC104Master::showToText);
-	connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::showLog);
+	connect(manager, &ManagerIEC104Master::toLog, this, &frmIEC104Master::handleLog);
 
 }
 
@@ -87,14 +86,18 @@ void frmIEC104Master::sendData(const QByteArray& data)
 {
 	if(manager)
 	{
+		MyLog log;
 		if(manager->protocolShow.init(data))
 		{
-			showToText(manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText(), 1);
+			log.type = MyLog::SENDDATA;
+			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText();
 		}
 		else
 		{
-			showLog("未识别的报文: " + data.toHex(' ') + "\r\n" + manager->protocolShow.mError);
+			log.type = MyLog::ERRORLOG;
+			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.mError;
 		}
+		handleLog(log);
 		emitsignals(data.toHex(' '));
 	}
 
@@ -126,28 +129,29 @@ void frmIEC104Master::stopdebug()
 
 }
 
-void frmIEC104Master::showToText(const QString& data, int type) //type 0接收 1发送
+void frmIEC104Master::handleLog(MyLog& log)
 {
-	if(type == 1)
+	switch(log.type)
 	{
+	case MyLog::SENDDATA:
 		ui->textEdit_data->setTextColor(QColor("darkgreen"));
 		ui->textEdit_data->append(QString("[发送报文][%1]").arg(DATETIME));
-	}
-	else
-	{
+		break;
+	case MyLog::RECVDATA:
 		ui->textEdit_data->setTextColor(QColor("red"));
 		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
-		showRemoteResult(data);
+		break;
+	case MyLog::ERRORLOG:
+		ui->textEdit_data->setTextColor(QColor("Magenta"));
+		ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
+		break;
+	default:
+		break;
 	}
-	ui->textEdit_data->append(data);
-
-}
-
-void frmIEC104Master::showLog(const QString& data)
-{
-	ui->textEdit_data->setTextColor(QColor("Magenta"));
-	ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
-	ui->textEdit_data->append(data);
+	ui->textEdit_data->append(log.text);
+	ui->textEdit_data->append("***********************************************");
+	log.dt = QDateTime::currentDateTime();
+	emit toLog(log);
 }
 
 

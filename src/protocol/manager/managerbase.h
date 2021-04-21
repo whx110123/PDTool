@@ -34,8 +34,8 @@ public:
 
 signals:
 	void Send(const QByteArray& data);
-	void toText(const QString& text, int type = 0);			//接收报文的解析,type 0接收 1发送
-	void toLog(const QString& text);					//接收报文的错误报告
+//	void toText(const QString& text, int type = 0);			//接收报文的解析,type 0接收 1发送
+	void toLog(MyLog& log);					//接收报文的错误报告
 
 	void handleData();
 

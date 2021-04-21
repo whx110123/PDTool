@@ -99,6 +99,8 @@ private slots:
 
 	void on_action_wiscom_triggered();
 
+	void on_action_Log_triggered();
+
 public:
 	MyBase *createByName(QString name);
 	void SaveAll();

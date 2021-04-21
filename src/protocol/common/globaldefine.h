@@ -28,9 +28,10 @@ typedef unsigned int  uint;
 #define PW_AVAILABLE 0x01
 #define TP_AVAILABLE 0x02
 #define ISMASTER 0x80
-enum
+enum Master
 {
-	TYPE_UINT32,
+	IEC104Master,
+	MeasuredTerminalMaster
 };
 
 enum

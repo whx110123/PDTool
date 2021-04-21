@@ -128,6 +128,8 @@ void frmMain::initSignalAndSlots()
 	connect(ui->page_udpclient, &frmUdpClient::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
 	connect(ui->page_udpserver, &frmUdpServer::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
 	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
+
+	connect(ui->page_iec104master, &frmIEC104Master::toLog, ui->page_log, &frmLog::handleLog);
 }
 
 void frmMain::initStyle()
@@ -561,6 +563,11 @@ void frmMain::on_action_Analys_triggered()
 	setWindowTitle("报文解析    " + APPTITLE);
 }
 
+void frmMain::on_action_Log_triggered()
+{
+	ui->stackedWidget->setCurrentIndex(6);
+	setWindowTitle("日志系统    " + APPTITLE);
+}
 void frmMain::ConfigHide()
 {
 	ui->pushButton_hide->setText("打开配置");
@@ -819,3 +826,4 @@ void frmMain::on_action_wiscom_triggered()
 	App::CurrentSkin = 3;
 	App::writeConfig();
 }
+

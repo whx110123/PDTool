@@ -55,7 +55,10 @@ void ManagerIEC104Master::timerRcv()
 	{
 		if(myPro.init(rcvData))
 		{
-			emit toText(myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText());
+			MyLog log;
+			log.type = MyLog::RECVDATA;
+			log.text = myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText();
+			emit toLog(log);
 			noDataTimes = 0;
 			if(myPro.apci.control.type == UTYPE)
 			{
@@ -120,7 +123,10 @@ void ManagerIEC104Master::timerRcv()
 			}
 			else
 			{
-				emit toLog("未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError);
+				MyLog log;
+				log.type = MyLog::ERRORLOG;
+				log.text = "未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError;
+				emit toLog(log);
 			}
 			mutexRD.lock();
 			rcvData.remove(0, 1);

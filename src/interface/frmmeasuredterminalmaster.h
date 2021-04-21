@@ -35,8 +35,7 @@ private slots:
 	void sendData(const QByteArray& data);
 	void startdebug();
 	void stopdebug();
-	void showToText(const QString& data, int type);		//type 0接收 1发送
-	void showLog(const QString& data);
+	void handleLog(MyLog& log);
 	void emitsignals(const QString& data);
 
 	void on_pushButton_startdebug_clicked();
