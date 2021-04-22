@@ -15,6 +15,7 @@ public:
 		SENDDATA,
 		RECVDATA,
 		ERRORLOG,
+		ALLLOG,
 	};
 	uchar masterType;
 	uchar type;			//log类型

@@ -2,6 +2,7 @@
 #define FRMLOG_H
 
 #include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include <QWidget>
 #include <mybase.h>
 
@@ -26,6 +27,8 @@ private slots:
 	void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 	void on_listWidget_customContextMenuRequested(const QPoint& pos);
+
+	void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 
 private:
 	Ui::frmLog *ui;

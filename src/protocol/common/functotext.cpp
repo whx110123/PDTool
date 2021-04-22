@@ -2150,7 +2150,7 @@ QString eventTypeToText(uchar ch)
 
 QString masterTypeToText(uchar masterType)
 {
-	QString text = "规约:";
+	QString text;
 	switch(masterType)
 	{
 	case IEC104Master:

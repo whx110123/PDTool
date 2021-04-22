@@ -82,3 +82,41 @@ void frmLog::on_listWidget_customContextMenuRequested(const QPoint&)
 {
 	popMenu->exec(QCursor::pos());
 }
+
+void frmLog::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *)
+{
+
+	uchar type = MyLog::DEFAULT;
+	if(current->text(0) == QString("全部"))
+	{
+		type = MyLog::ALLLOG;
+	}
+	else if(current->text(0) == QString("发送报文"))
+	{
+		type = MyLog::SENDDATA;
+	}
+	else if(current->text(0) == QString("接收报文"))
+	{
+		type = MyLog::RECVDATA;
+	}
+	else if(current->text(0) == QString("错误"))
+	{
+		type = MyLog::ERRORLOG;
+	}
+	int row = 0;
+	while(row < (ui->listWidget->count()))
+	{
+		QListWidgetItem *item = ui->listWidget->item(row);
+		QVariant var = item->data(0xff);
+		MyLog log = var.value<MyLog>();
+		if(type == MyLog::ALLLOG || log.type == type)
+		{
+			item->setHidden(false);
+		}
+		else
+		{
+			item->setHidden(true);
+		}
+		row++;
+	}
+}
