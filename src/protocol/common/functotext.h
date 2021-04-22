@@ -87,5 +87,5 @@ QString tooToText(uchar ch);
 QString tovToText(uchar ch);
 QString vtiToText_iec101(uchar ch);
 QString vtiToText_iec103(uchar ch);
-
+QString masterTypeToText(uchar masterType);
 #endif // FUNCTOTEXT_H

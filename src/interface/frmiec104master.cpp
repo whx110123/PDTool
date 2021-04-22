@@ -131,25 +131,7 @@ void frmIEC104Master::stopdebug()
 
 void frmIEC104Master::handleLog(MyLog& log)
 {
-	switch(log.type)
-	{
-	case MyLog::SENDDATA:
-		ui->textEdit_data->setTextColor(QColor("darkgreen"));
-		ui->textEdit_data->append(QString("[发送报文][%1]").arg(DATETIME));
-		break;
-	case MyLog::RECVDATA:
-		ui->textEdit_data->setTextColor(QColor("red"));
-		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
-		break;
-	case MyLog::ERRORLOG:
-		ui->textEdit_data->setTextColor(QColor("Magenta"));
-		ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
-		break;
-	default:
-		break;
-	}
-	ui->textEdit_data->append(log.text);
-	ui->textEdit_data->append("***********************************************");
+	log.masterType = IEC104Master;
 	log.dt = QDateTime::currentDateTime();
 	emit toLog(log);
 }

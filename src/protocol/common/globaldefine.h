@@ -30,6 +30,7 @@ typedef unsigned int  uint;
 #define ISMASTER 0x80
 enum Master
 {
+	DefaultMaster,
 	IEC104Master,
 	MeasuredTerminalMaster
 };

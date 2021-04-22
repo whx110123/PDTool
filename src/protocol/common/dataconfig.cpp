@@ -2,6 +2,7 @@
 
 MyLog::MyLog()
 {
+	masterType = DefaultMaster;
 	type = MyLog::DEFAULT;
 }
 

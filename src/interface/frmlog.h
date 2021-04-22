@@ -20,14 +20,17 @@ public:
 
 public slots:
 	void handleLog(const MyLog& log);
+	void clearlist();
 
 private slots:
-	void on_listWidget_itemActivated(QListWidgetItem *item);
-
 	void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
+	void on_listWidget_customContextMenuRequested(const QPoint& pos);
 
 private:
 	Ui::frmLog *ui;
+	QMenu *popMenu;
+	QAction *clearSeeds;
 };
 
 #endif // FRMLOG_H

@@ -15,27 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>40</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>20</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>日志系统</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QSplitter" name="splitter_2">
+    <widget class="QSplitter" name="splitter_H">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -45,7 +25,7 @@
         <widget class="QTreeWidget" name="treeWidget">
          <column>
           <property name="text">
-           <string>1</string>
+           <string>分类</string>
           </property>
          </column>
          <item>
@@ -74,8 +54,12 @@
        </item>
       </layout>
      </widget>
-     <widget class="QListWidget" name="listWidget"/>
-     <widget class="QSplitter" name="splitter">
+     <widget class="QListWidget" name="listWidget">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+     </widget>
+     <widget class="QSplitter" name="splitter_V">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>

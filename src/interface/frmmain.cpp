@@ -41,7 +41,8 @@ void frmMain::initForm()
 	this->initTranslator();
 	ui->stackedWidget->setCurrentIndex(0);
 	ui->stackedWidget_config->setCurrentIndex(0);
-
+	ui->splitter->setStretchFactor(0, 5);
+	ui->splitter->setStretchFactor(1, 1);
 	ui->protocolcbox->addItems(App::Protocollst);
 	QStringList list = QStringList();
 	list << "1" << "2";

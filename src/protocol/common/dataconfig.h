@@ -16,7 +16,7 @@ public:
 		RECVDATA,
 		ERRORLOG,
 	};
-
+	uchar masterType;
 	uchar type;			//log类型
 	QDateTime dt;
 	QString text_s;		//简易文本

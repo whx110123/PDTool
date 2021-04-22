@@ -2147,3 +2147,20 @@ QString eventTypeToText(uchar ch)
 	}
 	return text;
 }
+
+QString masterTypeToText(uchar masterType)
+{
+	QString text = "规约:";
+	switch(masterType)
+	{
+	case IEC104Master:
+		text.append("IEC104主站规约");
+		break;
+	case MeasuredTerminalMaster:
+		text.append("南网计量终端网络主站规约");
+		break;
+	default:
+		break;
+	}
+	return text;
+}
