@@ -83,6 +83,8 @@ QString myTime1ToText(const char *time, int timelen);
 QString myTime1ToText(uchar *time, int timelen);
 QString myTime2ToText(const char *time, int timelen);
 QString myTime2ToText(uchar *time, int timelen);
+QString myTime3ToText(const char *time, int timelen);
+QString myTime3ToText(uchar *time, int timelen);
 QString tooToText(uchar ch);
 QString tovToText(uchar ch);
 QString vtiToText_iec101(uchar ch);

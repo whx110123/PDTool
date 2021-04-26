@@ -1941,6 +1941,34 @@ QString myTime2ToText(uchar *time, int timelen)
 	return text;
 }
 
+QString myTime3ToText(const char *time, int timelen)
+{
+	uchar *mtime = (uchar *)time;
+	return myTime3ToText(mtime, timelen);
+}
+
+QString myTime3ToText(uchar *time, int timelen)
+{
+	QString text;
+
+	if(timelen != 7)
+	{
+		return text;
+	}
+
+	QDateTime datetime = charToDateTime(time, timelen, MYTIME3);
+
+	text.append(CharToHexStr(time, 2) + "\t年:" + QString::number(datetime.date().year()) + " \r\n");
+	text.append(CharToHexStr(time[2]) + "\t月:" + QString::number(datetime.date().month()) + "\r\n");
+	text.append(CharToHexStr(time[3]) + "\t日:" + QString::number(datetime.date().day()) + "\r\n");
+
+	text.append(CharToHexStr(time[4]) + "\t时:" + QString::number(datetime.time().hour()) + "\r\n");
+	text.append(CharToHexStr(time[5]) + "\t分:" + QString::number(datetime.time().minute()) + "\r\n");
+	text.append(CharToHexStr(time[6]) + "\t秒:" + QString::number(datetime.time().second()) + "\r\n");
+
+	return text;
+}
+
 QString fptToText(uchar ch)
 {
 	QString text = "故障相别及类型FPT";
@@ -2164,3 +2192,4 @@ QString masterTypeToText(uchar masterType)
 	}
 	return text;
 }
+

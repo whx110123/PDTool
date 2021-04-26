@@ -71,8 +71,9 @@ enum
 	BINARYTIME2A,		//二进制时间2a
 	BINARYTIME2B,		//二进制时间2b
 	BINARYTIME2C,		//二进制时间2c
-	MYTIME1,			//自定义时间方式，4字节对应日时分秒
-	MYTIME2,			//自定义时间方式，6字节对应年月日时分的BCD码
+	MYTIME1,			//自定义时间方式，4字节对应秒分时日
+	MYTIME2,			//自定义时间方式，6字节对应分时日月年的BCD码
+	MYTIME3,			//自定义时间方式，7字节对应年月日时分秒
 };
 
 enum

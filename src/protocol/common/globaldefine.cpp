@@ -205,6 +205,19 @@ QDateTime charToDateTime(uchar *data, int len, int model)
 		months = QString::number(data[3], 16).toUShort();
 		years = (QString::number(data[5], 16) + QString::number(data[4], 16)).toUShort();
 		break;
+	case MYTIME3:
+		if(len != 7)
+		{
+			return datetime;
+		}
+		milliseconds = 0;
+		second = data[6];
+		minutes = data[5];
+		hours = data[4];
+		dayofmonths = data[3];
+		months = data[2];
+		years = charTouint(data, 2);
+		break;
 	default:
 		break;
 	}
