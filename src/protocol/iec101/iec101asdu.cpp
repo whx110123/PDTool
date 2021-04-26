@@ -462,7 +462,7 @@ QString IEC101Asdu::typeToText()
 		text.append("参数激活");
 		break;
 	case 116:
-		text.append("源端维护");
+		text.append("源端维护/南网顺控");
 		break;
 	case 120:
 		text.append("文件淮备就绪");

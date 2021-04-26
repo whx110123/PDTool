@@ -75,7 +75,7 @@ bool IEC104Asdu116Data::handle(const QByteArray& buff)
 			mText.append(CharToHexStr(buff.data() + mLen) + infCodeToText() + "\r\n");
 			mLen++;
 			ba.clear();
-			int infLen = buff.length() - mLen;
+			uchar infLen = buff.length() - mLen;
 			ba.append(buff.data() + mLen, infLen);
 			infStr = gbk->toUnicode(ba);
 			mText.append(CharToHexStr(buff.data() + mLen, infLen) + "\t信息字符: " + infStr + "\r\n");
@@ -85,7 +85,6 @@ bool IEC104Asdu116Data::handle(const QByteArray& buff)
 		case 5:
 		{
 			mText.append(CharToHexStr(buff.data() + mLen) + "\t操作标识: 5：程序化操作配置信息变化\r\n");
-
 			mLen++;
 			idLen = *(buff.data() + mLen);
 			mText.append(CharToHexStr(buff.data() + mLen) + "\t变电站ID长度: " + QString::number(idLen) + "\r\n");
