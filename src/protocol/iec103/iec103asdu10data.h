@@ -10,7 +10,6 @@ public:
 	IEC103Asdu10DataSetGid(const MyConfig& Config);
 	~IEC103Asdu10DataSetGid();
 	bool initgid(const QByteArray& buff, uchar *ch);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:
@@ -24,7 +23,6 @@ public:
 	IEC103Asdu10DataSetGdd(const MyConfig& Config);
 	~IEC103Asdu10DataSetGdd();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:
@@ -39,7 +37,6 @@ public:
 	IEC103Asdu10DataSet(const MyConfig& Config);
 	~IEC103Asdu10DataSet();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:
@@ -54,14 +51,12 @@ public:
 	IEC103Asdu10Data(const MyConfig& Config);
 	~IEC103Asdu10Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:
 	uchar rii;
 	uchar ngd;
 	QList<IEC103Asdu10DataSet *> setlist;
-
 };
 
 #endif // IEC103ASDU10DATA_H

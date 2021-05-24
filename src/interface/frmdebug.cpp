@@ -37,6 +37,7 @@ void frmDebug::initfrm()
 	mapchk.insert(4, ui->checkBox4);
 	mapchk.insert(5, ui->checkBox5);
 	mapchk.insert(6, ui->checkBox6);
+	initdataList();
 }
 
 void frmDebug::initdataList()
@@ -48,6 +49,7 @@ void frmDebug::initdataList()
 	mapstr.clear();
 	for(int i = 0; i < mapline.size(); i++)
 	{
+		mapline[i + 1]->setStyleSheet("background-color:rgba(255,255,255,255);color:rgba(0,0,0,255)");
 		data = mapline[i + 1]->text();
 		if(mapchk[i + 1]->isChecked() && !data.trimmed().isEmpty())
 		{
@@ -131,20 +133,16 @@ void frmDebug::emitsignals(const QString& data)
 	{
 		emit ToCom(data);
 	}
-	QPalette palette1;
-	palette1.setColor(QPalette::Base, Qt::red);
-	QPalette palette2;
-	palette2.setColor(QPalette::Base, Qt::white);
+
 	for(int i = 0; i < mapstr.size(); i++)
 	{
 		if(mapstr[i + 1] == data)
 		{
-			mapline[i + 1]->setPalette(palette1);
-
+			mapline[i + 1]->setStyleSheet("background-color:rgba(0,255,255,255);color:rgba(0,0,0,255)");
 		}
 		else
 		{
-			mapline[i + 1]->setPalette(palette2);
+			mapline[i + 1]->setStyleSheet("background-color:rgba(255,255,255,255);color:rgba(0,0,0,255)");
 		}
 	}
 }
@@ -276,13 +274,11 @@ void frmDebug::on_pushButton_clearAll_clicked()
 	{
 		return;
 	}
-	QPalette palette2;
-	palette2.setColor(QPalette::Base, Qt::white);
 
 	for(int i = 0; i < mapline.size(); i++)
 	{
 		mapline[i + 1]->clear();
-		mapline[i + 1]->setPalette(palette2);
+		mapline[i + 1]->setStyleSheet("background-color:rgba(255,255,255,255);color:rgba(0,0,0,255)");
 	}
 	stopTimer();
 }
@@ -315,18 +311,21 @@ void frmDebug::on_btnsendfile_clicked()
 		}
 		file.close();
 	}
-	//以下代码为测试读取不同编码方式的文件报文
-	QFile data(ui->linefiledir->text());
-	if(data.open(QFile::ReadOnly | QIODevice::Text))
-	{
-		QTextStream in(&data);
-		in.setCodec("GB18030");
-		while(!in.atEnd())
+	/*
+	 * 以下代码为测试读取不同编码方式的文件报文
+		QFile data(ui->linefiledir->text());
+		if(data.open(QFile::ReadOnly | QIODevice::Text))
 		{
-			QString line = in.readLine();
-			qDebug() << line;
+			QTextStream in(&data);
+			in.setCodec("GB18030");
+			while(!in.atEnd())
+			{
+				QString line = in.readLine();
+				qDebug() << line;
+			}
+			data.close();
 		}
-	}
+	 */
 }
 
 void frmDebug::on_pushButton_send1_clicked()

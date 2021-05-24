@@ -9,7 +9,6 @@ public:
 	MTAsdu(const MyConfig& Config);
 	~MTAsdu();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	QString afnToText();

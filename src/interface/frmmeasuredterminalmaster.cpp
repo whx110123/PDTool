@@ -84,7 +84,8 @@ void frmMeasuredTerminalMaster::sendData(const QByteArray& data)
 		else
 		{
 			log.type = MyLog::ERRORLOG;
-			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.mError;
+			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText();
+			log.text_error = manager->protocolShow.mError;
 		}
 		handleLog(log);
 	}
@@ -118,26 +119,8 @@ void frmMeasuredTerminalMaster::stopdebug()
 
 void frmMeasuredTerminalMaster::handleLog(MyLog& log)
 {
-	switch(log.type)
-	{
-	case MyLog::SENDDATA:
-		ui->textEdit_data->setTextColor(QColor("darkgreen"));
-		ui->textEdit_data->append(QString("[发送报文][%1]").arg(DATETIME));
-		break;
-	case MyLog::RECVDATA:
-		ui->textEdit_data->setTextColor(QColor("red"));
-		ui->textEdit_data->append(QString("[接收报文][%1]").arg(DATETIME));
-		break;
-	case MyLog::ERRORLOG:
-		ui->textEdit_data->setTextColor(QColor("Magenta"));
-		ui->textEdit_data->append(QString("[%1]").arg(DATETIME));
-		break;
-	default:
-		break;
-
-	}
-	ui->textEdit_data->append(log.text);
-	ui->textEdit_data->append("***********************************************");
+	log.masterType = MeasuredTerminalMaster;
+	emit toLog(log);
 }
 
 void frmMeasuredTerminalMaster::emitsignals(const QString& data)

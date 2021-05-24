@@ -10,7 +10,6 @@ public:
 	IEC104(const MyConfig& Config);
 	~IEC104();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:

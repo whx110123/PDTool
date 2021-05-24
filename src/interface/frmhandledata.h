@@ -30,6 +30,8 @@ private slots:
 
 	void on_Bt_clear_clicked();
 
+	void on_checkreverse_stateChanged(int arg1);
+
 private:
 	void initForm();
 

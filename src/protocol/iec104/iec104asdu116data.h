@@ -26,6 +26,7 @@ public:
 	QString id;			//变电站ID
 	uchar opFlag;
 	uchar result;
+	uchar charTmp;
 	uchar fileNameSize;
 	QString fileName;
 	uint fileID;

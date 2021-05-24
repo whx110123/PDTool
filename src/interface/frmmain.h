@@ -30,6 +30,8 @@ private:
 	DlgModbus *modbusdlg;
 	int currentIndex;
 	QTextCursor tc;
+	QMenu *popMenu_Analysis;
+	QAction *clearSeeds_Analysis;
 private slots:
 	void initForm();
 	void initSignalAndSlots();
@@ -60,10 +62,6 @@ private slots:
 
 	void on_action_HandleData_triggered(bool checked);
 	void on_action_SendData_triggered(bool checked);
-
-
-
-
 
 	void on_action_TCPClient_triggered();
 
@@ -101,6 +99,14 @@ private slots:
 
 	void on_action_Log_triggered();
 
+	void on_treeWidget_Analysis_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+
+	void on_treeWidget_Analysis_customContextMenuRequested(const QPoint& pos);
+
+	void on_checkBox_simple_stateChanged(int arg1);
+
+	void on_checkBox_LineWrap_stateChanged(int arg1);
+
 public:
 	MyBase *createByName(QString name);
 	void SaveAll();
@@ -109,6 +115,7 @@ public:
 	void ActionHide();
 	void ConfigShow(int index);
 	void initcursor();
+	void clearlist();
 
 };
 

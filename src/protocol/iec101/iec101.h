@@ -10,7 +10,6 @@ public:
 	IEC101(const MyConfig& Config);
 	~IEC101();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	IEC101Apci apci;

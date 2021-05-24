@@ -31,6 +31,7 @@ bool IEC104Asdu43Data::init(const QByteArray& buff)
 
 	uchar crctmp = crcsum(buff.data(), 5, mLen - 1);
 	crc = *(buff.data() + mLen);
+	mText.append(CharToHexStr(crc) + "\t校验和\r\n");
 	if(crc != crctmp)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
@@ -41,14 +42,8 @@ bool IEC104Asdu43Data::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString IEC104Asdu43Data::showToText()
-{
-	QString text = mText;
-	text.append(CharToHexStr(crc) + "\t校验和\r\n");
-	return text;
 }
 
 

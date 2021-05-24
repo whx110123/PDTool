@@ -11,7 +11,6 @@ public:
 	ModbusRTU(const MyConfig& Config);
 	~ModbusRTU();
 	virtual bool init(const QByteArray& buff);					//初始化
-	virtual QString showToText();						//显示解析结果
 
 public:
 	Modbus mb;

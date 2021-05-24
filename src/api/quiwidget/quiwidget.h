@@ -597,11 +597,16 @@ public:
 
 	//初始化随机数种子
 	static void initRand();
+	//获取uuid
+	static QString getUuid();
 
 	//初始化数据库
 	static void initDb(const QString& dbName);
 	//初始化文件,不存在则拷贝
 	static void initFile(const QString& sourceName, const QString& targetName);
+
+	//检查ini配置文件
+	static bool checkIniFile(const QString& iniFile);
 
 	//设置图标到按钮
 	static void setIconBtn(QAbstractButton *btn, const QString& png, const QChar& str);
@@ -645,6 +650,9 @@ public:
 	static void setTranslator(const QString& qmFile = ":/image/qt_zh_CN.qm");
 	//设置编码
 	static void setCode();
+	//设置字体
+	static void setFont(const QString& ttfFile = ":/image/DroidSansFallback.ttf",
+						const QString& fontName = "Microsoft Yahei", int fontSize = 12);
 	//设置延时
 	static void sleep(int msec);
 	//设置系统时间
@@ -715,15 +723,14 @@ public:
 	static quint16 getModbus16(quint8 *data, int len);
 	static QByteArray getCRCCode(const QByteArray& data);
 
-	//字节数组转Ascii字符串
+	//字节数组与Ascii字符串互转
+	static void initAsciiStr();
 	static QString byteArrayToAsciiStr(const QByteArray& data);
-	//16进制字符串转字节数组
-	static QByteArray hexStrToByteArray(const QString& str);
-	static char convertHexChar(char ch);
+	static QByteArray asciiStrToByteArray(const QString& data);
 
-	//Ascii字符串转字节数组
-	static QByteArray asciiStrToByteArray(const QString& str);
-	//字节数组转16进制字符串
+	//16进制字符串与字节数组互转
+	static char hexStrToChar(char data);
+	static QByteArray hexStrToByteArray(const QString& data);
 	static QString byteArrayToHexStr(const QByteArray& data);
 
 	//获取保存的文件
@@ -756,7 +763,7 @@ public:
 	//获取网页所有源代码
 	static QString getHtml(const QString& url);
 	//获取本机公网IP地址
-	static QString getNetIP(const QString& webCode);
+	static QString getNetIP(const QString& html);
 	//获取本机IP
 	static QString getLocalIP();
 	//获取本机IP地址集合

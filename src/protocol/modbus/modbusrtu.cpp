@@ -27,14 +27,14 @@ bool ModbusRTU::init(const QByteArray& buff)
 		}
 		i++;
 	}
-	mLen += i;
+	int ALL_LEN = i;
 	if(!isOk)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未发现正确的modbus RTU报文");
 		return false;
 	}
 
-	if((int) * (buff.data() + 2) == mLen - 3)
+	if((int) * (buff.data() + 2) == ALL_LEN - 3)
 	{
 		mb.isMaster = false;
 	}
@@ -43,12 +43,12 @@ bool ModbusRTU::init(const QByteArray& buff)
 		mb.isMaster = true;
 	}
 
-	if(mb.isMaster && mLen < 6)
+	if(mb.isMaster && ALL_LEN < 6)
 	{
 		crc = charTouint(buff.data() + 6, 2);
 		if(crc16((uchar *)buff.data(), 6) == crc)
 		{
-			mLen = 6;
+			ALL_LEN = 6;
 		}
 		else
 		{
@@ -57,31 +57,28 @@ bool ModbusRTU::init(const QByteArray& buff)
 		}
 	}
 
-	if(!mb.init(buff.left(mLen)))
+	if(!mb.init(buff.left(ALL_LEN)))
 	{
+		mText.append(mb.showToText());
 		return false;
 	}
-
-	if(mLen != mb.mLen)
+	mText.append(mb.showToText());
+	mLen += mb.mLen;
+	if(ALL_LEN != mb.mLen)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！modbus RTU报文解析错误");
 		return false;
 	}
 
+	mText.append(CharToHexStr(buff.data() + mLen, 2) + "\t校验和\r\n");
 	mLen += 2;
-	mRecvData = buff.left(mLen);
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 
 }
 
-QString ModbusRTU::showToText()
-{
-	mText.append(mb.showToText());
-	mText.append(CharToHexStr(uintToBa(crc, 2).data(), 2) + "\t校验和\r\n");
-	return mText;
-}

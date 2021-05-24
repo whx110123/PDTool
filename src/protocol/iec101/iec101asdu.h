@@ -23,7 +23,6 @@ public:
 	IEC101Asdu(const MyConfig& Config);
 	~IEC101Asdu();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:

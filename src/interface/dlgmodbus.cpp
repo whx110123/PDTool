@@ -30,8 +30,8 @@ void DlgModbus::initShow()
 		QFont font = headerItem->font(); //获取原有字体设置
 		font.setBold(true);//设置为粗体
 		font.setPointSize(12);//字体大小
-		headerItem->setTextColor(Qt::red);//字体颜色
 		headerItem->setFont(font);//设置字体
+		headerItem->setForeground(Qt::red);//字体颜色
 		ui->tableInfo->setHorizontalHeaderItem(i, headerItem); //设置表头单元格的Item
 	}
 	ui->tableInfo->setSelectionBehavior(QAbstractItemView::SelectRows); //选择行
@@ -92,21 +92,25 @@ void DlgModbus::setItem(int rowNo, QStringList list)
 	}
 	item = new QTableWidgetItem(type);
 	item->setBackground(color);
+	item->setForeground(Qt::black);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colType, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(analy);
 	item->setBackground(color);
+	item->setForeground(Qt::black);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colAnaly, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(len);
 	item->setBackground(color);
+	item->setForeground(Qt::black);
 	item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colLen, item); //为单元格设置Item
 
 	item = new QTableWidgetItem(des);
 	item->setBackground(color);
+	item->setForeground(Qt::black);
 	item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter); //文本对齐格式
 	ui->tableInfo->setItem(rowNo, DlgModbus::colDes, item); //为单元格设置Item
 }

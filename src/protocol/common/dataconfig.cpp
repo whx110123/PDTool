@@ -4,6 +4,7 @@ MyLog::MyLog()
 {
 	masterType = DefaultMaster;
 	type = MyLog::DEFAULT;
+	dt = QDateTime::currentDateTime();
 }
 
 MyLog::~MyLog()

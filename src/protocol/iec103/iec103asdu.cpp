@@ -101,6 +101,7 @@ bool IEC103AsduData::init(const QByteArray& buff)
 	{
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 }
 
@@ -122,6 +123,7 @@ bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun)
 	{
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 }
 
@@ -140,6 +142,7 @@ bool IEC103AsduData::init(const QByteArray& buff, uchar ch_fun, uchar ch_inf)
 	{
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 }
 
@@ -467,17 +470,18 @@ bool IEC103Asdu::init(const QByteArray& buff)
 	mText.append(CharToHexStr(buff.data() + mLen) + "\t" + vsqToText() + "\r\n");
 	mLen++;
 
-	if(mConfig.cotlen > 0)
+	if(mConfig.cotlen > 0 && mConfig.cotlen < 3)
 	{
 		cot = *(buff.data() + mLen);
 		mText.append(CharToHexStr(buff.data() + mLen, mConfig.cotlen) + "\t" + cotToText() + "\r\n");
+		mLen += mConfig.cotlen;
 	}
 	else
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！传送原因字节数错误");
 		return false;
 	}
-	mLen += mConfig.cotlen;
+
 
 	commonaddr = charTouint(buff.data() + mLen, mConfig.comaddrlen);
 	if(mConfig.comaddrlen == 1)
@@ -506,6 +510,7 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未识别的asdu类型");
 			return false;
 		}
+		datalist.append(mdata);
 		mdata->asduType = type;
 		mdata->mIndex = index;
 		bool isOk = false;
@@ -566,20 +571,18 @@ bool IEC103Asdu::init(const QByteArray& buff)
 			}
 			isOk = mdata->init(buff.mid(mLen), fun, (uchar)(inf + index * k));
 		}
+		mText.append(mdata->showToText());
 		if(!isOk)
 		{
-			mText.append(mdata->showToText());
-			delete mdata;
-			mdata = NULL;
 			return false;
 		}
-		datalist.append(mdata);
 		mLen += mdata->mLen;
 	}
 
 	if(endflag != IEC103END_NO)
 	{
 		end = *(buff.data() + mLen);
+		mText.append(CharToHexStr(end) + "\t" + endToText() + QString::number(end) + "\r\n");
 		mLen++;
 	}
 	if(mLen > buff.length())
@@ -587,21 +590,8 @@ bool IEC103Asdu::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString IEC103Asdu::showToText()
-{
-	QString text = mText;
-	for(IEC103AsduData *mdata : qAsConst(datalist))
-	{
-		text.append(mdata->showToText());
-	}
-	if(endflag != IEC103END_NO)
-	{
-		text.append(CharToHexStr(end) + "\t" + endToText() + QString::number(end) + "\r\n");
-	}
-	return text;
 }
 
 bool IEC103Asdu::createData(MyData& proData)

@@ -15,53 +15,49 @@ bool IEC103NetBaoXin::init(const QByteArray& buff)
 	setDefault(buff);
 
 	int LENGTH_LEN = stringToInt(mConfig.lengthType);	//长度域字节数
-	int APCI_LEN = LENGTH_LEN + 5;					//APCI总字节数
+	int APCI_LEN = LENGTH_LEN + 5;						//APCI总字节数
 
-	if(buff.count() < APCI_LEN)
+	if(APCI_LEN > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题\r\n").arg(APCI_LEN));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题").arg(APCI_LEN));
 		return false;
 	}
 
-	if(!apci.init(buff.left(APCI_LEN)))
+	if(!apci.init(buff.mid(mLen, APCI_LEN)))
 	{
-		mRecvData = buff.left(APCI_LEN);
+		mText.append(apci.showToText());
 		return false;
 	}
-	mLen = apci.length + LENGTH_LEN + 1;
+	mText.append(apci.showToText());
+	mLen += apci.mLen;
 
-	if(mLen > buff.length())
+	if(mLen != APCI_LEN)
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
-	mRecvData = buff.left(mLen);
 
-	if(apci.control.type == ITYPE && buff.count() <= APCI_LEN)
+	int APDU_LEN = apci.length + LENGTH_LEN + 1;		//APDU总字节数
+	if(APDU_LEN > buff.length())
 	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！I帧报文无ASDU数据");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(APDU_LEN).arg(buff.length()));
 		return false;
 	}
-	else if(apci.control.type == UTYPE || apci.control.type == STYPE)
+
+	if(apci.control.type == IEC104Control::ITYPE)
 	{
-		if(mLen != APCI_LEN)
+		if(!asdu.init(buff.mid(mLen, APDU_LEN - APCI_LEN)))
 		{
-			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+			mText.append(asdu.showToText());
 			return false;
 		}
-		else
-		{
-			if(mLen > buff.length())
-			{
-				mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
-				return false;
-			}
-			return true;
-		}
+		mText.append(asdu.showToText());
+		mLen += asdu.mLen;
 	}
 
-	if(!asdu.init(buff.mid(APCI_LEN, mLen - APCI_LEN)))
+	if(mLen != APDU_LEN)
 	{
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
 
@@ -70,20 +66,7 @@ bool IEC103NetBaoXin::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString IEC103NetBaoXin::showToText()
-{
-	QString text(mText);
-	if(mLen > 6)
-	{
-		text.append(apci.showToText());
-	}
-	if(mLen > 7 && apci.control.type == ITYPE)
-	{
-		text.append(asdu.showToText());
-	}
-	return text;
 }
 

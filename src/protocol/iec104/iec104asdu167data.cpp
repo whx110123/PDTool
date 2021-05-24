@@ -36,8 +36,10 @@ bool IEC104Asdu167Data::init(const QByteArray& buff)
 
 	if(!asdu.init(buff.mid(mLen, iec103len)))
 	{
+		mText.append(asdu.showToText());
 		return false;
 	}
+	mText.append(asdu.showToText());
 	mLen += asdu.mLen;
 	if(asdu.mLen != iec103len)
 	{
@@ -49,15 +51,8 @@ bool IEC104Asdu167Data::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-
-QString IEC104Asdu167Data::showToText()
-{
-	QString text = mText;
-	text.append(asdu.showToText());
-	return text;
 }
 
 bool IEC104Asdu167Data::createData(MyData& proData)

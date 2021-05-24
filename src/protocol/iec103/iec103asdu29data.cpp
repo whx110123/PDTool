@@ -34,16 +34,15 @@ bool IEC103Asdu29Data::handle(const QByteArray& buff)
 	for(int index = 0; index < _not; index++)
 	{
 		IEC103Asdu1Data *mset = new IEC103Asdu1Data(mConfig);
+		setlist.append(mset);
+		mset->mIndex = index;
 		bool isOk = mset->init(buff.mid(mLen, 3));
+		mText.append(mset->showToText());
 		if(!isOk)
 		{
-			delete mset;
-			mset = NULL;
 			return false;
 		}
-		mset->mIndex = index;
 		mLen += mset->mLen;
-		setlist.append(mset);
 	}
 	if(mLen > buff.length())
 	{
@@ -51,16 +50,6 @@ bool IEC103Asdu29Data::handle(const QByteArray& buff)
 		return false;
 	}
 	return true;
-}
-
-QString IEC103Asdu29Data::showToText()
-{
-	QString text = mText;
-	for(IEC103Asdu1Data *mset : qAsConst(setlist))
-	{
-		text.append(mset->showToText());
-	}
-	return text;
 }
 
 

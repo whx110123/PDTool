@@ -130,6 +130,11 @@ bool IEC104Asdu116Data::handle(const QByteArray& buff)
 			result = *(buff.data() + mLen) & 0x01;
 			mText.append(CharToHexStr(buff.data() + mLen) + "\t结果描述字: " + QString(result ? "1 失败" : "0 成功") + "\r\n");
 			mLen++;
+			/*=======此段不一定有==========
+			charTmp = *(buff.data() + mLen);
+			mText.append(CharToHexStr(buff.data() + mLen) + "\t备用\r\n");
+			mLen++;
+			*/
 			fileNameSize = *(buff.data() + mLen);
 			mText.append(CharToHexStr(buff.data() + mLen) + "\t文件名长度: " + QString::number(fileNameSize) + "\r\n");
 			mLen++;

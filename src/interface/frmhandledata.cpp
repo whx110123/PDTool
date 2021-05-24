@@ -66,7 +66,7 @@ void frmHandleData::on_pbcrc_clicked()
 	{
 		data.append(" " + CharToHexStr(crcarray[i]));
 	}
-	ui->textdestination->setText(data.toUpper());
+	ui->textdestination->setPlainText(data.toUpper());
 }
 
 void frmHandleData::on_pbtransform_clicked()
@@ -258,4 +258,16 @@ void frmHandleData::on_Bt_clear_clicked()
 	ui->textdestination->clear();
 	ui->linesource->clear();
 	ui->linedestination->clear();
+}
+
+void frmHandleData::on_checkreverse_stateChanged(int)
+{
+	QString data = ui->linedestination->text().trimmed();
+	QByteArray ba = QUIHelper::hexStrToByteArray(data);
+	if(ba.isEmpty())
+	{
+		return;
+	}
+	BaReverse(ba);
+	ui->linedestination->setText(ba.toHex(' ').toUpper());
 }

@@ -5,6 +5,8 @@
 
 class IEC104Control : public MyBase
 {
+
+
 public:
 	IEC104Control(const MyConfig& Config);
 	~IEC104Control();
@@ -12,6 +14,13 @@ public:
 	virtual bool createData(MyData& proData);
 
 public:
+	enum
+	{
+		ITYPE = 1,
+		UTYPE,
+		STYPE
+	};
+
 	uchar type;		//帧类型
 	uchar code;		//功能码
 	ushort remoteSendNo;	//对端发送序号
@@ -27,7 +36,6 @@ public:
 	~IEC104Apci();
 	virtual bool init(const QByteArray& buff);
 	virtual bool handle(const QByteArray& buff);				//单独处理多出来的数据
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:

@@ -28,6 +28,7 @@ signals:
 	void ToUdpClient(const QString& data);
 	void ToUdpServer(const QString& data);
 	void ToCom(const QString& data);
+	void toLog(const MyLog& log);
 
 public slots:
 	void dealRcvData(const QString& data, const QString& title);

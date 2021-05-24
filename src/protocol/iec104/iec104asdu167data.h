@@ -11,7 +11,6 @@ public:
 	IEC104Asdu167Data(const MyConfig& Config);
 	~IEC104Asdu167Data();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 	virtual bool createData(MyData& proData);
 
 public:

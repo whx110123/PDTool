@@ -11,7 +11,6 @@ public:
 	IEC104Asdu43Data(const MyConfig& Config);
 	~IEC104Asdu43Data();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	uchar cont;

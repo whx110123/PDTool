@@ -12,6 +12,7 @@
 #include <iec103netbaoxin.h>
 #include <iec103netwiscom.h>
 #include <iec104.h>
+#include <iec61850.h>
 #include <measuredterminal.h>
 #include <modbusrtu.h>
 #include <modbustcp.h>
@@ -75,17 +76,18 @@ void frmMain::initForm()
 	ui->comboBox3_modbus->installEventFilter(this);
 
 	ui->protocolcbox->setCurrentIndex(ui->protocolcbox->findText(App::DefaultProtocol));
-	ui->stackedWidget_config->setCurrentIndex(0);
-	ui->comboBox_lengthtype->setCurrentText(IEC_SINGLE);
-	ui->comboBox_addrlen->setCurrentText("1");
-	ui->comboBox_cotlen->setCurrentText("2");
-	ui->comboBox_comaddrlen->setCurrentText("2");
-	ui->comboBox_infaddrlen->setCurrentText("3");
+	on_protocolcbox_currentIndexChanged(App::DefaultProtocol);
+
 	highlighter1->hlformat.setForeground(Qt::magenta);
 	highlighter1->hlformat.setFontWeight(QFont::Bold);
 	highlighter2->hlformat.setForeground(Qt::magenta);
 	highlighter2->hlformat.setFontWeight(QFont::Bold);
 	on_pushButton_hide_clicked();
+
+	popMenu_Analysis = new QMenu(this);
+	clearSeeds_Analysis = new QAction(tr("清空列表"), this);
+	popMenu_Analysis->addAction(clearSeeds_Analysis);
+	connect(clearSeeds_Analysis, &QAction::triggered, this, &frmMain::clearlist);
 
 }
 
@@ -131,6 +133,7 @@ void frmMain::initSignalAndSlots()
 	connect(ui->page_com, &frmComTool::TofrmOthers, ui->page_MTMaster, &frmMeasuredTerminalMaster::dealRcvData);
 
 	connect(ui->page_iec104master, &frmIEC104Master::toLog, ui->page_log, &frmLog::handleLog);
+	connect(ui->page_MTMaster, &frmMeasuredTerminalMaster::toLog, ui->page_log, &frmLog::handleLog);
 }
 
 void frmMain::initStyle()
@@ -343,9 +346,9 @@ void frmMain::on_fontcolor_clicked()
 //      highlighter1->hlformat.setFontWeight(QFont::Bold);
 		highlighter2->hlformat.setForeground(color);
 //      highlighter2->hlformat.setFontWeight(QFont::Bold);
-		ui->resulttext->setText(ui->resulttext->toPlainText());
+		ui->resulttext->setPlainText(ui->resulttext->toPlainText());
 		initcursor();
-		ui->originaltext->setText(ui->originaltext->toPlainText());
+		ui->originaltext->setPlainText(ui->originaltext->toPlainText());
 	}
 }
 
@@ -356,9 +359,9 @@ void frmMain::on_backgroundcolor_clicked()
 	{
 		highlighter1->hlformat.setBackground(color);
 		highlighter2->hlformat.setBackground(color);
-		ui->resulttext->setText(ui->resulttext->toPlainText());
+		ui->resulttext->setPlainText(ui->resulttext->toPlainText());
 		initcursor();
-		ui->originaltext->setText(ui->originaltext->toPlainText());
+		ui->originaltext->setPlainText(ui->originaltext->toPlainText());
 	}
 }
 
@@ -370,9 +373,9 @@ void frmMain::on_fontchange_clicked()
 	{
 		highlighter1->hlformat.setFont(font);
 		highlighter2->hlformat.setFont(font);
-		ui->resulttext->setText(ui->resulttext->toPlainText());
+		ui->resulttext->setPlainText(ui->resulttext->toPlainText());
 		initcursor();
-		ui->originaltext->setText(ui->originaltext->toPlainText());
+		ui->originaltext->setPlainText(ui->originaltext->toPlainText());
 	}
 }
 
@@ -385,35 +388,61 @@ void frmMain::on_pushButton_Analysis_clicked()
 	{
 		return;
 	}
-
+	QByteArray buffer = QUIHelper::hexStrToByteArray(data);
+	if(buffer.length() <= 0)
+	{
+		return;
+	}
 	MyBase *myprotocol = createByName(ui->protocolcbox->currentText());
 
 	if(myprotocol)
 	{
+		//总解析
 		QString tmp;
-		int i = 1;
-		QByteArray buffer = QUIHelper::hexStrToByteArray(data);
+		//单帧解析
+		QString tmpOne;
+		int i = 0;
+		QTreeWidgetItem *headItem = new QTreeWidgetItem(ui->treeWidget_Analysis, QTreeWidgetItem::UserType);
+		ui->treeWidget_Analysis->setCurrentItem(headItem);
+		headItem->setText(0, QString("全部") + QString::number(ui->treeWidget_Analysis->topLevelItemCount()));
+		//设置禁止展开
+		ui->treeWidget_Analysis->setItemsExpandable(false);
+		//当前进度
+		int progressValue = 0;
+		ui->progressBar_Analysis->setMaximum(buffer.length());
+
 		while(!buffer.isEmpty())
 		{
-			tmp.append(QString("####第%1帧####\r\n").arg(i++));
+			tmpOne.clear();
+			tmpOne.append(QString("####第%1帧####\r\n").arg(++i));
 			if(myprotocol->init(buffer))
 			{
-				tmp.append(myprotocol->showToText());
+				tmpOne.append(myprotocol->showToText());
 				buffer.remove(0, myprotocol->mLen);
+				tmpOne.append("****************************************************************************************************\r\n");
+				progressValue += myprotocol->mLen;
+				ui->progressBar_Analysis->setValue(progressValue);
+				QApplication::processEvents();
 			}
 			else
 			{
 				if(ui->checkBox_error->isChecked())
 				{
-					tmp.append(myprotocol->showToText());
+					tmpOne.append(myprotocol->showToText());
 				}
-				tmp.append(myprotocol->mError);
-				break;
+				tmpOne.append(myprotocol->mError);
+				buffer.clear();
 			}
-			tmp.append("****************************************************************************************************\r\n");
+			QTreeWidgetItem *item = new QTreeWidgetItem(headItem, QTreeWidgetItem::UserType + i);
+			item->setText(0, QString::number(i));
+			item->setData(0, Qt::UserRole, tmpOne);
+			tmp.append(tmpOne);
 		}
-		ui->resulttext->setText(tmp);
+		headItem->setData(0, Qt::UserRole, tmp);
+		ui->resulttext->setPlainText(tmp);
 		initcursor();
+		ui->progressBar_Analysis->setValue(0);
+		ui->treeWidget_Analysis->setItemsExpandable(true);
 
 		delete myprotocol;
 		myprotocol = NULL;
@@ -426,12 +455,12 @@ void frmMain::on_pushButton_change_clicked()
 	if(ui->pushButton_change->text() == "字母大写")
 	{
 		ui->pushButton_change->setText("字母小写");
-		ui->originaltext->setText(data.toUpper());
+		ui->originaltext->setPlainText(data.toUpper());
 	}
 	else
 	{
 		ui->pushButton_change->setText("字母大写");
-		ui->originaltext->setText(data.toLower());
+		ui->originaltext->setPlainText(data.toLower());
 	}
 }
 
@@ -454,7 +483,7 @@ void frmMain::on_pushButton_clean_clicked()
 		}
 
 	}
-	ui->originaltext->setText(data.trimmed());
+	ui->originaltext->setPlainText(data.trimmed());
 }
 
 MyBase *frmMain::createByName(QString name)
@@ -499,6 +528,10 @@ MyBase *frmMain::createByName(QString name)
 	else if(name == MEASUREDTERMINAL_NW_NET)
 	{
 		protocol = new MeasuredTerminal(Config);
+	}
+	else if(name == IEC_61850)
+	{
+		protocol = new IEC61850(Config);
 	}
 
 	return protocol;
@@ -602,6 +635,15 @@ void frmMain::initcursor()
 	tc = ui->resulttext->textCursor();
 	ui->pushButton_before->setToolTip(QString());
 	ui->pushButton_after->setToolTip(QString());
+}
+
+void frmMain::clearlist()
+{
+	if(ui->treeWidget_Analysis->topLevelItemCount() > 0)
+	{
+		ui->treeWidget_Analysis->reset();
+		ui->treeWidget_Analysis->clear();
+	}
 }
 
 void frmMain::on_action_HandleData_triggered(bool checked)
@@ -828,3 +870,47 @@ void frmMain::on_action_wiscom_triggered()
 	App::writeConfig();
 }
 
+
+void frmMain::on_treeWidget_Analysis_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{
+	if(!current)
+	{
+		return;
+	}
+	QString str = current->data(0, Qt::UserRole).toString();
+
+	ui->resulttext->setPlainText(str);
+
+}
+
+
+void frmMain::on_treeWidget_Analysis_customContextMenuRequested(const QPoint& pos)
+{
+	popMenu_Analysis->exec(QCursor::pos());
+}
+
+void frmMain::on_checkBox_simple_stateChanged(int arg1)
+{
+	if(arg1)
+	{
+		highlighter1->setEnable(false);
+		highlighter2->setEnable(false);
+	}
+	else
+	{
+		highlighter1->setEnable(true);
+		highlighter2->setEnable(true);
+	}
+}
+
+void frmMain::on_checkBox_LineWrap_stateChanged(int arg1)
+{
+	if(arg1)
+	{
+		ui->resulttext->setLineWrapMode(QPlainTextEdit::WidgetWidth);
+	}
+	else
+	{
+		ui->resulttext->setLineWrapMode(QPlainTextEdit::NoWrap);
+	}
+}

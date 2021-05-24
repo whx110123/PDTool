@@ -10,7 +10,6 @@ public:
 	IEC103NetWiscom(const MyConfig& Config);
 	~IEC103NetWiscom();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	IEC103NetApciWiscom apci;

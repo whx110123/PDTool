@@ -60,7 +60,7 @@ void ManagerIEC104Master::timerRcv()
 			log.text = myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText();
 			emit toLog(log);
 			noDataTimes = 0;
-			if(myPro.apci.control.type == UTYPE)
+			if(myPro.apci.control.type == IEC104Control::UTYPE)
 			{
 				if(myPro.apci.control.code == 0x0b)
 				{
@@ -77,7 +77,7 @@ void ManagerIEC104Master::timerRcv()
 					flag = STATE_NODATA;
 				}
 			}
-			else if(myPro.apci.control.type == STYPE)
+			else if(myPro.apci.control.type == IEC104Control::STYPE)
 			{
 				if(sndNo >= myPro.apci.control.remoteRecvNo)
 				{
@@ -88,7 +88,7 @@ void ManagerIEC104Master::timerRcv()
 					k = 0;
 				}
 			}
-			else if(myPro.apci.control.type == ITYPE)
+			else if(myPro.apci.control.type == IEC104Control::ITYPE)
 			{
 				rcvNo = myPro.apci.control.remoteSendNo + 1;
 				w++;
@@ -125,7 +125,8 @@ void ManagerIEC104Master::timerRcv()
 			{
 				MyLog log;
 				log.type = MyLog::ERRORLOG;
-				log.text = "未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError;
+				log.text = myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText();
+				log.text_error = "未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError;
 				emit toLog(log);
 			}
 			mutexRD.lock();
@@ -196,7 +197,7 @@ QByteArray ManagerIEC104Master::SendU(uchar ch)
 	MyData sendData;
 	IEC104Apci apci(mConfig);
 
-	apci.control.type = UTYPE;
+	apci.control.type = IEC104Control::UTYPE;
 	apci.control.code = ch;
 	if(apci.createData(sendData))
 	{
@@ -213,7 +214,7 @@ QByteArray ManagerIEC104Master::SendS()
 	MyData sendData;
 	IEC104Apci apci(mConfig);
 
-	apci.control.type = STYPE;
+	apci.control.type = IEC104Control::STYPE;
 	apci.control.localRecvNo = rcvNo;
 	if(apci.createData(sendData))
 	{
@@ -237,7 +238,7 @@ QByteArray ManagerIEC104Master::SendI(const QByteArray& data)
 	sendData.data += data;
 	IEC104Apci apci(mConfig);
 
-	apci.control.type = ITYPE;
+	apci.control.type = IEC104Control::ITYPE;
 	apci.control.localSendNo = sndNo;
 	apci.control.localRecvNo = rcvNo;
 	sendData.reverse = true;

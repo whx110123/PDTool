@@ -9,7 +9,6 @@ public:
 	IEC103Asdu29Data(const MyConfig& Config);
 	~IEC103Asdu29Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	ushort fan;

@@ -3,11 +3,15 @@
 
 myhighlighter::myhighlighter(QTextDocument *parent): QSyntaxHighlighter(parent)
 {
-
+	enable = true;
 }
 
 void myhighlighter::highlightBlock(const QString& text)
 {
+	if(!enable)
+	{
+		return;
+	}
 	QTextCharFormat myformat1;
 	myformat1.setFontWeight(QFont::Bold);
 	myformat1.setForeground(Qt::red);
@@ -31,11 +35,6 @@ void myhighlighter::highlightBlock(const QString& text)
 			 << " 在相应的累加周期内计数器溢出"
 			 << " 被测值无效";
 
-	QStringList patlis2;
-	for(int i = 1; i < 20; i++)
-	{
-		patlis2  << QString("####第%1帧####").arg(i);
-	}
 
 	for(int i = 0; i < patlis1.size(); i++)
 	{
@@ -48,17 +47,21 @@ void myhighlighter::highlightBlock(const QString& text)
 			index = text.indexOf(pattern, index + length);
 		}
 	}
-	for(int i = 0; i < patlis2.size(); i++)
+
+	QString pattern1 = "####第";
+	int length1 = pattern1.length();
+	QString pattern2 = "帧####";
+	int length2 = pattern2.length();
+	int index1 = text.indexOf(pattern1);
+	int index2 = text.indexOf(pattern2, index1);
+	while(index1 >= 0 && index2 >= 0 && (index2 - index1) < (length1 + 8))
 	{
-		QString pattern = patlis2.at(i);
-		int length = pattern.length();
-		int index = text.indexOf(pattern);
-		while(index >= 0)
-		{
-			setFormat(index, length, myformat2);
-			index = text.indexOf(pattern, index + length);
-		}
+		int length = index2 - index1 + length2;
+		setFormat(index1, length, myformat2);
+		index1 = text.indexOf(pattern1, index1 + length);
+		index2 = text.indexOf(pattern2, index1);
 	}
+
 
 	int length = hlstr.length();
 	if(length > 0)
@@ -70,4 +73,9 @@ void myhighlighter::highlightBlock(const QString& text)
 			index = text.indexOf(hlstr, index + length);
 		}
 	}
+}
+
+void myhighlighter::setEnable(bool isOK)
+{
+	enable = isOK;
 }

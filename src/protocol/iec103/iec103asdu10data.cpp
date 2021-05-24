@@ -31,6 +31,8 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 	QDateTime datet;
 	QDateTime datet2;
 
+	int i = 0;
+
 	switch(gdd[0])
 	{
 	case 1:
@@ -224,18 +226,19 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		mLen ++;
 		break;
 	case 23:
+		i = 0;
 		while(mLen < gdd[1])
 		{
 			IEC103Asdu10DataSetGdd *mgdd = new IEC103Asdu10DataSetGdd(mConfig);
+			gddlist.append(mgdd);
+			mgdd->mIndex = i++;
 			if(!mgdd->init(buff.mid(mLen)))
 			{
-				delete mgdd;
-				mgdd = NULL;
+				mText.append(mgdd->showToText());
 				return false;
 			}
-			mgdd->mIndex = 0;
+			mText.append(mgdd->showToText());
 			mLen += mgdd->mLen;
-			gddlist.append(mgdd);
 		}
 		if(mLen != gdd[1])
 		{
@@ -376,24 +379,15 @@ bool IEC103Asdu10DataSetGid::initgid(const QByteArray& buff, uchar *gdd)
 		return false;
 		break;
 	}
-	gid = mRecvData.left(mLen);
 	mText.append("-----------------------------------------------------------------------------------------------\r\n");
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
+	gid = mRecvData;
 	return true;
-}
-
-QString IEC103Asdu10DataSetGid::showToText()
-{
-	QString text = mText;
-	for(IEC103Asdu10DataSetGdd *mgdd : qAsConst(gddlist))
-	{
-		text.append(mgdd->showToText());
-	}
-	return text;
 }
 
 bool IEC103Asdu10DataSetGid::createData(MyData& proData)
@@ -464,33 +458,23 @@ bool IEC103Asdu10DataSetGdd::init(const QByteArray& buff)
 	for(int index = 0; index < gidnum; index++)
 	{
 		IEC103Asdu10DataSetGid *mgid = new IEC103Asdu10DataSetGid(mConfig);
+		gidlist.append(mgid);
+		mgid->mIndex = index;
 		bool isOk = mgid->initgid(buff.mid(mLen), gdd);
+		mText.append(mgid->showToText());
 		if(!isOk)
 		{
-			delete mgid;
-			mgid = NULL;
 			return false;
 		}
-		mgid->mIndex = index;
 		mLen += mgid->mLen;
-		gidlist.append(mgid);
 	}
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString IEC103Asdu10DataSetGdd::showToText()
-{
-	QString text = mText;
-	for(IEC103Asdu10DataSetGid *mgid : qAsConst(gidlist))
-	{
-		text.append(mgid->showToText());
-	}
-	return text;
 }
 
 bool IEC103Asdu10DataSetGdd::createData(MyData& proData)
@@ -554,22 +538,18 @@ bool IEC103Asdu10DataSet::init(const QByteArray& buff)
 
 	if(!mygdd.init(buff.mid(mLen)))
 	{
+		mText.append(mygdd.showToText());
 		return false;
 	}
+	mText.append(mygdd.showToText());
 	mLen += mygdd.mLen;
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString IEC103Asdu10DataSet::showToText()
-{
-	QString text = mText;
-	text.append(mygdd.showToText());
-	return text;
 }
 
 bool IEC103Asdu10DataSet::createData(MyData& proData)
@@ -631,16 +611,15 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 	for(int index = 0; index < (ngd & 0x3f); index++)
 	{
 		IEC103Asdu10DataSet *mset = new IEC103Asdu10DataSet(mConfig);
+		setlist.append(mset);
+		mset->mIndex = index;
 		bool isOk = mset->init(buff.mid(mLen));
+		mText.append(mset->showToText());
 		if(!isOk)
 		{
-			delete mset;
-			mset = NULL;
 			return false;
 		}
-		mset->mIndex = index;
 		mLen += mset->mLen;
-		setlist.append(mset);
 	}
 
 	if(mLen > buff.length())
@@ -649,17 +628,6 @@ bool IEC103Asdu10Data::handle(const QByteArray& buff)
 		return false;
 	}
 	return true;
-}
-
-
-QString IEC103Asdu10Data::showToText()
-{
-	QString text = mText;
-	for(IEC103Asdu10DataSet *mset : qAsConst(setlist))
-	{
-		text.append(mset->showToText());
-	}
-	return text;
 }
 
 bool IEC103Asdu10Data::createData(MyData& proData)

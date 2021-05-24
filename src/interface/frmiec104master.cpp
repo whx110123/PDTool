@@ -95,7 +95,8 @@ void frmIEC104Master::sendData(const QByteArray& data)
 		else
 		{
 			log.type = MyLog::ERRORLOG;
-			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.mError;
+			log.text = manager->protocolShow.mRecvData.toHex(' ') + "\r\n" + manager->protocolShow.showToText();
+			log.text_error = manager->protocolShow.mError;
 		}
 		handleLog(log);
 		emitsignals(data.toHex(' '));
@@ -132,7 +133,6 @@ void frmIEC104Master::stopdebug()
 void frmIEC104Master::handleLog(MyLog& log)
 {
 	log.masterType = IEC104Master;
-	log.dt = QDateTime::currentDateTime();
 	emit toLog(log);
 }
 
@@ -888,7 +888,7 @@ void frmIEC104Master::on_pushButton_SendAsdu1_clicked()
 	{
 		return;
 	}
-	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu1->toPlainText()));
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->plainTextEdit_Asdu1->toPlainText()));
 }
 
 void frmIEC104Master::on_pushButton_SendAsdu2_clicked()
@@ -897,7 +897,7 @@ void frmIEC104Master::on_pushButton_SendAsdu2_clicked()
 	{
 		return;
 	}
-	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu2->toPlainText()));
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->plainTextEdit_Asdu2->toPlainText()));
 }
 
 void frmIEC104Master::on_pushButton_SendAsdu3_clicked()
@@ -906,7 +906,7 @@ void frmIEC104Master::on_pushButton_SendAsdu3_clicked()
 	{
 		return;
 	}
-	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu3->toPlainText()));
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->plainTextEdit_Asdu3->toPlainText()));
 }
 
 void frmIEC104Master::on_pushButton_SendAsdu4_clicked()
@@ -915,7 +915,7 @@ void frmIEC104Master::on_pushButton_SendAsdu4_clicked()
 	{
 		return;
 	}
-	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu4->toPlainText()));
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->plainTextEdit_Asdu4->toPlainText()));
 }
 
 void frmIEC104Master::on_pushButton_SendAsdu5_clicked()
@@ -924,7 +924,7 @@ void frmIEC104Master::on_pushButton_SendAsdu5_clicked()
 	{
 		return;
 	}
-	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu5->toPlainText()));
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->plainTextEdit_Asdu5->toPlainText()));
 }
 
 void frmIEC104Master::on_pushButton_SendAsdu6_clicked()
@@ -933,5 +933,5 @@ void frmIEC104Master::on_pushButton_SendAsdu6_clicked()
 	{
 		return;
 	}
-	manager->SendI(QUIHelper::hexStrToByteArray(ui->textEdit_Asdu6->toPlainText()));
+	manager->SendI(QUIHelper::hexStrToByteArray(ui->plainTextEdit_Asdu6->toPlainText()));
 }

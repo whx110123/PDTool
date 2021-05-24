@@ -35,6 +35,7 @@ bool MTAsduData::init(const QByteArray& buff)
 	{
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 }
 

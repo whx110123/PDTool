@@ -11,6 +11,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QtDebug>
+#include <QTreeWidgetItem>
 
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -33,13 +34,6 @@ enum Master
 	DefaultMaster,
 	IEC104Master,
 	MeasuredTerminalMaster
-};
-
-enum
-{
-	ITYPE = 1,
-	UTYPE,
-	STYPE
 };
 
 enum
@@ -78,7 +72,7 @@ enum
 
 enum
 {
-	SQ_NOADDR,			//无地址
+	SQ_NOADDR,		//无地址
 	SQ_INF,			//带inf
 	SQ_FUNINF,		//带fun和inf
 };
@@ -117,10 +111,10 @@ int stringToInt(QString data);					//长度域类型转换
 void stringToHtmlFilter(QString& str);
 void stringToHtml(QString& str, QColor crl);
 void outputMessage(QtMsgType type, const QMessageLogContext& context, const QString& msg);
-#define APPTITLE QString("Protocol Debug Tool V3.03     作者: 王洪星")
 
 #define IEC_104 "104"
 #define IEC_101 "101"
+#define IEC_61850 "61850"
 #define IEC_103WISCOMNET "金智网络103"
 #define IEC_103COM "串口103"
 #define IEC_103ASDU "103ASDU"

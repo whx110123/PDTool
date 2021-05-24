@@ -62,7 +62,8 @@ void ManagerMTMaster::timerRcv()
 				{
 					MyLog log;
 					log.type = MyLog::ERRORLOG;
-					log.text = "未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError;
+					log.text = myPro.mRecvData.toHex(' ') + "\r\n" + myPro.showToText();
+					log.text_error = "未识别的报文: " + rcvData.toHex(' ') + "\r\n" + myPro.mError;
 					emit toLog(log);
 				}
 			}

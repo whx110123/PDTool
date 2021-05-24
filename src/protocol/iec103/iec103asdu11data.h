@@ -9,7 +9,6 @@ public:
 	IEC103Asdu11DataSet(const MyConfig& Config);
 	~IEC103Asdu11DataSet();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 
 };
 
@@ -19,7 +18,6 @@ public:
 	IEC103Asdu11Data(const MyConfig& Config);
 	~IEC103Asdu11Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	uchar rii;

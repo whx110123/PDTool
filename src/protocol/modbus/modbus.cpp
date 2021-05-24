@@ -79,7 +79,7 @@ bool Modbus::init(const QByteArray& buff)
 		}
 
 	}
-	else if(isMaster == false)
+	else
 	{
 		mgroup.dataLen = *(buff.data() + mLen);
 		mgroup.type.clear();
@@ -111,21 +111,17 @@ bool Modbus::init(const QByteArray& buff)
 					mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！申请内存失败");
 					return false;
 				}
-				mdata->mIndex = m_index;
+				datalist.append(mdata);
+				mdata->mIndex = m_index++;
 				if(!mdata->initData(buff.mid(mLen), &mgroup))
 				{
+					mText.append(mdata->showToText());
 					return false;
 				}
-				datalist.append(mdata);
+				mText.append(mdata->showToText());
 				mLen += mdata->mLen;
-				m_index++;
 			}
 		}
-	}
-	else
-	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！无法确定此报文为召唤或应答报文");
-		return false;
 	}
 
 
@@ -135,16 +131,8 @@ bool Modbus::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString Modbus::showToText()
-{
-	for(ModbusData *d : qAsConst(datalist))
-	{
-		mText.append(d->showToText());
-	}
-	return mText;
 }
 
 QString Modbus::codeToText()

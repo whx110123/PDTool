@@ -6,3 +6,4 @@ temp
 *.vcxproj
 bin
 *.sln
+.svn

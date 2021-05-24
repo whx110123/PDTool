@@ -9,7 +9,6 @@ public:
 	Modbus(const MyConfig& Config);
 	~Modbus();
 	virtual bool init(const QByteArray& buff);			//初始化
-	virtual QString showToText();						//显示解析结果
 
 public:
 	QString codeToText();

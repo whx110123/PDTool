@@ -2192,4 +2192,3 @@ QString masterTypeToText(uchar masterType)
 	}
 	return text;
 }
-

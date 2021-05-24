@@ -11,6 +11,9 @@ public:
 	QString hlstr;
 	QTextCharFormat hlformat;
 	void highlightBlock(const QString& text);
+	void setEnable(bool isOK);
+private:
+	bool enable;
 };
 
 #endif // MYHIGHLIGHTER_H

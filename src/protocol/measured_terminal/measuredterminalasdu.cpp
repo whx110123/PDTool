@@ -48,25 +48,17 @@ bool MTAsdu::init(const QByteArray& buff)
 			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！申请内存失败");
 			return false;
 		}
+		datalist.append(mdata);
 		mdata->flag = flag;
 		mdata->afn = afn;
-		mdata->mIndex = index;
+		mdata->mIndex = index++;
 		if(!mdata->init(buff.mid(mLen)))
 		{
 			mText.append(mdata->showToText());
-			delete mdata;
-			mdata = NULL;
 			return false;
 		}
-		datalist.append(mdata);
 		mText.append(mdata->showToText());
 		mLen += mdata->mLen;
-		index++;
-	}
-	if(mLen != buff.length() - pwFlag * 16 - tpFlag * 5)
-	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！用户数据报文长度错误");
-		return false;
 	}
 
 	if(pwFlag)
@@ -89,13 +81,8 @@ bool MTAsdu::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString MTAsdu::showToText()
-{
-	QString text = mText;
-	return text;
 }
 
 

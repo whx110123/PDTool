@@ -25,22 +25,18 @@ bool IEC103Asdu11DataSet::init(const QByteArray& buff)
 	}
 	if(!mygdd.init(buff.mid(mLen)))
 	{
+		mText.append(mygdd.showToText());
 		return false;
 	}
+	mText.append(mygdd.showToText());
 	mLen += mygdd.mLen;
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-QString IEC103Asdu11DataSet::showToText()
-{
-	QString text = mText;
-	text.append(mygdd.showToText());
-	return text;
 }
 
 
@@ -78,16 +74,15 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 	for(int index = 0; index < setnum; index++)
 	{
 		IEC103Asdu11DataSet *mset = new IEC103Asdu11DataSet(mConfig);
+		setlist.append(mset);
+		mset->mIndex = index;
 		bool isOk = mset->init(buff.mid(mLen));
+		mText.append(mset->showToText());
 		if(!isOk)
 		{
-			delete mset;
-			mset = NULL;
 			return false;
 		}
-		mset->mIndex = index;
 		mLen += mset->mLen;
-		setlist.append(mset);
 	}
 
 	if(mLen > buff.length())
@@ -98,14 +93,5 @@ bool IEC103Asdu11Data::handle(const QByteArray& buff)
 	return true;
 }
 
-QString IEC103Asdu11Data::showToText()
-{
-	QString text = mText;
-	for(IEC103Asdu11DataSet *mset : qAsConst(setlist))
-	{
-		text.append(mset->showToText());
-	}
-	return text;
-}
 
 

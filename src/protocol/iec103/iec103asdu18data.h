@@ -10,7 +10,6 @@ public:
 	HisInfo(const MyConfig& Config);
 	~HisInfo();
 	virtual bool init(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	uchar devaddr;
@@ -34,7 +33,6 @@ public:
 	IEC103Asdu18Data(const MyConfig& Config);
 	~IEC103Asdu18Data();
 	virtual bool handle(const QByteArray& buff);
-	virtual QString showToText();
 
 public:
 	uchar isLast;

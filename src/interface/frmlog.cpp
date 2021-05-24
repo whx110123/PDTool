@@ -47,13 +47,15 @@ void frmLog::handleLog(const MyLog& log)
 		text.append(QString("[错误报告][%1]").arg(log.dt.toString("yyyy-MM-dd hh:mm:ss.zzz")));
 		break;
 	default:
+		item->setForeground(QColor("gray"));
+		text.append(QString("[其他报告][%1]").arg(log.dt.toString("yyyy-MM-dd hh:mm:ss.zzz")));
 		break;
 	}
 	item->setText(text);
 
 	QVariant var;
 	var.setValue(log);
-	item->setData(0xff, var);
+	item->setData(Qt::UserRole, var);
 }
 
 void frmLog::clearlist()
@@ -63,19 +65,23 @@ void frmLog::clearlist()
 		ui->listWidget->reset();
 		ui->listWidget->clear();
 	}
-	ui->textEdit_attr->clear();
-	ui->textEdit_content->clear();
+	ui->plainTextEdit_attr->clear();
+	ui->plainTextEdit_content->clear();
 }
 
 void frmLog::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *)
 {
-	QVariant var = current->data(0xff);
+	QVariant var = current->data(Qt::UserRole);
 	MyLog log = var.value<MyLog>();
-	ui->textEdit_content->setText(log.text);
+	ui->plainTextEdit_content->setPlainText(log.text);
 
-	ui->textEdit_attr->clear();
-	ui->textEdit_attr->append(masterTypeToText(log.masterType));
-	ui->textEdit_attr->append(log.text_s);
+	ui->plainTextEdit_attr->clear();
+	ui->plainTextEdit_attr->appendPlainText(masterTypeToText(log.masterType));
+	ui->plainTextEdit_attr->appendPlainText(log.text_s);
+	if(log.type == MyLog::ERRORLOG)
+	{
+		ui->plainTextEdit_attr->appendPlainText(log.text_error);
+	}
 }
 
 void frmLog::on_listWidget_customContextMenuRequested(const QPoint&)
@@ -107,7 +113,7 @@ void frmLog::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWid
 	while(row < (ui->listWidget->count()))
 	{
 		QListWidgetItem *item = ui->listWidget->item(row);
-		QVariant var = item->data(0xff);
+		QVariant var = item->data(Qt::UserRole);
 		MyLog log = var.value<MyLog>();
 		if(type == MyLog::ALLLOG || log.type == type)
 		{

@@ -17,11 +17,12 @@ public:
 		ERRORLOG,
 		ALLLOG,
 	};
-	uchar masterType;
+	uchar masterType;	//规约类型
 	uchar type;			//log类型
-	QDateTime dt;
+	QDateTime dt;		//时间
 	QString text_s;		//简易文本
 	QString text;		//详细文本
+	QString text_error;	//错误说明
 };
 Q_DECLARE_METATYPE(MyLog)
 
@@ -55,7 +56,7 @@ struct MyConfig			//报文格式
 	QVector<ModbusDataGroup> groups;	//界面提供的解析方式
 };
 
-class MyData			//数据信息
+class MyData			//数据包信息
 {
 public:
 	MyData();
@@ -64,7 +65,7 @@ public:
 	MyData operator+(const MyData& md) const;
 
 	QByteArray data;		//总报文
-	uchar sqFlag;				//标记是否需要带地址
+	uchar sqFlag;			//标记是否需要带地址
 	bool reverse;			//0:在后面添加，1:在前面添加
 
 };

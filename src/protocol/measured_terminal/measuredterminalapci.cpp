@@ -18,7 +18,7 @@ bool MTApci::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < 12)
+	if(buff.length() < 12)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
@@ -32,11 +32,6 @@ bool MTApci::init(const QByteArray& buff)
 		mLen++;
 
 		int lengthlen = stringToInt(mConfig.lengthType);
-		if(lengthlen == 0)
-		{
-			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
-			return false;
-		}
 		if(mConfig.lengthType == IEC_DOUBLESAME)
 		{
 			length = *(uchar *)(buff.data() + mLen);
@@ -75,10 +70,9 @@ bool MTApci::init(const QByteArray& buff)
 				return false;
 			}
 		}
-
-		if(buff.count() < 10 + lengthlen)
+		else
 		{
-			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
 			return false;
 		}
 
@@ -100,11 +94,11 @@ bool MTApci::init(const QByteArray& buff)
 
 	if(!code.init(buff.mid(mLen, 1)))
 	{
+		mText.append(code.showToText());
 		return false;
 	}
-
 	mText.append(code.showToText());
-	mLen++;
+	mLen += code.mLen;
 
 	A1 = charTouint(buff.data() + mLen, 3);
 	mText.append(CharToHexStr(buff.data() + mLen, 3) + "\t" + A1ToText() + "\r\n");
@@ -124,6 +118,7 @@ bool MTApci::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 }
 

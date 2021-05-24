@@ -18,12 +18,6 @@ IEC103NetApciWiscom::~IEC103NetApciWiscom()
 
 bool IEC103NetApciWiscom::handle(const QByteArray& buff)
 {
-	int lengthlen = stringToInt(mConfig.lengthType);
-	if(buff.count() < lengthlen + 13)
-	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度不满15个字节");
-		return false;
-	}
 	source_factory_addr = *(buff.data() + mLen);
 	mText.append(CharToHexStr(buff.data() + mLen) + "\t源厂站地址:" + QString::number(source_factory_addr) + "\r\n");
 	mLen++;
@@ -54,12 +48,4 @@ bool IEC103NetApciWiscom::handle(const QByteArray& buff)
 		return false;
 	}
 	return true;
-}
-
-QString IEC103NetApciWiscom::showToText()
-{
-	QString text;
-	text.append(mText);
-
-	return text;
 }

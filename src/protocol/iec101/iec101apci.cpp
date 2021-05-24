@@ -29,6 +29,7 @@ bool IEC101Code::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 }
 
@@ -48,7 +49,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < 2 + mConfig.addrLen)
+	if(2 + mConfig.addrLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
@@ -62,11 +63,6 @@ bool IEC101Apci::init(const QByteArray& buff)
 		mLen++;
 
 		int lengthlen = stringToInt(mConfig.lengthType);
-		if(lengthlen == 0)
-		{
-			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
-			return false;
-		}
 		if(mConfig.lengthType == IEC_DOUBLESAME)
 		{
 			length = *(uchar *)(buff.data() + mLen);
@@ -89,10 +85,9 @@ bool IEC101Apci::init(const QByteArray& buff)
 			mText.append(CharToHexStr(buff.data() + mLen, lengthlen) + "\t长度域:" + QString::number(length) + "\r\n");
 			mLen += lengthlen;
 		}
-
-		if(buff.count() < 3 + lengthlen + mConfig.addrLen)
+		else
 		{
-			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
+			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！未知的长度域类型");
 			return false;
 		}
 
@@ -120,11 +115,11 @@ bool IEC101Apci::init(const QByteArray& buff)
 
 	if(!code.init(buff.mid(mLen, 1)))
 	{
+		mText.append(code.showToText());
 		return false;
 	}
-
+	mLen += code.mLen;
 	mText.append(code.showToText());
-	mLen++;
 
 	addr = charTouint(buff.data() + mLen, mConfig.addrLen);
 	mText.append(CharToHexStr(buff.data() + mLen, mConfig.addrLen) + "\t地址域:" + QString::number(addr) + "\r\n");
@@ -135,6 +130,7 @@ bool IEC101Apci::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
 
 }

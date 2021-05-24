@@ -15,7 +15,7 @@ bool IEC103COM::init(const QByteArray& buff)
 {
 	setDefault(buff);
 
-	if(buff.count() < mConfig.addrLen + 4)
+	if(mConfig.addrLen + 4 > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！长度不足");
 		return false;
@@ -35,76 +35,74 @@ bool IEC103COM::init(const QByteArray& buff)
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文头错误");
 		return false;
 	}
-	if(!apci.init(buff.left(APCI_LEN)))
+	if(APCI_LEN > buff.length())
 	{
-		mRecvData = buff.left(APCI_LEN);
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！报文总长不满%1个字节，条件不满足，因此报文有问题").arg(APCI_LEN));
 		return false;
 	}
-	mLen = APCI_LEN + apci.length;
+	if(!apci.init(buff.mid(mLen, APCI_LEN)))
+	{
+		mText.append(apci.showToText());
+		return false;
+	}
+	mText.append(apci.showToText());
+	mLen = apci.mLen;
 
-	if(mLen > buff.count())
+	if(mLen != APCI_LEN)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
 		return false;
 	}
-	mRecvData = buff.left(mLen);
-
-	if(apci.flag == 0x68 && buff.count() > APCI_LEN + 3)
+	int APDU_LEN = APCI_LEN - 2 + apci.length + 2;		//APDU总字节数
+	if(APDU_LEN > buff.length())
 	{
-		if(!asdu.init(buff.mid(APCI_LEN, mLen - APCI_LEN - 2)))
-		{
-			return false;
-		}
-
-	}
-	else if(apci.flag == 0x10)
-	{
-		if(mLen != APCI_LEN + 2)
-		{
-			mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
-			return false;
-		}
-	}
-	else
-	{
-		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(APDU_LEN).arg(buff.length()));
 		return false;
 	}
 
-	uchar crctmp = crcsum(buff.data(), APCI_LEN - 2, mLen - 3);
-	crc = *(buff.data() + mLen - 2);
+	if(apci.flag == 0x68)
+	{
+		if(!asdu.init(buff.mid(mLen, APDU_LEN - APCI_LEN - 2)))
+		{
+			mText.append(asdu.showToText());
+			return false;
+		}
+		mText.append(asdu.showToText());
+		mLen += asdu.mLen;
+	}
+
+	uchar crctmp = crcsum(buff.data(), APCI_LEN - 2, APDU_LEN - 3);
+	crc = *(buff.data() + mLen);
+	mText.append(CharToHexStr(crc) + "\t校验和\r\n");
 	if(crc != crctmp)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！校验错误");
 		return false;
 	}
+	mLen++;
 
-	end = *(buff.data() + mLen - 1);
+	end = *(buff.data() + mLen);
+	mText.append(CharToHexStr(end) + "\t结束字符\r\n");
 	if(end != 0x16)
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文结束位错误");
 		return false;
 	}
+	mLen++;
+
+	if(mLen != APDU_LEN)
+	{
+		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg("出错！报文长度错误");
+		return false;
+	}
+
 	if(mLen > buff.length())
 	{
 		mError = QString("\"%1\" %2 [%3行]\r\n%4\r\n").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(QString("出错！解析所需报文长度(%1)比实际报文长度(%2)长").arg(mLen).arg(buff.length()));
 		return false;
 	}
+	mRecvData.resize(mLen);
 	return true;
-}
-
-
-QString IEC103COM::showToText()
-{
-	QString text;
-	text.append(apci.showToText());
-	if(apci.flag == 0x68)
-	{
-		text.append(asdu.showToText());
-	}
-	text.append(CharToHexStr(crc) + "\t校验和\r\n");
-	text.append(CharToHexStr(end) + "\t结束字符\r\n");
-	return text;
 }
 
 
