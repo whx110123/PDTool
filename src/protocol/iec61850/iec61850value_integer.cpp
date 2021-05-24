@@ -1,4 +1,5 @@
-﻿#include "iec61850value_integer.h"
+﻿#include "iec61850define.h"
+#include "iec61850value_integer.h"
 
 IEC61850Value_Integer::IEC61850Value_Integer(const MyConfig& Config): ASN1BERValue(Config)
 {
@@ -143,8 +144,9 @@ void IEC61850Value_Integer::initValueMap()
 		valueMap.insert(98, "");
 		valueMap.insert(99, "");
 	}
-	if(myGroup.des.contains("basicObjectClass"))
+	switch(myGroup.typeEnum)
 	{
+	case TypeInteger::basicObjectClass:
 		valueMap.insert(0, "namedVariable");
 		valueMap.insert(1, "scatteredAccess");
 		valueMap.insert(2, "namedVariableList");
@@ -159,14 +161,12 @@ void IEC61850Value_Integer::initValueMap()
 		valueMap.insert(11, "operatorStation");
 		valueMap.insert(12, "dataExchange");
 		valueMap.insert(13, "accessControlList");
-	}
-	else if(myGroup.des.contains("csObjectClass"))
-	{
+		break;
+	case TypeInteger::csObjectClass:
 		valueMap.insert(0, "eventConditionList");
 		valueMap.insert(1, "unitControl");
-	}
-	if(myGroup.des.contains("DataAccessError"))
-	{
+		break;
+	case TypeInteger::DataAccessError:
 		valueMap.insert(0, "object-invalidated");
 		valueMap.insert(1, "hardware-fault");
 		valueMap.insert(2, "temporarily-unavailable");
@@ -179,5 +179,40 @@ void IEC61850Value_Integer::initValueMap()
 		valueMap.insert(9, "object-access-unsupported");
 		valueMap.insert(10, "object-non-existent");
 		valueMap.insert(11, "object-value-invalid");
+		break;
+	case TypeInteger::vmd_state:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "vmd-state-conflict");
+		valueMap.insert(2, "vmd-operational-problem");
+		valueMap.insert(3, "domain-transfer-problem");
+		valueMap.insert(4, "state-machine-id-invalid");
+		break;
+	case TypeInteger::application_reference:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "application-unreachable");
+		valueMap.insert(2, "connection-lost");
+		valueMap.insert(3, "application-reference-invalid");
+		valueMap.insert(4, "context-unsupported");
+		break;
+	case TypeInteger::definition:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "object-undefined");
+		valueMap.insert(2, "invalid-address");
+		valueMap.insert(3, "type-unsupported");
+		valueMap.insert(4, "type-inconsistent");
+		valueMap.insert(5, "object-exists");
+		valueMap.insert(6, "object-attribute-inconsistent");
+		break;
+	case TypeInteger::resource:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "memory-unavailable");
+		valueMap.insert(2, "processor-resource-unavailable");
+		valueMap.insert(3, "mass-storage-unavailable");
+		valueMap.insert(4, "capability-unavailable");
+		valueMap.insert(5, "capability-unknown ");
+		break;
+	default:
+		break;
 	}
+
 }

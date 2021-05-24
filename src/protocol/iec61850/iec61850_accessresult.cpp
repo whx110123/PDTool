@@ -1,5 +1,6 @@
 ﻿#include "iec61850_accessresult.h"
 #include "iec61850_data.h"
+#include "iec61850define.h"
 
 IEC61850_AccessResult::IEC61850_AccessResult(const MyConfig& Config): ASN1BER(Config)
 {
@@ -28,6 +29,7 @@ void IEC61850_AccessResult::initMap()
 	uint tagNo = 0;
 	group.type = ASN1BER::Integer;
 	group.typeDes = "IMPLICIT DataAccessError";
+	group.typeEnum = TypeInteger::DataAccessError;
 	group.des = "failure";
 	myTagNoMap.insert(tagNo, group);
 }

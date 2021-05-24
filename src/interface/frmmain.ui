@@ -611,6 +611,7 @@
     <addaction name="action_UDPClient"/>
     <addaction name="action_UDPServer"/>
     <addaction name="action_COM"/>
+    <addaction name="separator"/>
     <addaction name="action_Log"/>
    </widget>
    <widget class="QMenu" name="menu_B">

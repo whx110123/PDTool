@@ -1,4 +1,5 @@
 ﻿#include "iec61850_objectclass.h"
+#include "iec61850define.h"
 
 IEC61850_ObjectClass::IEC61850_ObjectClass(const MyConfig& Config): ASN1BER(Config)
 {
@@ -19,12 +20,14 @@ void IEC61850_ObjectClass::initMap()
 	uint tagNo = 0;
 	group.type = ASN1BER::Integer;
 	group.typeDes = "IMPLICIT INTEGER";
+	group.typeEnum = TypeInteger::basicObjectClass;
 	group.des = "basicObjectClass";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 1;
 	group.type = ASN1BER::Integer;
 	group.typeDes = "IMPLICIT INTEGER";
+	group.typeEnum = TypeInteger::csObjectClass;
 	group.des = "csObjectClass";
 	myTagNoMap.insert(tagNo, group);
 }

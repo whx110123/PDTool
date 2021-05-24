@@ -5,8 +5,11 @@
 
 struct BERGroup
 {
+	BERGroup(): typeEnum(0) {}
+
 	uchar type;				//数据类型
 	QString typeDes;		//数据类型描述
+	uint typeEnum;			//特殊类型标识
 	QString des;			//描述
 	uint index;				//下标
 };
@@ -20,16 +23,12 @@ public:
 	~ASN1BER();
 	virtual bool init(const QByteArray& buff) override;
 	virtual void initMap();
-	ASN1BER *CreateBER(uint tagNo, uchar tag, uint index);	//创建ber
-	ASN1BER *CreateUniversalBER(uint tagNo, uint index);	//创建通用的ber
-	ASN1BER *CreateBERByType(uint type, uint index = 0);		//按通用标签类型创建
+	ASN1BER *CreateBER(uint tagNo, uchar tag, uint index);			//创建ber
+	ASN1BER *CreateUniversalBER(uint tagNo, uint index);			//创建通用的ber
+	ASN1BER *CreateBERByType(uint type, uint index = 0);			//按通用标签类型创建
 	virtual ASN1BER *CreateContextBER(uint tagNo, uint index);		//创建根据规范内容定义的ber
-//	virtual ASN1BER *CreateBERByTagNo(uint tagNo);			//按指定标签号创建
-//	virtual ASN1BER *CreateBERByIndex(uint& index);			//按下标创建，针对没有标签号的情况
-	virtual ASN1BER *CreateSequenceBER(uint index);
-//	virtual ASN1BER *CreateBERByMyType(uint type);		//
-
-	void setBERGroup(ASN1BER *ber, const BERGroup group);		//
+	virtual ASN1BER *CreateSequenceBER(uint index);					//单独创建Sequence类型的ber
+	void setBERGroup(ASN1BER *ber, const BERGroup group);			//设置ber属性
 
 private:
 	QString tagNoToText(uint tagNo);

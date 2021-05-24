@@ -1,5 +1,6 @@
 ﻿#include "iec61850_confirmed_request.h"
 #include "iec61850_confirmedservice_request.h"
+#include "iec61850_requestdetail.h"
 
 IEC61850_Confirmed_Request::IEC61850_Confirmed_Request(const MyConfig& Config): ASN1BER(Config)
 {
@@ -32,7 +33,7 @@ void IEC61850_Confirmed_Request::initMap()
 	myTagNoMap.clear();
 
 	uint tagNo = 79;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::ChoiceWithTag;
 	group.typeDes = "Request-Detail OPTIONAL";
 	group.des = "Request-Detail";
 	myTagNoMap.insert(tagNo, group);
@@ -48,7 +49,7 @@ ASN1BER *IEC61850_Confirmed_Request::CreateContextBER(uint tagNo, uint index)
 	}
 	else if(tagNo == 79)
 	{
-//		ber = new IEC61850_RequestDetail(mConfig);
+		ber = new IEC61850_RequestDetail(mConfig);
 		setBERGroup(ber, myTagNoMap[tagNo]);
 	}
 	else

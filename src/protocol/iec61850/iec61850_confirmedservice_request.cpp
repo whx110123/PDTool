@@ -1,4 +1,5 @@
-﻿#include "iec61850_confirmedservice_request.h"
+﻿#include "iec61850_additionalservice_request.h"
+#include "iec61850_confirmedservice_request.h"
 #include "iec61850_getnamelist_request.h"
 #include "iec61850_getvariableaccessattributes_request.h"
 #include "iec61850_objectname.h"
@@ -551,16 +552,16 @@ void IEC61850_ConfirmedService_Request::initMap()
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 78;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::ChoiceWithTag;
 	group.typeDes = "IMPLICIT AdditionalService-Request";
 	group.des = "AdditionalService-Request";
 	myTagNoMap.insert(tagNo, group);
 
-	tagNo = 79;
-	group.type = ASN1BER::Sequence;
-	group.typeDes = "IMPLICIT reserved";
-	group.des = "reserved";
-	myTagNoMap.insert(tagNo, group);
+//	tagNo = 79;
+//	group.type = ASN1BER::Sequence;
+//	group.typeDes = "IMPLICIT reserved";
+//	group.des = "reserved";
+//	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 80;
 	group.type = ASN1BER::Sequence;
@@ -627,6 +628,9 @@ ASN1BER *IEC61850_ConfirmedService_Request::CreateContextBER(uint tagNo, uint in
 			break;
 		case 12:
 			ber = new IEC61850_ObjectName(mConfig);
+			break;
+		case 78:
+			ber = new IEC61850_AdditionalService_Request(mConfig);
 			break;
 		default:
 			ber = CreateBERByType(myTagNoMap[tagNo].type);

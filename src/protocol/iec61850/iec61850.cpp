@@ -1,4 +1,5 @@
 ﻿#include "iec61850.h"
+#include "iec61850_confirmed_error.h"
 #include "iec61850_confirmed_request.h"
 #include "iec61850_confirmed_response.h"
 #include "iec61850_initiate_request.h"
@@ -123,6 +124,7 @@ ASN1BER *IEC61850::CreateContextBER(uint tagNo, uint index)
 			ber = new IEC61850_Confirmed_Response(mConfig);
 			break;
 		case 2:
+			ber = new IEC61850_Confirmed_Error(mConfig);
 			break;
 		case 3:
 			ber = new IEC61850_Unconfirmed(mConfig);

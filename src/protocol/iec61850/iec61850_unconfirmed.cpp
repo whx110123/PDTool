@@ -1,4 +1,5 @@
 ﻿#include "iec61850_unconfirmed.h"
+#include "iec61850_unconfirmeddetail.h"
 #include "iec61850_unconfirmedservice.h"
 
 IEC61850_Unconfirmed::IEC61850_Unconfirmed(const MyConfig& Config): ASN1BER(Config)
@@ -26,7 +27,7 @@ void IEC61850_Unconfirmed::initMap()
 	myTagNoMap.clear();
 
 	uint tagNo = 79;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::ChoiceWithTag;
 	group.typeDes = "Unconfirmed-Detail OPTIONAL";
 	group.des = "Unconfirmed-Detail";
 	myTagNoMap.insert(tagNo, group);
@@ -37,7 +38,7 @@ ASN1BER *IEC61850_Unconfirmed::CreateContextBER(uint tagNo, uint index)
 	ASN1BER *ber = NULL;
 	if(tagNo == 79)
 	{
-//		ber = new IEC61850_UnconfirmedDetail(mConfig);
+		ber = new IEC61850_UnconfirmedDetail(mConfig);
 		setBERGroup(ber, myTagNoMap[tagNo]);
 	}
 	else

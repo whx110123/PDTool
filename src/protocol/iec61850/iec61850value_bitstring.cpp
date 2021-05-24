@@ -1,4 +1,5 @@
-﻿#include "iec61850value_bitstring.h"
+﻿#include "iec61850define.h"
+#include "iec61850value_bitstring.h"
 
 IEC61850Value_BitString::IEC61850Value_BitString(const MyConfig& Config): ASN1BERValue(Config)
 {
@@ -149,8 +150,9 @@ void IEC61850Value_BitString::initValueMap()
 		valueMap.insert(98, "");
 		valueMap.insert(99, "");
 	}
-	if(myGroup.typeDes.contains("ParameterSupportOptions"))
+	switch(myGroup.typeEnum)
 	{
+	case TypeBitString::ParameterSupportOptions:
 		valueMap.insert(0, "str1");
 		valueMap.insert(1, "str2");
 		valueMap.insert(2, "vnam");
@@ -169,9 +171,8 @@ void IEC61850Value_BitString::initValueMap()
 		valueMap.insert(15, "csplc");
 		valueMap.insert(16, "cspi");
 		valueMap.insert(17, "char");
-	}
-	else if(myGroup.typeDes.contains("ServiceSupportOptions"))
-	{
+		break;
+	case TypeBitString::ServiceSupportOptions:
 		valueMap.insert(0, "status");
 		valueMap.insert(1, "getNameList");
 		valueMap.insert(2, "identify");
@@ -265,9 +266,8 @@ void IEC61850Value_BitString::initValueMap()
 		valueMap.insert(90, "deleteAccessControlList");
 		valueMap.insert(91, "alterAccessControl");
 		valueMap.insert(92, "reconfigureProgramInvocation");
-	}
-	else if(myGroup.typeDes.contains("AdditionalSupportOptions"))
-	{
+		break;
+	case TypeBitString::AdditionalSupportOptions:
 		valueMap.insert(0, "vMDStop");
 		valueMap.insert(1, "vMDReset");
 		valueMap.insert(2, "select");
@@ -291,11 +291,14 @@ void IEC61850Value_BitString::initValueMap()
 		valueMap.insert(20, "getEventConditionListAttributes");
 		valueMap.insert(21, "reportEventConditionListStatus");
 		valueMap.insert(22, "alterEventConditionListMonitoring");
-	}
-	else if(myGroup.typeDes.contains("AdditionalCBBOptions"))
-	{
+		break;
+	case TypeBitString::AdditionalCBBOptions:
 		valueMap.insert(0, "des");
 		valueMap.insert(1, "dei");
 		valueMap.insert(2, "recl");
+		break;
+	default:
+		break;
+
 	}
 }

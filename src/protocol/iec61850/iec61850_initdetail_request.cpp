@@ -1,4 +1,5 @@
 ﻿#include "iec61850_initdetail_request.h"
+#include "iec61850define.h"
 
 IEC61850_InitDetail_Request::IEC61850_InitDetail_Request(const MyConfig& Config): ASN1BER(Config)
 {
@@ -25,24 +26,28 @@ void IEC61850_InitDetail_Request::initMap()
 	tagNo = 1;
 	group.type = ASN1BER::BitString;
 	group.typeDes = "IMPLICIT ParameterSupportOptions";
+	group.typeEnum = TypeBitString::ParameterSupportOptions;
 	group.des = "proposedParameterCBB";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 2;
 	group.type = ASN1BER::BitString;
 	group.typeDes = "IMPLICIT ServiceSupportOptions";
+	group.typeEnum = TypeBitString::ServiceSupportOptions;
 	group.des = "servicesSupportedCalling";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 3;
 	group.type = ASN1BER::BitString;
 	group.typeDes = "IMPLICIT AdditionalSupportOptions";
+	group.typeEnum = TypeBitString::AdditionalSupportOptions;
 	group.des = "additionalSupportedCalling";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 4;
 	group.type = ASN1BER::BitString;
 	group.typeDes = "IMPLICIT AdditionalCBBOptions";
+	group.typeEnum = TypeBitString::AdditionalCBBOptions;
 	group.des = "additionalCbbSupportedCalling";
 	myTagNoMap.insert(tagNo, group);
 

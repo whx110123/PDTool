@@ -1,4 +1,5 @@
-﻿#include "iec61850_confirmedservice_response.h"
+﻿#include "iec61850_additionalservice_response.h"
+#include "iec61850_confirmedservice_response.h"
 #include "iec61850_getnamedvariablelistattributes_response.h"
 #include "iec61850_getnamelist_response.h"
 #include "iec61850_getvariableaccessattributes_response.h"
@@ -551,7 +552,7 @@ void IEC61850_ConfirmedService_Response::initMap()
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 78;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::ChoiceWithTag;
 	group.typeDes = "IMPLICIT AdditionalService-Response";
 	group.des = "AdditionalService-Response";
 	myTagNoMap.insert(tagNo, group);
@@ -626,6 +627,9 @@ ASN1BER *IEC61850_ConfirmedService_Response::CreateContextBER(uint tagNo, uint i
 			break;
 		case 12:
 			ber = new IEC61850_GetNamedVariableListAttributes_Response(mConfig);
+			break;
+		case 78:
+			ber = new IEC61850_AdditionalService_Response(mConfig);
 			break;
 		default:
 			ber = CreateBERByType(myTagNoMap[tagNo].type);
