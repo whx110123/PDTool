@@ -1,9 +1,12 @@
 ﻿#include "iec61850.h"
+#include "iec61850_cancel_error.h"
 #include "iec61850_confirmed_error.h"
 #include "iec61850_confirmed_request.h"
 #include "iec61850_confirmed_response.h"
 #include "iec61850_initiate_request.h"
 #include "iec61850_initiate_response.h"
+#include "iec61850_reject.h"
+#include "iec61850_serviceerror.h"
 #include "iec61850_unconfirmed.h"
 
 IEC61850::IEC61850(const MyConfig& Config): ASN1BER(Config)
@@ -56,15 +59,15 @@ void IEC61850::initMap()
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 5;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::Integer;
 	group.typeDes = "IMPLICIT Cancel-RequestPDU";
-	group.des = "Cancel_Request";
+	group.des = "Cancel_Request -- originalInvokeID";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 6;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::Integer;
 	group.typeDes = "IMPLICIT Cancel-ResponsePDU";
-	group.des = "Cancel_Response";
+	group.des = "Cancel_Response -- originalInvokeID";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 7;
@@ -92,13 +95,13 @@ void IEC61850::initMap()
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 11;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::Null;
 	group.typeDes = "IMPLICIT Conclude-RequestPDU";
 	group.des = "Conclude_Request";
 	myTagNoMap.insert(tagNo, group);
 
 	tagNo = 12;
-	group.type = ASN1BER::Sequence;
+	group.type = ASN1BER::Null;
 	group.typeDes = "IMPLICIT Conclude-ResponsePDU";
 	group.des = "Conclude_Response";
 	myTagNoMap.insert(tagNo, group);
@@ -130,12 +133,10 @@ ASN1BER *IEC61850::CreateContextBER(uint tagNo, uint index)
 			ber = new IEC61850_Unconfirmed(mConfig);
 			break;
 		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
+			ber = new IEC61850_Reject(mConfig);
 			break;
 		case 7:
+			ber = new IEC61850_Cancel_Error(mConfig);
 			break;
 		case 8:
 			ber = new IEC61850_Initiate_Request(mConfig);
@@ -144,14 +145,13 @@ ASN1BER *IEC61850::CreateContextBER(uint tagNo, uint index)
 			ber = new IEC61850_Initiate_Response(mConfig);
 			break;
 		case 10:
-			break;
-		case 11:
-			break;
-		case 12:
+			ber = new IEC61850_ServiceError(mConfig);
 			break;
 		case 13:
+			ber = new IEC61850_ServiceError(mConfig);
 			break;
 		default:
+			ber = CreateBERByType(myTagNoMap[tagNo].type);
 			break;
 		}
 		setBERGroup(ber, myTagNoMap[tagNo]);

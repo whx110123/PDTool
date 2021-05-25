@@ -3,10 +3,12 @@ HEADERS +=  \
 	$$PWD/asn1bervalue.h \
 	$$PWD/iec61850.h \
 	$$PWD/iec61850_accessresult.h \
+	$$PWD/iec61850_additionalservice_error.h \
 	$$PWD/iec61850_additionalservice_request.h \
 	$$PWD/iec61850_additionalservice_response.h \
 	$$PWD/iec61850_address.h \
 	$$PWD/iec61850_array_typedescription.h \
+	$$PWD/iec61850_cancel_error.h \
 	$$PWD/iec61850_componentitem.h \
 	$$PWD/iec61850_components.h \
 	$$PWD/iec61850_confirmed_error.h \
@@ -38,9 +40,12 @@ HEADERS +=  \
 	$$PWD/iec61850_objectscope.h \
 	$$PWD/iec61850_read_request.h \
 	$$PWD/iec61850_read_response.h \
+	$$PWD/iec61850_reject.h \
+	$$PWD/iec61850_rejectreason.h \
 	$$PWD/iec61850_requestdetail.h \
 	$$PWD/iec61850_responsedetail.h \
 	$$PWD/iec61850_serviceerror.h \
+	$$PWD/iec61850_servicespecificinfo.h \
 	$$PWD/iec61850_structure_typedescription.h \
 	$$PWD/iec61850_typedescription.h \
 	$$PWD/iec61850_typespecification.h \
@@ -68,10 +73,12 @@ SOURCES +=  \
 	$$PWD/asn1bervalue.cpp \
 	$$PWD/iec61850.cpp \
 	$$PWD/iec61850_accessresult.cpp \
+	$$PWD/iec61850_additionalservice_error.cpp \
 	$$PWD/iec61850_additionalservice_request.cpp \
 	$$PWD/iec61850_additionalservice_response.cpp \
 	$$PWD/iec61850_address.cpp \
 	$$PWD/iec61850_array_typedescription.cpp \
+	$$PWD/iec61850_cancel_error.cpp \
 	$$PWD/iec61850_componentitem.cpp \
 	$$PWD/iec61850_components.cpp \
 	$$PWD/iec61850_confirmed_error.cpp \
@@ -103,9 +110,12 @@ SOURCES +=  \
 	$$PWD/iec61850_objectscope.cpp \
 	$$PWD/iec61850_read_request.cpp \
 	$$PWD/iec61850_read_response.cpp \
+	$$PWD/iec61850_reject.cpp \
+	$$PWD/iec61850_rejectreason.cpp \
 	$$PWD/iec61850_requestdetail.cpp \
 	$$PWD/iec61850_responsedetail.cpp \
 	$$PWD/iec61850_serviceerror.cpp \
+	$$PWD/iec61850_servicespecificinfo.cpp \
 	$$PWD/iec61850_structure_typedescription.cpp \
 	$$PWD/iec61850_typedescription.cpp \
 	$$PWD/iec61850_typespecification.cpp \

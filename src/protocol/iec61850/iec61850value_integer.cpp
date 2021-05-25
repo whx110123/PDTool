@@ -209,7 +209,130 @@ void IEC61850Value_Integer::initValueMap()
 		valueMap.insert(2, "processor-resource-unavailable");
 		valueMap.insert(3, "mass-storage-unavailable");
 		valueMap.insert(4, "capability-unavailable");
-		valueMap.insert(5, "capability-unknown ");
+		valueMap.insert(5, "capability-unknown");
+		break;
+	case TypeInteger::service:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "primitives-out-of-sequence");
+		valueMap.insert(2, "object-state-conflict");
+		valueMap.insert(3, "reserved");
+		valueMap.insert(4, "continuation-invalid");
+		valueMap.insert(5, "object-constraint-conflict");
+		break;
+	case TypeInteger::service_preempt:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "timeout");
+		valueMap.insert(2, "deadlock");
+		valueMap.insert(3, "cancel");
+		break;
+	case TypeInteger::time_resolution:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "unsupportable-time-resolution");
+		break;
+	case TypeInteger::access:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "object-access-unsupported");
+		valueMap.insert(2, "object-non-existent");
+		valueMap.insert(3, "object-access-denied");
+		valueMap.insert(4, "object-invalidated");
+		break;
+	case TypeInteger::initiate:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "reserved");
+		valueMap.insert(2, "reserved");
+		valueMap.insert(3, "max-services-outstanding-calling-insufficient");
+		valueMap.insert(4, "max-services-outstanding-called-insufficient");
+		valueMap.insert(5, "service-CBB-insufficient");
+		valueMap.insert(6, "parameter-CBB-insufficient");
+		valueMap.insert(7, "nesting-level-insufficient");
+		break;
+	case TypeInteger::conclude:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "further-communication-required");
+		break;
+	case TypeInteger::cancel:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invoke-id-unknown");
+		valueMap.insert(2, "cancel-not-possible");
+		break;
+	case TypeInteger::file:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "filename-ambiguous");
+		valueMap.insert(2, "file-busy");
+		valueMap.insert(3, "filename-syntax-error");
+		valueMap.insert(4, "content-type-invalid");
+		valueMap.insert(5, "position-invalid");
+		valueMap.insert(6, "file-access-denied");
+		valueMap.insert(7, "file-non-existent");
+		valueMap.insert(8, "duplicate-filename");
+		valueMap.insert(9, "insufficient-space-in-filestore");
+		break;
+	case TypeInteger::rejectReason_confirmed_requestPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "unrecognized-service");
+		valueMap.insert(2, "unrecognized-modifier");
+		valueMap.insert(3, "invalid-invokeID");
+		valueMap.insert(4, "invalid-argument");
+		valueMap.insert(5, "invalid-modifier");
+		valueMap.insert(6, "max-serv-outstanding-exceeded");
+		valueMap.insert(7, "reserved");
+		valueMap.insert(8, "max-recursion-exceeded");
+		valueMap.insert(9, "value-out-of-range");
+		break;
+	case TypeInteger::rejectReason_confirmed_responsePDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "unrecognized-service");
+		valueMap.insert(2, "invalid-invokeID");
+		valueMap.insert(3, "invalid-result");
+		valueMap.insert(4, "reserved");
+		valueMap.insert(5, "max-recursion-exceeded");
+		valueMap.insert(6, "value-out-of-range");
+		break;
+	case TypeInteger::rejectReason_confirmed_errorPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "unrecognized-service");
+		valueMap.insert(2, "invalid-invokeID");
+		valueMap.insert(3, "invalid-serviceError");
+		valueMap.insert(4, "value-out-of-range");
+		break;
+	case TypeInteger::rejectReason_unconfirmedPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "unrecognized-service");
+		valueMap.insert(2, "invalid-argument");
+		valueMap.insert(3, "max-recursion-exceeded");
+		valueMap.insert(4, "value-out-of-range");
+		break;
+	case TypeInteger::rejectReason_pdu_error:
+		valueMap.insert(0, "unknown-pdu-type");
+		valueMap.insert(1, "invalid-pdu");
+		valueMap.insert(2, "illegal-acse-mapping");
+		break;
+	case TypeInteger::rejectReason_cancel_requestPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invalid-invokeID");
+		break;
+	case TypeInteger::rejectReason_cancel_responsePDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invalid-invokeID");
+		break;
+	case TypeInteger::rejectReason_cancel_errorPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invalid-invokeID");
+		valueMap.insert(2, "invalid-serviceError");
+		valueMap.insert(3, "value-out-of-range");
+		break;
+	case TypeInteger::rejectReason_conclude_requestPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invalid-argument");
+		break;
+	case TypeInteger::rejectReason_conclude_responsePDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invalid-result");
+		break;
+	case TypeInteger::rejectReason_conclude_errorPDU:
+		valueMap.insert(0, "other");
+		valueMap.insert(1, "invalid-serviceError");
+		valueMap.insert(2, "value-out-of-range");
 		break;
 	default:
 		break;

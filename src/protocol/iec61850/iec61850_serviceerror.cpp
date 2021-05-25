@@ -1,5 +1,6 @@
 ﻿#include "iec61850_errorclass.h"
 #include "iec61850_serviceerror.h"
+#include "iec61850_servicespecificinfo.h"
 
 IEC61850_ServiceError::IEC61850_ServiceError(const MyConfig& Config): ASN1BER(Config)
 {
@@ -53,7 +54,7 @@ ASN1BER *IEC61850_ServiceError::CreateContextBER(uint tagNo, uint index)
 			ber = new IEC61850_ErrorClass(mConfig);
 			break;
 		case 3:
-//			ber = new IEC61850_ServiceSpecificInfo(mConfig);
+			ber = new IEC61850_ServiceSpecificInfo(mConfig);
 			break;
 		default:
 			ber = CreateBERByType(myTagNoMap[tagNo].type);

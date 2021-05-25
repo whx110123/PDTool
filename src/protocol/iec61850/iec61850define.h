@@ -22,6 +22,17 @@ public:
 		conclude,
 		cancel,
 		file,
+		rejectReason_confirmed_requestPDU,
+		rejectReason_confirmed_responsePDU,
+		rejectReason_confirmed_errorPDU,
+		rejectReason_unconfirmedPDU,
+		rejectReason_pdu_error,
+		rejectReason_cancel_requestPDU,
+		rejectReason_cancel_responsePDU,
+		rejectReason_cancel_errorPDU,
+		rejectReason_conclude_requestPDU,
+		rejectReason_conclude_responsePDU,
+		rejectReason_conclude_errorPDU,
 	};
 };
 
